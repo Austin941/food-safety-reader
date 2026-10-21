@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>食品安全入門：油品之選擇與安全注意</title>
+  <style>
+    :root {
+      --bg: #F8F6F0;
+      --card-bg: #FFFFFF;
+      --card-border: rgba(44, 40, 36, 0.09);
+      --card-shadow: 0 8px 24px rgba(44, 40, 36, 0.04), 0 2px 6px rgba(44, 40, 36, 0.02);
+      --card-hover-shadow: 0 16px 36px rgba(44, 40, 36, 0.08), 0 4px 12px rgba(44, 40, 36, 0.03);
+      --text-main: #1C1917;
+      --text-body: #44403C;
+      --text-muted: #78716C;
+      --primary: #15803D;
+      --primary-soft: #F0FDF4;
+      --primary-border: #BBF7D0;
+      --accent: #C2410C;
+      --accent-soft: #FFF7ED;
+      --accent-border: #FED7AA;
+      --amber: #B45309;
+      --amber-soft: #FFFBEB;
+      --amber-border: #FDE68A;
+      --indigo: #1D4ED8;
+      --indigo-soft: #EFF6FF;
+      --indigo-border: #BFDBFE;
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+      -webkit-font-smoothing: antialiased;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(240, 235, 224, 0.8) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(235, 230, 218, 0.6) 0px, transparent 50%);
+    }
+    .progress-bar-container { position: fixed; top: 0; left: 0; width: 100vw; height: 4px; background: rgba(44, 40, 36, 0.06); z-index: 100; }
+    .progress-bar { height: 100%; width: 11.11111111111111%; background: linear-gradient(90deg, #15803D, #D97706, #C2410C); transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+    .deck { flex: 1; position: relative; display: flex; align-items: center; justify-content: center; padding: 36px 48px 84px; }
+    .slide { position: absolute; top: 36px; bottom: 88px; left: 48px; right: 48px; display: flex; flex-direction: column; opacity: 0; pointer-events: none; transform: translateY(18px) scale(0.98); transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1); }
+    .slide.active { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1); }
+    .slide.active .card:nth-child(1) { animation: cardEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both; }
+    .slide.active .card:nth-child(2) { animation: cardEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both; }
+    .slide.active .card:nth-child(3) { animation: cardEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.19s both; }
+    .slide.active .card:nth-child(4) { animation: cardEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.26s both; }
+    .slide.active .table-container { animation: cardEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.08s both; }
+    @keyframes cardEnter { 0% { opacity: 0; transform: translateY(16px); } 100% { opacity: 1; transform: translateY(0); } }
+    .slide-header { margin-bottom: 22px; }
+    .tag-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; background: var(--primary-soft); border: 1px solid var(--primary-border); color: var(--primary); border-radius: 999px; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+    .slide-title { font-size: 2.15rem; font-weight: 800; letter-spacing: -0.025em; line-height: 1.25; color: var(--text-main); }
+    .slide-subtitle { font-size: 1.05rem; color: var(--text-muted); margin-top: 5px; font-weight: 450; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; flex: 1; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; flex: 1; }
+    .grid-4 { display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr); gap: 20px; flex: 1; }
+    .card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 24px 28px; box-shadow: var(--card-shadow); display: flex; flex-direction: column; transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease; }
+    .card:hover { border-color: rgba(21, 128, 61, 0.3); box-shadow: var(--card-hover-shadow); transform: translateY(-3px); }
+    .card-title { font-size: 1.25rem; font-weight: 750; color: var(--text-main); display: flex; align-items: center; gap: 10px; margin-bottom: 10px; letter-spacing: -0.01em; }
+    .badge-sub { display: inline-block; padding: 3px 10px; border-radius: 6px; font-size: 0.76rem; font-weight: 700; margin-bottom: 12px; width: fit-content; letter-spacing: 0.02em; }
+    .badge-cyan { background: var(--primary-soft); color: var(--primary); border: 1px solid var(--primary-border); }
+    .badge-rose { background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent-border); }
+    .badge-amber { background: var(--amber-soft); color: var(--amber); border: 1px solid var(--amber-border); }
+    .badge-indigo { background: var(--indigo-soft); color: var(--indigo); border: 1px solid var(--indigo-border); }
+    .card-list { list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 0.95rem; line-height: 1.58; color: var(--text-body); flex: 1; }
+    .card-list li { position: relative; padding-left: 18px; }
+    .card-list li::before { content: "•"; position: absolute; left: 0; color: var(--primary); font-size: 1.3rem; line-height: 1; top: -1px; }
+    .cover-content { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 40px; }
+    .cover-pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 20px; background: var(--primary-soft); border: 1px solid var(--primary-border); border-radius: 999px; color: var(--primary); font-size: 0.88rem; font-weight: 750; letter-spacing: 0.08em; margin-bottom: 26px; }
+    .cover-title { font-size: 3.4rem; font-weight: 900; letter-spacing: -0.035em; line-height: 1.18; margin-bottom: 20px; color: var(--text-main); }
+    .cover-subtitle { font-size: 1.32rem; color: var(--text-muted); max-width: 820px; line-height: 1.6; margin-bottom: 42px; font-weight: 450; }
+    .cover-meta { display: flex; gap: 32px; font-size: 0.95rem; color: var(--text-body); background: #FFFFFF; padding: 12px 30px; border-radius: 999px; border: 1px solid var(--card-border); box-shadow: 0 4px 16px rgba(44, 40, 36, 0.04); font-weight: 500; }
+    .table-container { flex: 1; overflow-y: auto; border-radius: var(--radius); border: 1px solid var(--card-border); background: #FFFFFF; box-shadow: var(--card-shadow); }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.92rem; }
+    th { background: #F4F1EA; color: var(--text-main); font-weight: 750; padding: 14px 16px; border-bottom: 1px solid rgba(44, 40, 36, 0.1); position: sticky; top: 0; }
+    td { padding: 13px 16px; border-bottom: 1px solid rgba(44, 40, 36, 0.06); color: var(--text-body); line-height: 1.48; }
+    tr:nth-child(even) td { background: #FAF8F5; }
+    tr:hover td { background: rgba(21, 128, 61, 0.05); }
+    .controls { position: fixed; bottom: 0; left: 0; width: 100vw; height: 70px; background: rgba(248, 246, 240, 0.92); border-top: 1px solid rgba(44, 40, 36, 0.08); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; align-items: center; justify-content: space-between; padding: 0 48px; z-index: 90; }
+    .slide-counter { font-size: 0.9rem; font-weight: 700; color: var(--text-muted); letter-spacing: 0.06em; }
+    .nav-buttons { display: flex; gap: 12px; }
+    .btn { background: #FFFFFF; border: 1px solid rgba(44, 40, 36, 0.12); color: var(--text-main); padding: 8px 20px; border-radius: 999px; font-size: 0.88rem; font-weight: 650; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(44, 40, 36, 0.04); transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
+    .btn:hover { background: var(--primary-soft); border-color: var(--primary); color: var(--primary); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(21, 128, 61, 0.12); }
+    .btn:active { transform: translateY(1px); }
+    .shortcuts-hint { font-size: 0.82rem; color: var(--text-muted); font-weight: 500; }
+  </style>
+</head>
+<body>
+  <div class="progress-bar-container"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="deck">
+
+    <!-- SLIDE 1: COVER -->
+    <div class="slide active">
+      <div class="cover-content">
+        <div class="cover-pill">FOOD SAFETY & NUTRITION MASTERCLASS</div>
+        <h1 class="cover-title">食品安全入門：油品之選擇與安全注意</h1>
+        <p class="cover-subtitle">從油脂化學結構、精煉工藝、發煙點匹配到高溫劣變與安全防弊全解析</p>
+        <div class="cover-meta">
+          <span>授課講授：文化大學 施明智 教授</span>
+          <span>章節：第二單元（2-1 至 2-6）</span>
+          <span>版型：米白雅緻精萃版</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2 -->
+    <div class="slide ">
+      <div class="slide-header">
+        <span class="tag-badge">Chapter 2-1</span>
+        <h2 class="slide-title">食用油脂的化學結構與脂肪酸分類</h2>
+        <p class="slide-subtitle">三酸甘油酯結構、飽和與不飽和脂肪酸、必需脂肪酸之生化本質</p>
+      </div>
+      <div class="grid-3">
+        
+        <div class="card">
+          <div class="card-title">三酸甘油酯基本骨架</div>
+          <div class="badge-sub badge-cyan">油脂化學基石</div>
+          <ul class="card-list">
+            <li>食用油脂 95% 以上為<strong>三酸甘油酯 (Triglycerides, TG)</strong>。</li><li>由 1 分子甘油與 3 分子脂肪酸以酯鍵結合而成。</li><li>碳鏈長度與雙鍵數決定融點：常溫固態為『脂 (Fat)』，液態為『油 (Oil)』。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">飽和 vs. 不飽和脂肪酸</div>
+          <div class="badge-sub badge-rose">心血管健康關聯</div>
+          <ul class="card-list">
+            <li><strong>飽和脂肪酸 (SFA)</strong>：無雙鍵，耐熱穩定，但過量易堆積壞膽固醇 (LDL)，增加心血管負擔（豬油、棕櫚油、椰子油）。</li><li><strong>單元不飽和脂肪酸 (MUFA)</strong>：含 1 個雙鍵（油酸），能調節血脂且熱穩定性佳。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">多元不飽和與必需脂肪酸</div>
+          <div class="badge-sub badge-amber">必需營養與抗發炎</div>
+          <ul class="card-list">
+            <li><strong>多元不飽和脂肪酸 (PUFA)</strong>：含 2 個以上雙鍵，易受熱氧化。</li><li>人體無法自製之【必需脂肪酸】：<br>• ω-6 亞麻油酸 (Linoleic)<br>• ω-3 次亞麻油酸 (α-Linolenic)</li><li>ω-3 可轉化為抗發炎之 EPA 與 DHA。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3 -->
+    <div class="slide ">
+      <div class="slide-header">
+        <span class="tag-badge">Chapter 2-2</span>
+        <h2 class="slide-title">動物油 vs. 植物油：特性對比與飲食原則</h2>
+        <p class="slide-subtitle">膽固醇有無、飽和度差異與現代人減少飽和脂肪酸之健康指引</p>
+      </div>
+      <div class="grid-2">
+        
+        <div class="card">
+          <div class="card-title">動物油脂特性與應用侷限</div>
+          <div class="badge-sub badge-cyan">高穩定但需限量</div>
+          <ul class="card-list">
+            <li><strong>含膽固醇</strong>：豬油、牛油、雞油天然含膽固醇（魚油除外）。</li><li><strong>物理特性</strong>：飽和脂肪酸高，熱穩定性強，耐長時間油炸不易變質。</li><li><strong>健康風險</strong>：過量攝取飽和脂肪易造成動脈硬化與高血壓。</li><li><strong>特例</strong>：【魚油】富含多元不飽和 (EPA/DHA)，抗發炎但極不耐熱！</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">植物油脂特性與飲食指南</div>
+          <div class="badge-sub badge-rose">降膽固醇・植物優先</div>
+          <ul class="card-list">
+            <li><strong>不含膽固醇</strong>：大豆沙拉油、菜籽油、葵花油、橄欖油等植物油一律無膽固醇。</li><li><strong>降壞膽固醇</strong>：不飽和脂肪酸高，有助心血管健康，但遇高溫易氧化劣變。</li><li><strong>熱帶油脂例外</strong>：【棕櫚油】與【椰子油】飽和脂肪高達 50~85%，性質似動物油。</li><li><strong>原則</strong>：日常料理以單元及多元不飽和植物油為主，少碰加工人造氫化油。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 4 -->
+    <div class="slide ">
+      <div class="slide-header">
+        <span class="tag-badge">Chapter 2-3</span>
+        <h2 class="slide-title">油脂加工製程三大路徑與精煉四部曲</h2>
+        <p class="slide-subtitle">煎熬法、壓榨法（冷壓/熱榨）與化學溶劑浸提法的工藝差異與精製目的</p>
+      </div>
+      <div class="grid-2">
+        
+        <div class="card">
+          <div class="card-title">三大油脂提煉工藝路徑</div>
+          <div class="badge-sub badge-cyan">原料決定製程</div>
+          <ul class="card-list">
+            <li><strong>1. 煎熬法 (Rendering)</strong>：切碎動物油脂加熱融出（如炸豬油）。</li><li><strong>2. 壓榨法 (Pressing)</strong>：用於高含油種子（芝麻、苦茶籽、橄欖）。<br>• 冷壓：未炒焙低溫壓榨，保留最多多酚與維生素E，出油率 < 25%。<br>• 熱榨：高溫炒焙螺旋壓榨，出油率 > 40%，焦香濃郁。</li><li><strong>3. 溶劑浸提法 (Solvent Extraction)</strong>：以食品級【正己烷】萃取大豆油，效率最高。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">精製油 (Refined Oil) 關鍵四部曲</div>
+          <div class="badge-sub badge-rose">提升發煙點核心</div>
+          <ul class="card-list">
+            <li>粗毛油含膠質、游離酸與雜質，必須依序精煉：</li><li>① <strong>脫膠 (Degumming)</strong>：加水去除磷脂膠質，防加熱冒黑煙。</li><li>② <strong>脫酸 (Deacidification)</strong>：加鹼中和游離脂肪酸，降酸價 (AV)。</li><li>③ <strong>脫色 (Bleaching)</strong>：活性白土吸附多餘色素。</li><li>④ <strong>高溫脫臭 (Deodorization)</strong>：高真空蒸氣去異味與溶劑殘留。</li><li>成品特性：清澈透明、無雜味、發煙點拉高至 230°C 以上。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: TABLE -->
+    <div class="slide ">
+      <div class="slide-header">
+        <span class="tag-badge">Chapter 2-3</span>
+        <h2 class="slide-title">各種食用油發煙點 (Smoke Point) 全覽表</h2>
+        <p class="slide-subtitle">發煙點即油脂開始受熱裂解、冒出藍煙產生致癌物質的最低溫度</p>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr><th>未精製 / 動物油品</th><th>發煙點 (°C)</th><th>精製植物油品</th><th>發煙點 (°C)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>牛油 (未精製)</td><td>149°C</td><td>精製大豆油 (沙拉油)</td><td>232°C</td></tr>
+<tr><td>芝麻油 (未精製)</td><td>160°C</td><td>玉米油 (精製)</td><td>232°C</td></tr>
+<tr><td>未精製椰子油 / 花生油</td><td>177°C</td><td>精製花生油</td><td>232°C</td></tr>
+<tr><td>豬脂 / 豬油 / 酥油</td><td>182°C</td><td>菜籽油 (精製)</td><td>232°C</td></tr>
+<tr><td>特級初榨橄欖油 (Extra Virgin)</td><td>191°C</td><td>芥花油 (Canola Oil)</td><td>240°C</td></tr>
+<tr><td>棕櫚油 (Palm Oil)</td><td>206°C</td><td>苦茶油 / 油茶油 (Camellia)</td><td>252°C</td></tr>
+<tr><td>棉籽油 / 葡萄籽油</td><td>216°C</td><td>米糠油 (Rice Bran Oil)</td><td>254°C</td></tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SLIDE 6 -->
+    <div class="slide ">
+      <div class="slide-header">
+        <span class="tag-badge">Chapter 2-4</span>
+        <h2 class="slide-title">油脂高溫劣變機制與油炸油管理法規標準</h2>
+        <p class="slide-subtitle">自動氧化自由基反應、水解聚合反應與總極性化合物 ≥ 25% 換油鐵律</p>
+      </div>
+      <div class="grid-2">
+        
+        <div class="card">
+          <div class="card-title">高溫油炸劣變三大化學機制</div>
+          <div class="badge-sub badge-rose">不可逆化學破壞</div>
+          <ul class="card-list">
+            <li>① <strong>水解反應 (Hydrolysis)</strong>：炸物水分進入熱油，三酸甘油酯水解生成甘油與游離酸，【酸價 (AV) 上升】且發煙點驟降。</li><li>② <strong>自動氧化 (Auto-oxidation)</strong>：熱與氧催化雙鍵產生自由基，生成過氧化物再裂解成醛、酮，散發油耗酸敗味。</li><li>③ <strong>熱聚合反應 (Polymerization)</strong>：高分子聚合物生成，油黏稠發黑、起泡難消，產生反式脂肪與致癌性【丙烯醯胺】。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">衛福部油炸油更換法定標準</div>
+          <div class="badge-sub badge-cyan">法定換油兩大鐵律</div>
+          <ul class="card-list">
+            <li>餐飲業油炸油符合以下任一條件，依法必須【立即全鍋換油】：</li><li>★ <strong>總極性化合物 (TPC) 含量：【TPC ≥ 25%】</strong>（最科學客觀之法定指標，儀器 20 秒測出）。</li><li>★ <strong>酸價 (Acid Value, AV)：【酸價 > 2.0 mg KOH/g】</strong>。</li><li>感官警訊：油炸時劇烈冒油煙、油色深黑黏稠、泡沫超過鍋面 1/2 久聚不退。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 7 -->
+    <div class="slide ">
+      <div class="slide-header">
+        <span class="tag-badge">Chapter 2-5</span>
+        <h2 class="slide-title">劣質地溝油事件與棉籽油混油案真相剖析</h2>
+        <p class="slide-subtitle">回顧大統混油案、棉酚 (Gossypol) 科學迷思與現代食安追溯追蹤體系</p>
+      </div>
+      <div class="grid-2">
+        
+        <div class="card">
+          <div class="card-title">大統棉籽油混油案之科學真相</div>
+          <div class="badge-sub badge-cyan">破解棉酚恐慌迷思</div>
+          <ul class="card-list">
+            <li><strong>核心罪行</strong>：【標示不實、攙偽假冒欺詐】！以低價棉籽油混合葵花油，非法加『銅葉綠素』染色冒充高級橄欖油牟利。</li><li><strong>迷思破解</strong>：當時名嘴恐嚇『吃棉籽油殺精絕育』。<br>• 施教授澄清：有毒棉酚 (Gossypol) 僅在粗毛油中。<br>• 經完整精煉（脫酸脫色脫臭）後，棉酚已被去除至未檢出，歐美皆合法安全食用！罪在於詐欺與染劑，非棉籽油本身有毒。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">回收油/地溝油的檢驗困境與防弊</div>
+          <div class="badge-sub badge-rose">從檢驗轉向源頭防堵</div>
+          <ul class="card-list">
+            <li><strong>強冠餿水油事件</strong>：收購皮革廢油、餿水油混入食用豬油。</li><li><strong>檢驗盲點</strong>：現代精煉工藝可將廢油化驗指標洗成『符合 CNS 規格』，常規化驗根本抓不到！</li><li><strong>制度革新防堵</strong>：<br>• 指標升級：檢測皮革防腐劑（五氯酚）、重金屬與苯駢芘。<br>• 源頭管理：全面建立【非追不可（追溯追蹤系統）】與廢油合法申報，阻斷回流管道。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 8 -->
+    <div class="slide ">
+      <div class="slide-header">
+        <span class="tag-badge">Chapter 2-6</span>
+        <h2 class="slide-title">烹調方式與油品精準匹配指南</h2>
+        <p class="slide-subtitle">低溫涼拌、中溫水炒與高溫油炸的發煙點對應及苦茶油保健優勢</p>
+      </div>
+      <div class="grid-2">
+        
+        <div class="card">
+          <div class="card-title">三大烹調情境精準用油</div>
+          <div class="badge-sub badge-cyan">發煙點匹配原則</div>
+          <ul class="card-list">
+            <li><strong>低溫涼拌 (< 120°C)</strong>：特級初榨橄欖油 (Extra Virgin)、冷壓芝麻油、亞麻仁油。保留天然多酚與 ω-3 營養。</li><li><strong>中溫水炒 (140°C ~ 180°C)</strong>：精製芥花油、大豆沙拉油、米糠油。採『水炒法』（水沸 100°C 壓制油溫）更健康。</li><li><strong>高溫油炸 (180°C ~ 200°C)</strong>：棕櫚油、精製椰子油、高油酸葵花油、苦茶油。嚴禁用初榨橄欖油久炸！</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">『東方橄欖油』苦茶油之保健優勢</div>
+          <div class="badge-sub badge-amber">耐高溫兼具高機能</div>
+          <ul class="card-list">
+            <li><strong>高單元不飽和酸</strong>：油酸達 80% 超越橄欖油，助調節血脂。</li><li><strong>超高發煙點 (252°C)</strong>：兼具極致健康與耐高溫特性，煎煮炒炸皆宜。</li><li><strong>機能成分</strong>：富含茶多酚、山茶苷與角鯊烯，實證輔助保護胃黏膜、改善消化性潰瘍。</li><li><strong>家用保存四避</strong>：【避光線、避高溫、避水分、避空氣】，開瓶後 3 個月內用畢。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 9 -->
+    <div class="slide ">
+      <div class="slide-header">
+        <span class="tag-badge">Critical Reflection</span>
+        <h2 class="slide-title">第二單元前瞻延伸思考：油脂科技與現代飲食省思</h2>
+        <p class="slide-subtitle">反式脂肪新禁令、氣炸鍋高溫熱氧化盲點與棕櫚油生態永續兩難</p>
+      </div>
+      <div class="grid-4">
+        
+        <div class="card">
+          <div class="card-title">思考一：反式脂肪替代挑戰</div>
+          <div class="badge-sub badge-cyan">油脂改良兩難</div>
+          <ul class="card-list">
+            <li>禁用不完全氫化油後，食品業改以全氫化油或棕櫚油替代。</li><li>棕櫚油飽和脂肪高達 50%，烘焙糕餅中長期攝取是否轉嫁心血管負擔？</li><li>解方：發展『酵素交酯化』技術重塑健康構型。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">思考二：氣炸鍋真的健康嗎？</div>
+          <div class="badge-sub badge-amber">新興家電迷思</div>
+          <ul class="card-list">
+            <li>熱風循環溫度高達 180~200°C，肉類油脂在高速熱風下極易產生『超氧化反應』形成大量膽固醇氧化物 (COPs) 與致癌物。</li><li>解方：溫度不超過 160°C，底油絕不重複淋回肉品。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">思考三：棕櫚油與熱帶雨林代價</div>
+          <div class="badge-sub badge-rose">環境永續考量</div>
+          <ul class="card-list">
+            <li>棕櫚油為全球最大產量植物油，洋芋片泡麵無所不在。</li><li>砍伐印尼雨林使紅毛猩猩瀕危且加劇暖化。</li><li>解方：支持【永續棕櫚油認證 (RSPO)】綠色採購。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">思考四：外食族油品知情權</div>
+          <div class="badge-sub badge-indigo">食安知情權落實</div>
+          <ul class="card-list">
+            <li>消費者在外食小吃消費，根本無從得知油品種類與 TPC 數值。</li><li>稽查為抽驗制，常賴肉眼判斷，換油不及時。</li><li>解方：推動小吃油炸油更換即時公示制度與數位化試紙評級。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="controls">
+    <div class="slide-counter" id="slideCounter">SLIDE 1 / 9</div>
+    <div class="shortcuts-hint">按鍵操作：鍵盤左右方向鍵 [←] [→] 或空白鍵換頁，按 [F] 鍵切換全螢幕</div>
+    <div class="nav-buttons">
+      <button class="btn" id="prevBtn">← 上一頁</button>
+      <button class="btn" id="nextBtn">下一頁 →</button>
+      <button class="btn" id="fsBtn">全螢幕</button>
+    </div>
+  </div>
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const fsBtn = document.getElementById('fsBtn');
+    const slideCounter = document.getElementById('slideCounter');
+    const progressBar = document.getElementById('progressBar');
+    let current = 0;
+    const total = slides.length;
+    function updateSlide(idx) {
+      slides.forEach((s, i) => s.classList.toggle('active', i === idx));
+      slideCounter.textContent = `SLIDE ${idx + 1} / ${total}`;
+      progressBar.style.width = `${((idx + 1) / total) * 100}%`;
+      prevBtn.style.opacity = idx === 0 ? "0.4" : "1";
+      nextBtn.style.opacity = idx === total - 1 ? "0.4" : "1";
+    }
+    function prev() { if (current > 0) { current--; updateSlide(current); } }
+    function next() { if (current < total - 1) { current++; updateSlide(current); } }
+    prevBtn.addEventListener('click', prev);
+    nextBtn.addEventListener('click', next);
+    fsBtn.addEventListener('click', () => {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(err => {});
+      else document.exitFullscreen();
+    });
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); next(); }
+      else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prev(); }
+      else if (e.key === 'f' || e.key === 'F') {
+        if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(err => {});
+        else document.exitFullscreen();
+      } else if (e.key === 'Home') { current = 0; updateSlide(current); }
+      else if (e.key === 'End') { current = total - 1; updateSlide(current); }
+    });
+    updateSlide(0);
+  </script>
+</body>
+</html>

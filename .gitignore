@@ -1,0 +1,17 @@
+# Environments & Caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+.vscode/
+.idea/
+
+# Operating System
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Scratch / Temp
+scratch/
+tmp/
+temp/

@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>食品安全入門：食品中毒之預防機制與實務策略</title>
+  <style>
+    :root {
+      --bg: #F8F6F0;                /* 溫潤米白底色 */
+      --bg-warm: #F2EFE9;           /* 次級層次米灰 */
+      --card-bg: #FFFFFF;           /* 純淨純白卡片 */
+      --card-border: rgba(44, 40, 36, 0.09); /* 柔和邊框 */
+      --card-shadow: 0 8px 24px rgba(44, 40, 36, 0.04), 0 2px 6px rgba(44, 40, 36, 0.02);
+      --card-hover-shadow: 0 16px 36px rgba(44, 40, 36, 0.08), 0 4px 12px rgba(44, 40, 36, 0.03);
+      --text-main: #1C1917;         /* 深炭黑/暖墨黑 */
+      --text-body: #44403C;         /* 暖炭灰本文 */
+      --text-muted: #78716C;        /* 雅緻次要文字 */
+      --primary: #15803D;          /* 森林墨綠 Primary */
+      --primary-soft: #F0FDF4;      /* 嫩綠膠囊底 */
+      --primary-border: #BBF7D0;
+      --accent: #C2410C;           /* 暖陶紅/赤陶 Accent */
+      --accent-soft: #FFF7ED;
+      --accent-border: #FED7AA;
+      --amber: #B45309;            /* 暖琥珀金 */
+      --amber-soft: #FFFBEB;
+      --amber-border: #FDE68A;
+      --indigo: #1D4ED8;           /* 典雅靛藍 */
+      --indigo-soft: #EFF6FF;
+      --indigo-border: #BFDBFE;
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+      -webkit-font-smoothing: antialiased;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(240, 235, 224, 0.8) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(235, 230, 218, 0.6) 0px, transparent 50%);
+    }
+
+    /* Top Progress Bar */
+    .progress-bar-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 4px;
+      background: rgba(44, 40, 36, 0.06);
+      z-index: 100;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 8.33%;
+      background: linear-gradient(90deg, #15803D, #D97706, #C2410C);
+      transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Deck Container */
+    .deck {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 36px 48px 84px;
+    }
+
+    .slide {
+      position: absolute;
+      top: 36px;
+      bottom: 88px;
+      left: 48px;
+      right: 48px;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(18px) scale(0.98);
+      transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0) scale(1);
+    }
+
+    /* Staggered Card Animation */
+    .slide.active .card:nth-child(1) {
+      animation: cardEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
+    }
+    .slide.active .card:nth-child(2) {
+      animation: cardEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
+    }
+    .slide.active .card:nth-child(3) {
+      animation: cardEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.19s both;
+    }
+    .slide.active .card:nth-child(4) {
+      animation: cardEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.26s both;
+    }
+    .slide.active .table-container {
+      animation: cardEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.08s both;
+    }
+
+    @keyframes cardEnter {
+      0% {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Header */
+    .slide-header {
+      margin-bottom: 22px;
+    }
+    .tag-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      background: var(--primary-soft);
+      border: 1px solid var(--primary-border);
+      color: var(--primary);
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .slide-title {
+      font-size: 2.15rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1.25;
+      color: var(--text-main);
+    }
+    .slide-subtitle {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      margin-top: 5px;
+      font-weight: 450;
+    }
+
+    /* Layout Grids */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      flex: 1;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      flex: 1;
+    }
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 20px;
+      flex: 1;
+    }
+
+    /* Elegant Warm White Card */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+    }
+    .card:hover {
+      border-color: rgba(21, 128, 61, 0.3);
+      box-shadow: var(--card-hover-shadow);
+      transform: translateY(-3px);
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 750;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+    
+    .badge-sub {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      width: fit-content;
+      letter-spacing: 0.02em;
+    }
+    .badge-cyan { background: var(--primary-soft); color: var(--primary); border: 1px solid var(--primary-border); }
+    .badge-rose { background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent-border); }
+    .badge-amber { background: var(--amber-soft); color: var(--amber); border: 1px solid var(--amber-border); }
+    .badge-indigo { background: var(--indigo-soft); color: var(--indigo); border: 1px solid var(--indigo-border); }
+
+    .card-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 0.95rem;
+      line-height: 1.58;
+      color: var(--text-body);
+      flex: 1;
+    }
+    .card-list li {
+      position: relative;
+      padding-left: 18px;
+    }
+    .card-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--primary);
+      font-size: 1.3rem;
+      line-height: 1;
+      top: -1px;
+    }
+
+    /* Cover Slide Specifics */
+    .cover-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 40px;
+    }
+    .cover-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 20px;
+      background: var(--primary-soft);
+      border: 1px solid var(--primary-border);
+      border-radius: 999px;
+      color: var(--primary);
+      font-size: 0.88rem;
+      font-weight: 750;
+      letter-spacing: 0.08em;
+      margin-bottom: 26px;
+    }
+    .cover-title {
+      font-size: 3.4rem;
+      font-weight: 900;
+      letter-spacing: -0.035em;
+      line-height: 1.18;
+      margin-bottom: 20px;
+      color: var(--text-main);
+    }
+    .cover-subtitle {
+      font-size: 1.32rem;
+      color: var(--text-muted);
+      max-width: 820px;
+      line-height: 1.6;
+      margin-bottom: 42px;
+      font-weight: 450;
+    }
+    .cover-meta {
+      display: flex;
+      gap: 32px;
+      font-size: 0.95rem;
+      color: var(--text-body);
+      background: #FFFFFF;
+      padding: 12px 30px;
+      border-radius: 999px;
+      border: 1px solid var(--card-border);
+      box-shadow: 0 4px 16px rgba(44, 40, 36, 0.04);
+      font-weight: 500;
+    }
+
+    /* Table Styles */
+    .table-container {
+      flex: 1;
+      overflow-y: auto;
+      border-radius: var(--radius);
+      border: 1px solid var(--card-border);
+      background: #FFFFFF;
+      box-shadow: var(--card-shadow);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.92rem;
+    }
+    th {
+      background: #F4F1EA;
+      color: var(--text-main);
+      font-weight: 750;
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(44, 40, 36, 0.1);
+      position: sticky;
+      top: 0;
+      letter-spacing: 0.02em;
+    }
+    td {
+      padding: 13px 16px;
+      border-bottom: 1px solid rgba(44, 40, 36, 0.06);
+      color: var(--text-body);
+      line-height: 1.48;
+    }
+    tr:nth-child(even) td {
+      background: #FAF8F5;
+    }
+    tr:hover td {
+      background: rgba(21, 128, 61, 0.05);
+    }
+
+    /* Bottom Control Bar */
+    .controls {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100vw;
+      height: 70px;
+      background: rgba(248, 246, 240, 0.92);
+      border-top: 1px solid rgba(44, 40, 36, 0.08);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      z-index: 90;
+    }
+    .slide-counter {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+    }
+    .nav-buttons {
+      display: flex;
+      gap: 12px;
+    }
+    .btn {
+      background: #FFFFFF;
+      border: 1px solid rgba(44, 40, 36, 0.12);
+      color: var(--text-main);
+      padding: 8px 20px;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 650;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 6px rgba(44, 40, 36, 0.04);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn:hover {
+      background: var(--primary-soft);
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(21, 128, 61, 0.12);
+    }
+    .btn:active {
+      transform: translateY(1px);
+    }
+    .shortcuts-hint {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <div class="deck">
+
+    <!-- SLIDE 1: COVER -->
+    <div class="slide active">
+      <div class="cover-content">
+        <div class="cover-pill">FOOD SAFETY & HYGIENE MASTERCLASS</div>
+        <h1 class="cover-title">食品安全入門：食品中毒之預防機制與實務策略</h1>
+        <p class="cover-subtitle">從本土流行病學大數據、微生物病理致病機轉到衛生防禦五要原則與新興飲食省思</p>
+        <div class="cover-meta">
+          <span>授課講授：文化大學 施明智 教授</span>
+          <span>章節：第一單元全解析</span>
+          <span>版型：米白雅緻精萃版</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: 1-1 大數據與高風險情境 -->
+    <div class="slide">
+      <div class="slide-header">
+        <span class="tag-badge">Chapter 1-1</span>
+        <h2 class="slide-title">食品中毒法定定義與台灣歷年食安大數據趨勢</h2>
+        <p class="slide-subtitle">剖析民國 70~108 年官方判明案件，洞察病因物質排行、高發場所與危險食品結構</p>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-title">法定定義與判明原則</div>
+          <div class="badge-sub badge-cyan">法律與公衛基石</div>
+          <ul class="card-list">
+            <li><strong>2人以上</strong>攝取相同食品引發相似症狀即成立。</li>
+            <li><strong>關鍵特例（1人即成立）</strong>：
+              <br>• 肉毒桿菌毒素中毒
+              <br>• 急性化學物質中毒
+              <br>• 動植物天然毒素中毒</li>
+            <li>須經由患者人體檢體與剩餘食物留樣雙重交叉比對。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">歷年病因物質大數據</div>
+          <div class="badge-sub badge-rose">流行病學排行</div>
+          <ul class="card-list">
+            <li><strong>細菌性案件佔絕對大宗</strong>（判明達1,200+件）。</li>
+            <li><strong>細菌案件總量前四名</strong>：
+              <br>1. 腸炎弧菌 (1,664件，長年居冠)
+              <br>2. 金黃色葡萄球菌 (655件)
+              <br>3. 仙人掌桿菌 (473件)
+              <br>4. 沙門氏桿菌 (344件)</li>
+            <li><strong>新興轉折</strong>：民國108年<strong>諾羅病毒</strong>件數首度超越細菌。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">高發場所與食品樣態</div>
+          <div class="badge-sub badge-amber">危險情境靶點</div>
+          <ul class="card-list">
+            <li><strong>場所前三名</strong>：1. 供膳營業場所 (餐廳/便當店) &gt; 2. 學校 (營養午餐) &gt; 3. 自宅。</li>
+            <li><strong>原因食品霸主</strong>：
+              <br>• <strong>複合調理食品 (盒餐/便當)：72%</strong>
+              <br>• 蔬果及其加工品：10%
+              <br>• 水產品：10%、肉類：5%</li>
+            <li>盒餐多工序、生熟交替、常溫暴露是致災核心。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: 1-2 三大機轉模型 -->
+    <div class="slide">
+      <div class="slide-header">
+        <span class="tag-badge">Chapter 1-2</span>
+        <h2 class="slide-title">細菌性食品中毒三大病理機轉模型</h2>
+        <p class="slide-subtitle">深入感染型、毒素型與中間型的病理差異、潛伏期長短與致病關鍵</p>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-title">感染型 (Infection)</div>
+          <div class="badge-sub badge-cyan">活菌體體內增殖</div>
+          <ul class="card-list">
+            <li><strong>作用機制</strong>：吃入大量活菌體，活菌在腸道黏膜大量增殖並侵犯組織。</li>
+            <li><strong>潛伏期</strong>：較長，通常 <strong>8 ~ 24 小時以上</strong>。</li>
+            <li><strong>典型代表</strong>：腸炎弧菌、沙門氏桿菌。</li>
+            <li><strong>症狀特徵</strong>：腹絞痛、水便、伴隨發燒反應。</li>
+            <li><strong>防禦弱點</strong>：菌體不耐熱，中心溫度達 70°C 澈底加熱可殺死。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">毒素型 (Intoxication)</div>
+          <div class="badge-sub badge-rose">預先產毒・毒素致病</div>
+          <ul class="card-list">
+            <li><strong>作用機制</strong>：細菌在食材中大量繁殖並分泌外毒素，人體攝入耐熱毒素發病。</li>
+            <li><strong>潛伏期</strong>：極短，僅 <strong>0.5 ~ 6 小時</strong>（發作急遽）。</li>
+            <li><strong>典型代表</strong>：金黃色葡萄球菌、肉毒桿菌。</li>
+            <li><strong>症狀特徵</strong>：劇烈噴射狀嘔吐、噁心，通常<strong>不發燒</strong>。</li>
+            <li><strong>防禦困境</strong>：<strong>外毒素極度耐熱</strong>，事後回鍋加熱仍無法去毒！</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">中間型 (Toxicoinfection)</div>
+          <div class="badge-sub badge-amber">體內產毒・芽孢裂解</div>
+          <ul class="card-list">
+            <li><strong>作用機制</strong>：吃入活菌，菌體在腸道內形成芽孢或裂解過程中釋放腸毒素。</li>
+            <li><strong>潛伏期</strong>：居中，約 <strong>8 ~ 16 小時</strong>。</li>
+            <li><strong>典型代表</strong>：仙人掌桿菌（腹瀉型）、產氣莢膜梭菌。</li>
+            <li><strong>症狀特徵</strong>：下腹絞痛與水樣腹瀉，極少嘔吐。</li>
+            <li><strong>防線</strong>：避免熟食在常溫緩慢冷卻，防止芽孢萌發。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: 1-2 腸炎弧菌與海鮮交叉污染 -->
+    <div class="slide">
+      <div class="slide-header">
+        <span class="tag-badge">Chapter 1-2</span>
+        <h2 class="slide-title">海味的隱匿殺手：腸炎弧菌與創傷弧菌</h2>
+        <p class="slide-subtitle">嗜鹽菌生態、10分鐘世代極速增殖與廚房交叉污染途徑</p>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">腸炎弧菌 (Vibrio parahaemolyticus)</div>
+          <div class="badge-sub badge-cyan">本土歷史案件數之冠</div>
+          <ul class="card-list">
+            <li><strong>嗜鹽性 (Halophilic)</strong>：最適生長鹽度 2% ~ 4%，廣泛分布於沿海泥沙與魚貝類。</li>
+            <li><strong>增殖世代極速</strong>：在 30~37°C 適溫下，<strong>倍增時間僅約 10~12 分鐘</strong>。</li>
+            <li><strong>交叉污染致病盲點</strong>：多數中毒非直接吃生海鮮，而是<strong>砧板、菜刀處理生魚後直接切熟食/小菜</strong>引起。</li>
+            <li><strong>致命弱點</strong>：極度不耐淡水（自來水沖洗易滲透壓破裂死亡）且不耐熱（60°C 15分鐘即死）。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">警戒對照：創傷弧菌 (Vibrio vulnificus)</div>
+          <div class="badge-sub badge-rose">致命級壞死性感染</div>
+          <ul class="card-list">
+            <li>俗稱<strong>海洋弧菌</strong>，同屬弧菌屬，但侵襲組織破壞力極度凶猛。</li>
+            <li><strong>感染途徑</strong>：除生食外，主要經由處理海鮮時<strong>被甲殼魚鰭刺傷傷口感染</strong>。</li>
+            <li><strong>臨床危險病程</strong>：引發壞死性筋膜炎、菌血症、組織快速黑死，<strong>致死率高達 50%</strong>。</li>
+            <li><strong>高危險群</strong>：慢性肝病、肝硬化、酒精性肝炎及免疫機能缺陷者。</li>
+            <li><strong>防護規範</strong>：處理帶刺甲殼類戴厚手套；手有傷口嚴禁碰海水生鮮。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: 1-3 金黃色葡萄球菌 -->
+    <div class="slide">
+      <div class="slide-header">
+        <span class="tag-badge">Chapter 1-3</span>
+        <h2 class="slide-title">耐熱外毒素霸主：金黃色葡萄球菌</h2>
+        <p class="slide-subtitle">人體化膿傷口污染、高耐鹽特性與 100°C 沸水煮不爛的腸毒素</p>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">細菌生態與傷口源頭</div>
+          <div class="badge-sub badge-cyan">廚工傷口大本營</div>
+          <ul class="card-list">
+            <li><strong>菌體來源</strong>：正常人體之皮膚表面、毛髮、鼻腔咽喉黏膜。</li>
+            <li><strong>最大危險源</strong>：手部<strong>化膿性傷口</strong>、粉刺疔瘡、切傷受感染處。</li>
+            <li><strong>極端耐鹽性</strong>：能在高達 <strong>7.5% ~ 10% NaCl</strong> 高鹽濃度下旺盛增殖。</li>
+            <li><strong>高風險受害食品</strong>：手作飯糰、壽司、三明治、切片熟肉、沙拉盒餐等高度仰賴手部調理之即食食品。</li>
+            <li><strong>從業禁令</strong>：廚工手部有化膿傷口者，依法<strong>嚴禁直接接觸供膳食品</strong>！</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">腸毒素之致命耐熱特性</div>
+          <div class="badge-sub badge-rose">高溫無法去毒</div>
+          <ul class="card-list">
+            <li><strong>致病機轉（毒素型）</strong>：菌體在室溫食品中釋放耐熱外腸毒素 (Enterotoxin)。</li>
+            <li><strong>急性發作</strong>：潛伏期極短（<strong>1 ~ 6 小時</strong>），連續噴射狀劇烈嘔吐、腹痛脫水，<strong>通常不發燒</strong>。</li>
+            <li><strong>加熱迷思破解</strong>：
+              <br>• 菌體本身 80°C 加熱即可殺死。
+              <br>• 但其分泌的腸毒素<strong>在 100°C 沸水滾煮 30 分鐘依然毒性不減</strong>！</li>
+            <li><strong>關鍵認知</strong>：食物放久變質『熱滾一下就能吃』是致命迷思！</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: 1-3 沙門氏桿菌 -->
+    <div class="slide">
+      <div class="slide-header">
+        <span class="tag-badge">Chapter 1-3</span>
+        <h2 class="slide-title">禽蛋生態鏈之感染主力：沙門氏桿菌</h2>
+        <p class="slide-subtitle">禽畜腸道帶原、未熟蛋品危機與 38~40°C 稽留性高燒鑑別指標</p>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">宿主生態與食物鏈傳播</div>
+          <div class="badge-sub badge-cyan">蛋禽類頭號殺手</div>
+          <ul class="card-list">
+            <li><strong>動物宿主</strong>：普遍存在於雞、鴨、豬、牛等家禽家畜腸道及鼠類、蟑螂。</li>
+            <li><strong>禽蛋污染雙途徑</strong>：
+              <br>• <strong>垂直感染</strong>：母雞卵巢感染直接進入蛋液內部。
+              <br>• <strong>水平感染</strong>：產蛋時蛋殼沾染糞便，保存不當穿透氣孔。</li>
+            <li><strong>高危險食材</strong>：未洗選鮮蛋、生蛋拌飯、美乃滋、提拉米蘇、半熟溫泉蛋、未完全熟透之禽肉製品。</li>
+            <li><strong>豆製品隱患</strong>：豆餡、豆干常因器具受禽肉交叉污染而引爆。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">感染病理與防治要點</div>
+          <div class="badge-sub badge-amber">高燒血便鑑別點</div>
+          <ul class="card-list">
+            <li><strong>典型感染型</strong>：侵入迴腸與結腸黏膜，潛伏期約 <strong>12 ~ 36 小時</strong>。</li>
+            <li><strong>鑑別性症狀</strong>：伴隨 <strong>38°C ~ 40°C 劇烈高燒</strong>、畏寒、腹絞痛與帶黏液血便（高燒為與金葡菌重要鑑別點）。</li>
+            <li><strong>溫度弱點</strong>：<strong>不耐熱！</strong>加熱至中心溫度 70°C 維持數分鐘即可全滅。</li>
+            <li><strong>防禦黃金法則</strong>：
+              <br>• 全面選購合格洗選蛋 (Washed Eggs)。
+              <br>• 孕婦、幼童、長者嚴禁生食未熟蛋料理。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: 1-4 病原性大腸桿菌 -->
+    <div class="slide">
+      <div class="slide-header">
+        <span class="tag-badge">Chapter 1-4</span>
+        <h2 class="slide-title">出血性致命怪獸：病原性大腸桿菌</h2>
+        <p class="slide-subtitle">從美國 Jack in the Box 漢堡到歐洲有機豆芽菜事件的歷史警示</p>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">致病株分類與毒力機制</div>
+          <div class="badge-sub badge-rose">志賀毒素與 HUS</div>
+          <ul class="card-list">
+            <li>腸道正常大腸桿菌無害，但帶毒力基因株具致命毒性。</li>
+            <li><strong>五大分型</strong>：ETEC (產毒)、EIEC (侵襲)、EPEC (致病)、EAEC (黏附)、<strong>EHEC/STEC (腸道出血性)</strong>。</li>
+            <li><strong>EHEC 殺手級毒力</strong>：分泌<strong>志賀毒素 (Shiga toxin)</strong>，摧毀微血管內皮。</li>
+            <li><strong>重症危機</strong>：引起嚴重出血性結腸炎（鮮血便），更會引發<strong>溶血性尿毒症候群 (HUS)</strong>，導致急性腎衰竭與不可逆神經損傷。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">歷史重大世紀公衛慘案</div>
+          <div class="badge-sub badge-cyan">世紀食安經典案例</div>
+          <ul class="card-list">
+            <li><strong>美國 Jack in the Box 漢堡事件 (O157:H7)</strong>：
+              <br>• 牛隻屠宰糞便污染牛肉，絞肉機將表面菌均勻拌入絞肉深層。
+              <br>• 漢堡肉煎煮時間不足、中心未熟，釀成數百人重症與多名幼童死亡。
+              <br>• 促使美國全面立法將絞肉熟化溫度定為 <strong>160°F (71°C)</strong>。</li>
+            <li><strong>德國有機豆芽菜事件 (O104:H4)</strong>：灌溉水受糞便污染，生吃芽菜引發歐洲數千人重症。</li>
+            <li><strong>教訓</strong>：絞肉製品絕對不可吃半熟；生菜用水需達生飲標準。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 8: 1-4 仙人掌桿菌 -->
+    <div class="slide">
+      <div class="slide-header">
+        <span class="tag-badge">Chapter 1-4</span>
+        <h2 class="slide-title">團膳米飯噩夢：仙人掌桿菌 (Bacillus cereus)</h2>
+        <p class="slide-subtitle">耐熱芽孢、炒飯症候群 (Fried Rice Syndrome) 與雙重毒素致病型態</p>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">微生物特性與產孢生存策略</div>
+          <div class="badge-sub badge-cyan">耐熱芽孢・休眠萌發</div>
+          <ul class="card-list">
+            <li>廣泛存在於土壤灰塵中，農作物、穀類（稻米、小麥）帶菌率極高。</li>
+            <li><strong>產芽孢桿菌 (Spore-former)</strong>：在高溫逆境下形成微小休眠芽孢。</li>
+            <li><strong>耐熱芽孢陷阱</strong>：
+              <br>• 煮飯高溫殺死細菌細胞，但<strong>芽孢耐熱存活</strong>！
+              <br>• 大鍋熟米飯若置於常溫（20~40°C）緩慢冷卻，芽孢感知適溫立即<strong>萌發生長</strong>並大量產毒。</li>
+            <li><strong>大型團膳殺手</strong>：學校桶餐米飯、隔夜炒飯是歷史最高發場所。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">雙重致病毒素型態比較</div>
+          <div class="badge-sub badge-amber">雙毒素鑑別體系</div>
+          <ul class="card-list">
+            <li><strong>嘔吐型 (Emetic type)——炒飯症候群</strong>：
+              <br>• 毒素：Cereulide，<strong>極度耐熱（126°C 加熱 90 分鐘仍不滅）</strong>。
+              <br>• 潛伏期：0.5 ~ 5 小時，劇烈嘔吐腹痛；多見於米飯、炒飯。</li>
+            <li><strong>腹瀉型 (Diarrheal type)</strong>：
+              <br>• 毒素：腸毒素，體內產毒，不耐熱（56°C 5分鐘去活）。
+              <br>• 潛伏期：8 ~ 16 小時，水樣下痢腹絞痛；多見於肉汁濃湯。</li>
+            <li><strong>防禦鐵則</strong>：熟飯絕不可在常溫久置，需快冷冷藏或維持 60°C 以上熱存！</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 9: 1-5 諾羅病毒與消毒迷思 -->
+    <div class="slide">
+      <div class="slide-header">
+        <span class="tag-badge">Chapter 1-4 & 1-5</span>
+        <h2 class="slide-title">現代食安之王：諾羅病毒與『無包膜』消毒迷思</h2>
+        <p class="slide-subtitle">超低感染劑量、糞口循環與為何 75% 酒精對其無能為力</p>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">病毒學特異性與群聚破壞力</div>
+          <div class="badge-sub badge-rose">微量致病・集體癱瘓</div>
+          <ul class="card-list">
+            <li><strong>極端致病力</strong>：僅需 <strong>1 ~ 100 顆病毒顆粒</strong>即可致病，全員易感。</li>
+            <li><strong>傳播鏈</strong>：接觸病患排泄物/嘔吐物污染之水與食品、吸入嘔吐物氣溶膠。</li>
+            <li><strong>指標高風險食品</strong>：牡蠣、生蠔、文蛤等濾食性雙殼貝類（體內高度濃縮污水中之病毒）。</li>
+            <li><strong>群聚特徵</strong>：校園、養護中心、觀光郵輪一夕爆發數百人集體感染。</li>
+            <li><strong>症狀</strong>：潛伏期 24~48 小時，大量噴射狀嘔吐、水瀉、發燒肌肉痛。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">無包膜結構與酒精無效真相</div>
+          <div class="badge-sub badge-cyan">破解乾洗手神話</div>
+          <ul class="card-list">
+            <li><strong>包膜病毒 (新冠/流感)</strong>：外有脂質雙層膜，75% 酒精可溶解脂質使其去活。</li>
+            <li><strong>無包膜病毒 (諾羅/腸病毒)</strong>：<strong>無脂質膜</strong>，外殼為堅韌蛋白質衣殼 (Capsid)。
+              <br>• <strong>75% 酒精完全無法破壞衣殼，乾洗手對諾羅完全無效！</strong></li>
+            <li><strong>正確清潔防線</strong>：肥皂流水洗手 20 秒，靠界面活性劑機械性沖刷剝離。</li>
+            <li><strong>環境消毒標準</strong>：必須使用<strong>次氯酸鈉（稀釋漂白水）</strong>！
+              <br>• 一般環境：500 ppm
+              <br>• 嘔吐物污染區：1,000 ~ 5,000 ppm 靜置消毒。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 10: 1-6 衛生實務與洗手科學 -->
+    <div class="slide">
+      <div class="slide-header">
+        <span class="tag-badge">Chapter 1-6</span>
+        <h2 class="slide-title">衛生防禦實務：洗手科學實驗與五要原則</h2>
+        <p class="slide-subtitle">實驗數據揭示手部菌落變化、指甲衛生規範與關鍵溫度帶控制</p>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">洗手科學化實驗大數據</div>
+          <div class="badge-sub badge-cyan">去除99%細菌實證</div>
+          <ul class="card-list">
+            <li><strong>未洗手狀態</strong>：手部菌落數高達 <strong>10^4 ~ 10^5 CFU</strong>。</li>
+            <li><strong>清水單純沖洗</strong>：手部仍殘留高達 <strong>10^3 CFU</strong>（無法去皮脂附著菌）。</li>
+            <li><strong>肥皂/洗手乳澈底洗手</strong>：<strong>消消除去除手部 99% 以上的細菌</strong>！</li>
+            <li><strong>20 SECONDS 原則</strong>：抹肥皂後，指尖、指縫、手心手背揉搓至少 20 秒。</li>
+            <li><strong>人員指甲規範</strong>：
+              <br>• 長度：手指平視不可超出指尖肉（指甲縫為細菌溫床）。
+              <br>• <strong>嚴禁指甲油/美甲</strong>：碎片易脫落污染餐點造成物理與化學危害。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">TFDA 食品中毒防治五要原則</div>
+          <div class="badge-sub badge-emerald">食安鐵律基石</div>
+          <ul class="card-list">
+            <li><strong>1. 要洗手</strong>：調理前、如廁後嚴格肥皂洗手 20 秒；手有傷口戴手套。</li>
+            <li><strong>2. 要新鮮</strong>：食材來源潔淨新鮮，生水絕不可生飲。</li>
+            <li><strong>3. 要生熟食分開</strong>：專用刀具砧板顏色分流，杜絕交叉污染。</li>
+            <li><strong>4. 要澈底加熱</strong>：中心溫度超過 <strong>70°C</strong>，徹底破壞病原菌與毒素。</li>
+            <li><strong>5. 要注意保存溫度</strong>：
+              <br>• 避開 <strong>7°C ~ 60°C 危險溫度帶 (Danger Zone)</strong>！
+              <br>• 熱存 &gt; 60°C，冷藏 &lt; 7°C，常溫不可超過 2 小時。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 11: 橫向對比矩陣 -->
+    <div class="slide">
+      <div class="slide-header">
+        <span class="tag-badge">Comprehensive Matrix</span>
+        <h2 class="slide-title">第一單元：六大核心病原微生物全方位對比矩陣</h2>
+        <p class="slide-subtitle">橫向統整型態、潛伏期、毒素耐熱性、典型症狀與關鍵防線</p>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>病原微生物</th>
+              <th>作用型態</th>
+              <th>潛伏期區間</th>
+              <th>高風險指標食品</th>
+              <th>致病特性 / 毒素耐熱性</th>
+              <th>核心防禦控制手段</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>腸炎弧菌</strong></td>
+              <td>感染型</td>
+              <td>2 ~ 48 小時</td>
+              <td>生鮮魚蝦貝類、海鮮小菜</td>
+              <td>嗜鹽性、繁殖極速（10分鐘一代）、不耐淡水</td>
+              <td>自來水澈底沖洗、煮熟、生熟砧板嚴格分開</td>
+            </tr>
+            <tr>
+              <td><strong>金黃色葡萄球菌</strong></td>
+              <td>毒素型</td>
+              <td>1 ~ 6 小時</td>
+              <td>手作壽司、飯糰、沙拉、熟肉切片</td>
+              <td>化膿傷口帶原、耐鹽；腸毒素 100°C 煮 30 分鐘不壞</td>
+              <td>手傷嚴禁供膳、全程戴手套、嚴格低溫冷藏</td>
+            </tr>
+            <tr>
+              <td><strong>沙門氏桿菌</strong></td>
+              <td>感染型</td>
+              <td>6 ~ 72 小時</td>
+              <td>鮮蛋、生蛋製品（美乃滋）、禽肉</td>
+              <td>侵入腸黏膜引起 38~40°C 高燒與黏液血便</td>
+              <td>採購洗選蛋、中心溫度 70°C 熟透、分色刀具</td>
+            </tr>
+            <tr>
+              <td><strong>仙人掌桿菌</strong></td>
+              <td>毒素/中間型</td>
+              <td>0.5~5h (嘔吐)<br>8~16h (腹瀉)</td>
+              <td>熟米飯、炒飯、馬鈴薯、濃湯</td>
+              <td>土壤產孢耐熱菌（嘔吐毒素 126°C 90min 存活）</td>
+              <td>米飯煮熟禁在 7~60°C 常溫放涼、快速低溫冷藏</td>
+            </tr>
+            <tr>
+              <td><strong>病原性大腸桿菌</strong></td>
+              <td>感染/產毒型</td>
+              <td>2 ~ 8 天</td>
+              <td>未熟漢堡肉絞肉、有機生菜芽菜</td>
+              <td>EHEC 產志賀毒素，破壞血管內皮致 HUS 急性腎衰竭</td>
+              <td>絞肉漢堡排絕對熟透、生菜洗滌達生飲標準</td>
+            </tr>
+            <tr>
+              <td><strong>諾羅病毒</strong></td>
+              <td>病毒感染</td>
+              <td>10 ~ 72 小時</td>
+              <td>生蠔貝類、污染水源、廚工雙手</td>
+              <td>無包膜病毒，75% 酒精無效；1~100顆微量即發病</td>
+              <td>肥皂流水洗手 20s、次氯酸鈉（漂白水）消毒</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SLIDE 12: 延伸思考 -->
+    <div class="slide">
+      <div class="slide-header">
+        <span class="tag-badge">Critical Reflection</span>
+        <h2 class="slide-title">前瞻延伸思考：現代飲食型態下的食安新挑戰</h2>
+        <p class="slide-subtitle">從外送平台延遲、低溫烹調流行到跨物種抗生素耐藥性風險的深度叩問</p>
+      </div>
+      <div class="grid-4">
+        <div class="card">
+          <div class="card-title">思考一：外送經濟與溫控斷裂</div>
+          <div class="badge-sub badge-cyan">外送產業鏈漏洞</div>
+          <ul class="card-list">
+            <li>外送餐點從製作、外送員取餐到送達常超過 60~90 分鐘。</li>
+            <li>便當（佔中毒 72%）長時間暴露於 20~50°C 核心危險溫度帶，為仙人掌桿菌與金葡菌絕佳溫床。</li>
+            <li><strong>解方</strong>：推動外送箱溫控監控、標註『出餐時效』。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">思考二：舒肥低溫慢煮之盲點</div>
+          <div class="badge-sub badge-amber">流行烹飪陷阱</div>
+          <ul class="card-list">
+            <li>坊間流行 50°C~58°C 低溫舒肥牛排、雞胸以維持軟嫩。</li>
+            <li>若加熱時間不足以殺滅深層沙門氏菌或產氣莢膜梭菌，低溫真空反而提供厭氧增殖溫床。</li>
+            <li><strong>解方</strong>：舒肥須嚴格匹配 D/Z 值致死時間溫度表。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">思考三：耐藥性超級細菌 (AMR)</div>
+          <div class="badge-sub badge-rose">全球公衛威脅</div>
+          <ul class="card-list">
+            <li>畜牧業抗生素過度濫用促使沙門氏菌、大腸桿菌產生廣效性耐藥（ESBL）。</li>
+            <li>過去常規抗生素可控的中毒，未來恐演變為無藥可醫之敗血症重症。</li>
+            <li><strong>解方</strong>：落實『健康一體 (One Health)』源頭減抗。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">思考四：HACCP 與家庭食安斷層</div>
+          <div class="badge-sub badge-indigo">認知普惠轉化</div>
+          <ul class="card-list">
+            <li>自宅佔中毒第三名，源於大眾對『酒精消毒無效』、『剩飯常溫放涼』等迷思未解。</li>
+            <li>稽查多集中工廠餐廳，家庭廚房常成衛生盲區。</li>
+            <li><strong>解方</strong>：將食安風險溝通生活化，建立全民溫控直覺。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom Controls -->
+  <div class="controls">
+    <div class="slide-counter" id="slideCounter">SLIDE 1 / 12</div>
+    <div class="shortcuts-hint">按鍵操作：鍵盤左右方向鍵 [←] [→] 或空白鍵換頁，按 [F] 鍵切換全螢幕</div>
+    <div class="nav-buttons">
+      <button class="btn" id="prevBtn">← 上一頁</button>
+      <button class="btn" id="nextBtn">下一頁 →</button>
+      <button class="btn" id="fsBtn">全螢幕</button>
+    </div>
+  </div>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const fsBtn = document.getElementById('fsBtn');
+    const slideCounter = document.getElementById('slideCounter');
+    const progressBar = document.getElementById('progressBar');
+
+    let current = 0;
+    const total = slides.length;
+
+    function updateSlide(idx) {
+      slides.forEach((s, i) => {
+        s.classList.toggle('active', i === idx);
+      });
+      slideCounter.textContent = `SLIDE ${idx + 1} / ${total}`;
+      progressBar.style.width = `${((idx + 1) / total) * 100}%`;
+      prevBtn.style.opacity = idx === 0 ? "0.4" : "1";
+      nextBtn.style.opacity = idx === total - 1 ? "0.4" : "1";
+    }
+
+    function prev() {
+      if (current > 0) {
+        current--;
+        updateSlide(current);
+      }
+    }
+
+    function next() {
+      if (current < total - 1) {
+        current++;
+        updateSlide(current);
+      }
+    }
+
+    prevBtn.addEventListener('click', prev);
+    nextBtn.addEventListener('click', next);
+
+    fsBtn.addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {});
+      } else {
+        document.exitFullscreen();
+      }
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        next();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        prev();
+      } else if (e.key === 'f' || e.key === 'F') {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(err => {});
+        } else {
+          document.exitFullscreen();
+        }
+      } else if (e.key === 'Home') {
+        current = 0;
+        updateSlide(current);
+      } else if (e.key === 'End') {
+        current = total - 1;
+        updateSlide(current);
+      }
+    });
+
+    updateSlide(0);
+  </script>
+</body>
+</html>
