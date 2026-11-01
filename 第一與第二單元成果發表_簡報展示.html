@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>食品安全入門：第一與第二單元階段成果發表</title>
+  <style>
+    :root {
+      --bg: #F8F6F0;
+      --card-bg: #FFFFFF;
+      --card-border: rgba(44, 40, 36, 0.09);
+      --card-shadow: 0 8px 24px rgba(44, 40, 36, 0.04), 0 2px 6px rgba(44, 40, 36, 0.02);
+      --card-hover-shadow: 0 16px 36px rgba(44, 40, 36, 0.08), 0 4px 12px rgba(44, 40, 36, 0.03);
+      --text-main: #1C1917;
+      --text-body: #44403C;
+      --text-muted: #78716C;
+      --primary: #15803D;
+      --primary-soft: #F0FDF4;
+      --primary-border: #BBF7D0;
+      --accent: #C2410C;
+      --accent-soft: #FFF7ED;
+      --accent-border: #FED7AA;
+      --amber: #B45309;
+      --amber-soft: #FFFBEB;
+      --amber-border: #FDE68A;
+      --indigo: #1D4ED8;
+      --indigo-soft: #EFF6FF;
+      --indigo-border: #BFDBFE;
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+      -webkit-font-smoothing: antialiased;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(240, 235, 224, 0.8) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(235, 230, 218, 0.6) 0px, transparent 50%);
+    }
+    .progress-bar-container { position: fixed; top: 0; left: 0; width: 100vw; height: 4px; background: rgba(44, 40, 36, 0.06); z-index: 100; }
+    .progress-bar { height: 100%; width: 7.142857142857143%; background: linear-gradient(90deg, #15803D, #D97706, #C2410C); transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+    .deck { flex: 1; position: relative; display: flex; align-items: center; justify-content: center; padding: 36px 48px 84px; }
+    .slide { position: absolute; top: 36px; bottom: 88px; left: 48px; right: 48px; display: flex; flex-direction: column; opacity: 0; pointer-events: none; transform: translateY(18px) scale(0.98); transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1); }
+    .slide.active { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1); }
+    .slide.active .card:nth-child(1) { animation: cardEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both; }
+    .slide.active .card:nth-child(2) { animation: cardEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both; }
+    .slide.active .card:nth-child(3) { animation: cardEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.19s both; }
+    .slide.active .card:nth-child(4) { animation: cardEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.26s both; }
+    .slide.active .table-container { animation: cardEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.08s both; }
+    @keyframes cardEnter { 0% { opacity: 0; transform: translateY(16px); } 100% { opacity: 1; transform: translateY(0); } }
+    .slide-header { margin-bottom: 22px; }
+    .tag-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; background: var(--primary-soft); border: 1px solid var(--primary-border); color: var(--primary); border-radius: 999px; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+    .slide-title { font-size: 2.15rem; font-weight: 800; letter-spacing: -0.025em; line-height: 1.25; color: var(--text-main); }
+    .slide-subtitle { font-size: 1.05rem; color: var(--text-muted); margin-top: 5px; font-weight: 450; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; flex: 1; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; flex: 1; }
+    .grid-4 { display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr); gap: 20px; flex: 1; }
+    .card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 24px 28px; box-shadow: var(--card-shadow); display: flex; flex-direction: column; transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease; }
+    .card:hover { border-color: rgba(21, 128, 61, 0.3); box-shadow: var(--card-hover-shadow); transform: translateY(-3px); }
+    .card-title { font-size: 1.25rem; font-weight: 750; color: var(--text-main); display: flex; align-items: center; gap: 10px; margin-bottom: 10px; letter-spacing: -0.01em; }
+    .badge-sub { display: inline-block; padding: 3px 10px; border-radius: 6px; font-size: 0.76rem; font-weight: 700; margin-bottom: 12px; width: fit-content; letter-spacing: 0.02em; }
+    .badge-cyan { background: var(--primary-soft); color: var(--primary); border: 1px solid var(--primary-border); }
+    .badge-rose { background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent-border); }
+    .badge-amber { background: var(--amber-soft); color: var(--amber); border: 1px solid var(--amber-border); }
+    .badge-indigo { background: var(--indigo-soft); color: var(--indigo); border: 1px solid var(--indigo-border); }
+    .card-list { list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 0.95rem; line-height: 1.58; color: var(--text-body); flex: 1; }
+    .card-list li { position: relative; padding-left: 18px; }
+    .card-list li::before { content: "•"; position: absolute; left: 0; color: var(--primary); font-size: 1.3rem; line-height: 1; top: -1px; }
+    .cover-content { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 40px; }
+    .cover-pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 20px; background: var(--primary-soft); border: 1px solid var(--primary-border); border-radius: 999px; color: var(--primary); font-size: 0.88rem; font-weight: 750; letter-spacing: 0.08em; margin-bottom: 26px; }
+    .cover-title { font-size: 3.4rem; font-weight: 900; letter-spacing: -0.035em; line-height: 1.18; margin-bottom: 20px; color: var(--text-main); }
+    .cover-subtitle { font-size: 1.32rem; color: var(--text-muted); max-width: 820px; line-height: 1.6; margin-bottom: 42px; font-weight: 450; }
+    .cover-meta { display: flex; gap: 32px; font-size: 0.95rem; color: var(--text-body); background: #FFFFFF; padding: 12px 30px; border-radius: 999px; border: 1px solid var(--card-border); box-shadow: 0 4px 16px rgba(44, 40, 36, 0.04); font-weight: 500; }
+    .table-container { flex: 1; overflow-y: auto; border-radius: var(--radius); border: 1px solid var(--card-border); background: #FFFFFF; box-shadow: var(--card-shadow); }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.92rem; }
+    th { background: #F4F1EA; color: var(--text-main); font-weight: 750; padding: 14px 16px; border-bottom: 1px solid rgba(44, 40, 36, 0.1); position: sticky; top: 0; }
+    td { padding: 13px 16px; border-bottom: 1px solid rgba(44, 40, 36, 0.06); color: var(--text-body); line-height: 1.48; }
+    tr:nth-child(even) td { background: #FAF8F5; }
+    tr:hover td { background: rgba(21, 128, 61, 0.05); }
+    .controls { position: fixed; bottom: 0; left: 0; width: 100vw; height: 70px; background: rgba(248, 246, 240, 0.92); border-top: 1px solid rgba(44, 40, 36, 0.08); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; align-items: center; justify-content: space-between; padding: 0 48px; z-index: 90; }
+    .slide-counter { font-size: 0.9rem; font-weight: 700; color: var(--text-muted); letter-spacing: 0.06em; }
+    .nav-buttons { display: flex; gap: 12px; }
+    .btn { background: #FFFFFF; border: 1px solid rgba(44, 40, 36, 0.12); color: var(--text-main); padding: 8px 20px; border-radius: 999px; font-size: 0.88rem; font-weight: 650; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(44, 40, 36, 0.04); transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
+    .btn:hover { background: var(--primary-soft); border-color: var(--primary); color: var(--primary); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(21, 128, 61, 0.12); }
+    .btn:active { transform: translateY(1px); }
+    .shortcuts-hint { font-size: 0.82rem; color: var(--text-muted); font-weight: 500; }
+  </style>
+</head>
+<body>
+  <div class="progress-bar-container"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="deck">
+
+    <!-- SLIDE 1: COVER -->
+    <div class="slide active">
+      <div class="cover-content">
+        <div class="cover-pill">MILESTONE PRESENTATION · 小成果發表</div>
+        <h1 class="cover-title">食品安全入門：一二單元整合成果發表</h1>
+        <p class="cover-subtitle">從微生物致病機轉、溫控防線到油脂生化精煉與劣變管理</p>
+        <div class="cover-meta">
+          <span>授課講授：文化大學 施明智 教授</span>
+          <span>章節：單元一 ＋ 單元二 整合匯報</span>
+          <span>版型：米白雅緻精萃版</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2 -->
+    <div class="slide ">
+      <div class="slide-header">
+        <span class="tag-badge">Agenda & Framework</span>
+        <h2 class="slide-title">成果發表三大核心脈絡導覽</h2>
+        <p class="slide-subtitle">建構從生物性病原體防線、化學性油脂品質到現代生活實務的全方位思維</p>
+      </div>
+      <div class="grid-3">
+        
+        <div class="card">
+          <div class="card-title">01. 微生物危害防禦</div>
+          <div class="badge-sub badge-cyan">單元一核心</div>
+          <ul class="card-list">
+            <li>公衛定義與台灣流行病學病因分布</li><li>三大致病機轉：感染型、毒素型、中間型</li><li>五大病原菌天王與諾羅病毒防制弱點</li><li>熱力學致死機制與 7°C~60°C 危險溫度帶</li><li>WHO 食品安全五大黃金原則</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">02. 食用油脂品質管理</div>
+          <div class="badge-sub badge-rose">單元二核心</div>
+          <ul class="card-list">
+            <li>三酸甘油酯結構與脂肪酸飽和度分類</li><li>動物油 vs 植物油理化特性與膽固醇</li><li>提煉三大途徑與精煉四部曲（脫膠/酸/色/臭）</li><li>發煙點全覽與高溫劣變三反應（水解/氧化/聚合）</li><li>衛福部換油鐵律：TPC ≥ 25% 與酸價 > 2.0</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">03. 跨單元整合與實務</div>
+          <div class="badge-sub badge-amber">前瞻研討焦點</div>
+          <ul class="card-list">
+            <li>夜市炸物小吃的『微生物＋劣變油』雙重風險</li><li>現代外送平台與雲端廚房的溫控黑洞</li><li>舒肥法 (Sous-Vide) 低溫真空厭氧風險評估</li><li>家庭廚房水炒法與苦茶油機能優勢</li><li>個人學習總結與理性食安素養建立</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3 -->
+    <div class="slide ">
+      <div class="slide-header">
+        <span class="tag-badge">Chapter 1-1</span>
+        <h2 class="slide-title">食品中毒公衛定義與台灣流行病學現況</h2>
+        <p class="slide-subtitle">依據衛福部《食安法》法定標準與歷年流病大數據監測剖析</p>
+      </div>
+      <div class="grid-2">
+        
+        <div class="card">
+          <div class="card-title">衛福部法定定義與通報體系</div>
+          <div class="badge-sub badge-cyan">法律規範門檻</div>
+          <ul class="card-list">
+            <li>【公衛標準定義】：二人或二人以上攝取相同食品引發相似疾病症狀者即構成。</li><li>【特例極刑門檻】：肉毒桿菌毒素、天然毒素或急性化學中毒，僅需【一人】即依法成立！</li><li>【醫療通報機制】：醫師診療懷疑食品中毒時，依法須於 24 小時內通報當地衛生局。</li><li>【黃金稽查動作】：衛生局進駐採檢環境抹片、人體排泄物及【48 小時食材留樣備查】。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">台灣流行病學好發病因排序</div>
+          <div class="badge-sub badge-rose">大數據分布</div>
+          <ul class="card-list">
+            <li>【細菌性中毒 (60%~70%)】：夏季大宗（5~10月）。前三名：腸炎弧菌、金黃色葡萄球菌、仙人掌桿菌、沙門氏桿菌。</li><li>【病毒性中毒 (20%~30%)】：秋冬高峰（11~3月）。以諾羅病毒 (Norovirus) 為絕對核心！</li><li>【天然毒素與化學 (5%~10%)】：河豚毒素、組織胺（鯖魚生魚片）、麻痺性貝毒。</li><li>【熱力學主因】：台灣夏季高溫潮濕，恰好落入細菌嗜溫繁殖的黃金區間！</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 4 -->
+    <div class="slide ">
+      <div class="slide-header">
+        <span class="tag-badge">Chapter 1-2</span>
+        <h2 class="slide-title">三大致病機轉生化病理深度對比</h2>
+        <p class="slide-subtitle">細菌進入人體破壞腸胃道的三種完全不同病理生理途徑</p>
+      </div>
+      <div class="grid-3">
+        
+        <div class="card">
+          <div class="card-title">01. 感染型 Infection</div>
+          <div class="badge-sub badge-cyan">大量活菌體內定殖</div>
+          <ul class="card-list">
+            <li>機制：攝入【大量活菌】，菌體黏附侵入小腸黏膜造成發炎潰瘍。</li><li>潛伏期：較長（通常 12 ~ 48 小時）。</li><li>耐熱性：【菌體不耐熱】！60~70°C 加熱數分鐘即可殺滅。</li><li>代表：腸炎弧菌、沙門氏桿菌。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">02. 毒素型 Intoxication</div>
+          <div class="badge-sub badge-rose">耐熱外毒素直接致病</div>
+          <ul class="card-list">
+            <li>機制：細菌在食品中繁殖並釋放【外毒素】，人體攝入毒素致病。</li><li>潛伏期：極短（通常 1 ~ 6 小時快速發作）。</li><li>特性：【外毒素高度耐熱】！100°C 沸水久煮無法破壞毒素！</li><li>代表：金黃色葡萄球菌（腸毒素）、肉毒桿菌。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">03. 中間型 Toxicoinfection</div>
+          <div class="badge-sub badge-amber">體內產毒釋放</div>
+          <ul class="card-list">
+            <li>機制：攝入活菌或芽孢，在小腸形成芽孢過程中於體內釋放毒素致病。</li><li>潛伏期：中等（通常 8 ~ 16 小時）。</li><li>特性：芽孢耐熱性強，體內釋出之蛋白質毒素對熱敏感。</li><li>代表：仙人掌桿菌（腹瀉型）、產氣莢膜桿菌。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5 -->
+    <div class="slide ">
+      <div class="slide-header">
+        <span class="tag-badge">Chapter 1-3</span>
+        <h2 class="slide-title">五大核心病原菌與諾羅病毒致病圖譜</h2>
+        <p class="slide-subtitle">解構各病原體生物特性、高危食材、致病症狀與致命防制弱點</p>
+      </div>
+      <div class="grid-4">
+        
+        <div class="card">
+          <div class="card-title">腸炎弧菌 (Vibrio)</div>
+          <div class="badge-sub badge-cyan">海鮮水產殺手</div>
+          <ul class="card-list">
+            <li>嗜鹽性 (2%~3% NaCl)，10~12 分鐘極速倍增。</li><li>生鮮魚貝水產、沾染刀具砧板交叉污染。</li><li>★ 致命弱點：【極度怕淡水、極度怕熱】！自來水徹底沖洗即可破裂死亡。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">金黃色葡萄球菌 (Staph)</div>
+          <div class="badge-sub badge-rose">化膿傷口耐熱毒素</div>
+          <ul class="card-list">
+            <li>耐鹽性高達 10%，寄居皮膚、鼻腔黏膜、化膿傷口。</li><li>產耐熱腸毒素（100°C 沸水煮 30 分鐘無效！）。</li><li>★ 關鍵防守：手部有傷口者【嚴禁調理即食食品】。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">沙門氏桿菌 (Salmonella)</div>
+          <div class="badge-sub badge-amber">生蛋與禽肉大患</div>
+          <ul class="card-list">
+            <li>寄居家禽腸道，經雞蛋氣孔或糞便表面污染內部，引起高燒血便。</li><li>高危食材：生蛋沙茶、提拉米蘇、未熟禽肉。</li><li>★ 關鍵防守：選用洗選蛋，蛋品禽肉【全熟加熱 (> 75°C)】。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">仙人掌桿菌 & 諾羅</div>
+          <div class="badge-sub badge-indigo">耐熱芽孢與群聚病毒</div>
+          <ul class="card-list">
+            <li>仙人掌桿菌：耐熱芽孢；炒飯嘔吐型（室溫米飯產耐熱毒素）。米飯 2 小時內降溫冷藏！</li><li>諾羅病毒：感染劑量僅需 1~10 顆微粒！酒精無效！</li><li>★ 消毒【必須使用 1000 ppm 含氯漂白水】。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 6 -->
+    <div class="slide ">
+      <div class="slide-header">
+        <span class="tag-badge">Chapter 1-4 & 1-5</span>
+        <h2 class="slide-title">熱力學殺菌機制與 7°C~60°C 危險溫度帶</h2>
+        <p class="slide-subtitle">世界衛生組織 (WHO) 食品安全五大黃金要訣之生物物理學依據</p>
+      </div>
+      <div class="grid-2">
+        
+        <div class="card">
+          <div class="card-title">危險溫度帶 (Danger Zone) 熱力學邊界</div>
+          <div class="badge-sub badge-cyan">細胞物理抑制</div>
+          <ul class="card-list">
+            <li>【< 7°C 冷藏溫度區間】：微生物細胞膜流動性暴跌，養分主動運輸停滯，生化酵素受抑進入休眠。</li><li>【20°C ~ 50°C 黃金繁殖溫床】：嗜溫菌之酵素活性最高點，倍增時間最短（15~20 分鐘一代，產毒極速！）。</li><li>【> 60°C 熱力學破壞區間】：細菌代謝酵素不可逆熱變性，蛋白質構型瓦解。</li><li>【> 70°C 澈底致死防線】：中心溫度維持 1~2 分鐘，致病菌體完全死亡！</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">WHO 食品安全五大原則落實守則</div>
+          <div class="badge-sub badge-rose">黃金防禦要訣</div>
+          <ul class="card-list">
+            <li>①【要洗手（清潔）】：如廁後、接觸生肉後澈底搓洗 20 秒。</li><li>②【要新鮮（食材）】：選購具溯源標章之生鮮食材。</li><li>③【要生熟分開（防污染）】：刀具、砧板、抹布嚴格分色專用。</li><li>④【要澈底加熱（滅活）】：中心溫度超過 70°C（禽肉蛋類達 75°C）。</li><li>⑤【要注意保存溫度（避危險帶）】：熟食室溫擺放【嚴禁超過 2 小時】（夏季高溫縮至 1 小時）！</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 7 -->
+    <div class="slide ">
+      <div class="slide-header">
+        <span class="tag-badge">Chapter 2-1 & 2-2</span>
+        <h2 class="slide-title">食用油脂生化本質與脂肪酸分類</h2>
+        <p class="slide-subtitle">三酸甘油酯結構、飽和度差異與動植物油脂之健康生理代謝</p>
+      </div>
+      <div class="grid-3">
+        
+        <div class="card">
+          <div class="card-title">三酸甘油酯與飽和酸 (SFA)</div>
+          <div class="badge-sub badge-cyan">結構基石與高耐熱</div>
+          <ul class="card-list">
+            <li>骨架：由 1 分子甘油 + 3 分子脂肪酸以【酯鍵】縮合（佔食用油 95% 以上）。</li><li>飽和酸 (SFA)：碳鏈皆單鍵，融點高，室溫呈固態（脂）。</li><li>特性：【熱穩定性極佳、耐長時間高溫油炸】不易氧化酸敗。</li><li>負擔：過量攝取提高壞膽固醇 (LDL-C)，促成動脈硬化（豬油、棕櫚油、椰子油）。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">單元不飽和脂肪酸 (MUFA)</div>
+          <div class="badge-sub badge-rose">心血管與熱穩定兼備</div>
+          <ul class="card-list">
+            <li>結構：含【1 個雙鍵】（代表為油酸 C18:1, ω-9）。</li><li>健康效益：顯著降低壞膽固醇 (LDL)，同時保留好膽固醇 (HDL)。</li><li>熱穩定性：優於多元不飽和，具備良好的耐熱性與抗氧化力。</li><li>代表油品：【苦茶油（油酸達 80%）】、特級初榨橄欖油、芥花油。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">多元不飽和與必需脂肪酸</div>
+          <div class="badge-sub badge-amber">必需營養但極易氧化</div>
+          <ul class="card-list">
+            <li>結構：含 2 個以上雙鍵（ω-6 亞麻油酸、ω-3 次亞麻油酸 / EPA / DHA）。</li><li>必需性：人體無法自行合成，調節發炎反應必需。</li><li>弱點：雙鍵處烯丙位氫不穩定，【遇熱極易受自由基氧化酸敗】！</li><li>禁忌：【嚴禁高溫油炸】！高溫產生致癌過氧化物。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 8 -->
+    <div class="slide ">
+      <div class="slide-header">
+        <span class="tag-badge">Chapter 2-3</span>
+        <h2 class="slide-title">油脂提煉工藝路徑與精煉四部曲</h2>
+        <p class="slide-subtitle">從粗毛油到清澈高發煙點精製油之化工分離與純化本質</p>
+      </div>
+      <div class="grid-2">
+        
+        <div class="card">
+          <div class="card-title">三大原始油脂提煉工藝途徑</div>
+          <div class="badge-sub badge-cyan">原料特性決定路徑</div>
+          <ul class="card-list">
+            <li>① 煎熬法 (Rendering)：切碎動物脂肪加熱融出（炸豬油、牛油）。</li><li>② 壓榨法 (Pressing)：高含油種子物理擠壓。冷壓（< 60°C，保留維生素E多酚，出油率 < 25%）；熱榨（炒焙後壓榨，出油率 > 40% 且焦香濃郁）。</li><li>③ 溶劑浸提法 (Solvent Extraction)：低含油大豆以【食品級正己烷】反覆浸提，出油率 > 99%，蒸餾回收溶劑。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">精製油 (Refined Oil) 關鍵四部曲</div>
+          <div class="badge-sub badge-rose">大幅拉高發煙點核心</div>
+          <ul class="card-list">
+            <li>粗毛油含磷脂膠質與游離酸，發煙點僅 140°C，必須依序精煉：</li><li>①【脫膠 (Degumming)】：加水去除磷脂膠質，防加熱冒黑煙起泡。</li><li>②【脫酸 (Deacidification)】：加鹼中和游離脂肪酸，大幅降低酸價 (AV)。</li><li>③【脫色 (Bleaching)】：活性白土吸附色素、雜質與氧化物。</li><li>④【高溫真空脫臭 (Deodorization)】：高真空蒸氣汽提異味醛酮與溶劑殘留。</li><li>★ 成果：清澈無雜味，【發煙點一舉躍升至 230°C 以上】！</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 9: TABLE -->
+    <div class="slide ">
+      <div class="slide-header">
+        <span class="tag-badge">Chapter 2-3 & 2-6</span>
+        <h2 class="slide-title">發煙點全景對照與烹調精準用油矩陣</h2>
+        <p class="slide-subtitle">發煙點即油脂裂解產生致癌藍煙的最低溫度；適油適溫方能食得安心</p>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr><th>未精製 / 動物油品</th><th>發煙點 (°C)</th><th>精製植物油品</th><th>發煙點 (°C)</th><th>最佳烹調適配手法</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>未精製牛油</td><td>149°C</td><td>精製大豆沙拉油</td><td>232°C</td><td>家常中溫水炒 (140~180°C)</td></tr>
+<tr><td>未精製芝麻香油</td><td>160°C</td><td>精製玉米油 / 花生油</td><td>232°C</td><td>家常中溫水炒 (140~180°C)</td></tr>
+<tr><td>自製豬油 (Lard)</td><td>182°C</td><td>精製芥花油 (Canola)</td><td>240°C</td><td>煎煮水炒皆宜 (160~180°C)</td></tr>
+<tr><td>特級初榨橄欖油</td><td>191°C</td><td>精製苦茶油 (Camellia)</td><td>252°C</td><td>低溫涼拌 (<120°C) / 苦茶油高溫炸 (200°C)</td></tr>
+<tr><td>未精製棕櫚油</td><td>206°C</td><td>精製玄米油 (Rice Bran)</td><td>254°C</td><td>高溫長時間油炸 / 煎炸 (180~220°C)</td></tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SLIDE 10 -->
+    <div class="slide ">
+      <div class="slide-header">
+        <span class="tag-badge">Chapter 2-4</span>
+        <h2 class="slide-title">高溫油炸劣變機制與衛福部換油鐵律</h2>
+        <p class="slide-subtitle">水解、自動氧化、熱聚合不可逆化學破壞與 TPC ≥ 25% 法定標準</p>
+      </div>
+      <div class="grid-2">
+        
+        <div class="card">
+          <div class="card-title">高溫油炸三大不可逆劣變化學反應</div>
+          <div class="badge-sub badge-rose">分子結構破壞</div>
+          <ul class="card-list">
+            <li>①【水解反應 (Hydrolysis)】：炸物水分進入高溫熱油（180°C），水解生成游離酸，【酸價 (AV) 急速飆高】，發煙點驟降！</li><li>②【自動氧化反應 (Auto-oxidation)】：熱與氧攻擊雙鍵產生自由基，生成過氧化物再裂解為刺鼻醛酮，散發強烈油耗味。</li><li>③【熱聚合反應 (Thermal Polymerization)】：自由基偶合形成大分子聚合物，油質黑濁黏稠、起泡難消，伴隨致癌物【丙烯醯胺】生成！</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">衛福部油炸油更換法定標準</div>
+          <div class="badge-sub badge-cyan">客觀量化法律防線</div>
+          <ul class="card-list">
+            <li>餐飲業油炸油符合以下任一條件，依法必須【立即全鍋換油】：</li><li>★ 鐵律一：【總極性化合物含量：TPC ≥ 25%】（游離酸、過氧化物、聚合異構物等極性分子總和，電容儀器 20 秒精準量測！）。</li><li>★ 鐵律二：【酸價：Acid Value > 2.0 mg KOH/g】。</li><li>★ 感官警訊：油炸時劇烈冒煙、油色深黑如醬油、泡沫超過鍋面 1/2 久不退！</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 11 -->
+    <div class="slide ">
+      <div class="slide-header">
+        <span class="tag-badge">Chapter 2-5</span>
+        <h2 class="slide-title">重大食安事件之科學真相除魅</h2>
+        <p class="slide-subtitle">理性審視大統混油案棉酚恐慌、地溝油化驗盲點與現代溯源體系</p>
+      </div>
+      <div class="grid-2">
+        
+        <div class="card">
+          <div class="card-title">2013 大統長基棉籽油混油案真相</div>
+          <div class="badge-sub badge-cyan">棉酚迷思科學平反</div>
+          <ul class="card-list">
+            <li>【案件核心本質】：屬於嚴重的【標示不實、攙偽假冒欺詐】！以低價棉籽油攙混，非法加工業染劑『銅葉綠素』冒充高級橄欖油牟取暴利。</li><li>【破解名嘴棉酚 (Gossypol) 恐慌】：當時名嘴恐嚇『吃棉籽油殺精絕育』。
+  • 施明智教授指出：棉酚在標準【精煉四部曲（脫酸階段）】即隨皂腳徹底去除，【在成品油中完全未檢出 (ND)】！歐美合法食用，罪在詐欺與染劑，非棉籽油有毒！</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">2014 強冠餿水油/地溝油事件與防弊</div>
+          <div class="badge-sub badge-rose">檢驗盲點與源頭管理</div>
+          <ul class="card-list">
+            <li>【現代化工帶來的檢驗盲點】：餿水廢油經高溫真空蒸餾、白土脫色脫臭後，常規檢驗（酸價、過氧化價）竟然全數【符合 CNS 國家標準】！</li><li>【防弊制度全面大革新】：
+  ① 檢驗升級：建立地溝油專屬指紋圖譜——檢測皮革防腐劑【五氯酚 (PCP)】、致癌物【苯駢芘 (BaP)】與特定膽固醇氧化衍生物。
+  ② 源頭防堵重於末端檢驗：全面建置【非追不可溯源系統】與【廢食用油申報三聯單】。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 12 -->
+    <div class="slide ">
+      <div class="slide-header">
+        <span class="tag-badge">Cross-Chapter Synthesis</span>
+        <h2 class="slide-title">外食與小吃的「雙重食安交集矩陣」</h2>
+        <p class="slide-subtitle">結合單元一微生物增殖與單元二油脂化學劣變之立體風險評估</p>
+      </div>
+      <div class="grid-2">
+        
+        <div class="card">
+          <div class="card-title">夜市鹽酥雞與小吃攤雙重風險疊加</div>
+          <div class="badge-sub badge-rose">雙維度危害交集</div>
+          <ul class="card-list">
+            <li>【微生物維度危害（單元一）】：生鮮食材常溫陳列（25~35°C 危險溫帶），金黃色葡萄球菌與仙人掌桿菌快速滋生產毒。</li><li>【油脂化學維度危害（單元二）】：油槽長時間高溫，總極性化合物 (TPC) 超標，積聚大量過氧化物與致癌丙烯醯胺。</li><li>【生理疊加效應】：劣變油脂之過氧化物先破壞胃腸黏膜屏障，此時微生物毒素乘虛侵入，極易誘發重症急性腸胃炎！</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">外食自保：感官辨識與行動清單</div>
+          <div class="badge-sub badge-cyan">消費者自我防衛</div>
+          <ul class="card-list">
+            <li>①【看油槽氣泡與色澤】：若油色深黑、炸物下鍋時泡沫漫過油鍋表面 1/2 且久聚不散，果斷拒買！</li><li>②【聞氣味辨油耗】：經過攤位若聞到刺鼻嗆辣油煙味或油耗味，表示油脂早已過度劣變。</li><li>③【檢視食材低溫冷藏】：攤位食材應具備低溫冷藏展示櫃，避免常溫暴露。</li><li>④【趁熱食用兩小時鐵律】：購買熟食後【務必在 2 小時內食用完畢】！</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 13 -->
+    <div class="slide ">
+      <div class="slide-header">
+        <span class="tag-badge">Critical Extension</span>
+        <h2 class="slide-title">現代生活型態的兩大新興食安盲點</h2>
+        <p class="slide-subtitle">外送平台溫控黑洞與舒肥低溫真空烹調之厭氧微生物風險評估</p>
+      </div>
+      <div class="grid-2">
+        
+        <div class="card">
+          <div class="card-title">盲點一：外送平台與雲端廚房的溫控黑洞</div>
+          <div class="badge-sub badge-amber">冷鏈配送延遲</div>
+          <ul class="card-list">
+            <li>外送機車在酷暑配送 40~90 分鐘，便當自 65°C 逐漸降至 35°C~45°C。</li><li>35°C~45°C 恰好精準命中【金黃色葡萄球菌與仙人掌桿菌黃金產毒區間】！</li><li>配送延遲使細菌完成 3~4 個世代倍增，釋出耐熱外毒素！</li><li>解方：外送抵達若非立即食用，務必二次覆熱使中心溫度 > 70°C。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">盲點二：舒肥法 (Sous-Vide) 的厭氧危機</div>
+          <div class="badge-sub badge-rose">低溫真空暗藏殺機</div>
+          <ul class="card-list">
+            <li>為追求軟嫩以 45°C~53°C 低溫長時間慢煮數小時。</li><li>真空無氧袋 + 55°C 以下，無異於為【肉毒桿菌與產氣莢膜桿菌】量身打造發酵槽！</li><li>★ 舒肥水溫【嚴禁低於 55°C】！禽肉中心需達 60°C 維持 12 分鐘以上。</li><li>★ 舒肥未即食者，必須在 2 小時內以大量冰水急速冰鎮至 3°C 以下！</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 14 -->
+    <div class="slide ">
+      <div class="slide-header">
+        <span class="tag-badge">Conclusion & Takeaways</span>
+        <h2 class="slide-title">成果發表總結：從科學認知到日常守護</h2>
+        <p class="slide-subtitle">食品安全不是口號，而是奠基於生物、化學與熱力學的量化風險管理科學</p>
+      </div>
+      <div class="grid-4">
+        
+        <div class="card">
+          <div class="card-title">① 守住溫度防線</div>
+          <div class="badge-sub badge-cyan">熱力學第一鐵律</div>
+          <ul class="card-list">
+            <li>避開 7°C~60°C 危險溫帶</li><li>熟食室溫不逾 2 小時</li><li>加熱中心 > 70°C</li><li>破除『煮熟萬能』迷思</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">② 烹調用油分流</div>
+          <div class="badge-sub badge-rose">精準化學匹配</div>
+          <ul class="card-list">
+            <li>低溫涼拌選初榨橄欖油</li><li>中溫倡導『健康水炒法』</li><li>高溫油炸選苦茶/玄米</li><li>鍋面冒煙即是過熱警告</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">③ 建立理性科學觀</div>
+          <div class="badge-sub badge-amber">破除恐慌與假象</div>
+          <ul class="card-list">
+            <li>棉籽油精煉已無棉酚</li><li>地溝油重在源頭管理</li><li>TPC ≥ 25% 換油客觀標準</li><li>拒絕盲目零檢出焦慮</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">④ 主動掌握知情權</div>
+          <div class="badge-sub badge-indigo">日常生活實踐</div>
+          <ul class="card-list">
+            <li>外食辨識油槽泡沫與油耗</li><li>外送餐盒落實及時覆熱</li><li>舒肥水溫嚴守 > 55°C</li><li>落實家庭食安長城</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="controls">
+    <div class="slide-counter" id="slideCounter">SLIDE 1 / 14</div>
+    <div class="shortcuts-hint">按鍵操作：鍵盤左右方向鍵 [←] [→] 或空白鍵換頁，按 [F] 鍵切換全螢幕</div>
+    <div class="nav-buttons">
+      <button class="btn" id="prevBtn">← 上一頁</button>
+      <button class="btn" id="nextBtn">下一頁 →</button>
+      <button class="btn" id="fsBtn">全螢幕</button>
+    </div>
+  </div>
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const fsBtn = document.getElementById('fsBtn');
+    const slideCounter = document.getElementById('slideCounter');
+    const progressBar = document.getElementById('progressBar');
+    let current = 0;
+    const total = slides.length;
+    function updateSlide(idx) {
+      slides.forEach((s, i) => s.classList.toggle('active', i === idx));
+      slideCounter.textContent = `SLIDE ${idx + 1} / ${total}`;
+      progressBar.style.width = `${((idx + 1) / total) * 100}%`;
+      prevBtn.style.opacity = idx === 0 ? "0.4" : "1";
+      nextBtn.style.opacity = idx === total - 1 ? "0.4" : "1";
+    }
+    function prev() { if (current > 0) { current--; updateSlide(current); } }
+    function next() { if (current < total - 1) { current++; updateSlide(current); } }
+    prevBtn.addEventListener('click', prev);
+    nextBtn.addEventListener('click', next);
+    fsBtn.addEventListener('click', () => {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(err => {});
+      else document.exitFullscreen();
+    });
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); next(); }
+      else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prev(); }
+      else if (e.key === 'f' || e.key === 'F') {
+        if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(err => {});
+        else document.exitFullscreen();
+      } else if (e.key === 'Home') { current = 0; updateSlide(current); }
+      else if (e.key === 'End') { current = total - 1; updateSlide(current); }
+    });
+    updateSlide(0);
+  </script>
+</body>
+</html>
