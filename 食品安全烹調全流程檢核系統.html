@@ -498,7 +498,7 @@
       seafood_rice: {
         dish: "招牌海鮮炒飯配薑絲蛤蜊豆腐湯",
         method: "大火快炒 + 滾沸煮湯 · 精製玄米油",
-        naList: ["2.2", "2.3", "2.6", "3.2", "3.3", "4.3", "4.5", "5.2", "5.4", "5.5"]
+        naList: ["2.2", "2.3", "2.6", "3.3", "4.3", "4.5", "5.2", "5.4", "5.5"]
       },
       cured_sausage: {
         dish: "蒜苗香腸炒彩椒 / 臘味便當",
@@ -669,6 +669,8 @@
         if (raw === "") {
           statEl.textContent = "選填實測數據以自動判讀合規性";
           statEl.style.color = "var(--text-muted)";
+          itemMeasures[id] = {};
+          setState(id, "pending");
           return;
         }
         const num = parseFloat(raw);
@@ -701,6 +703,7 @@
               anyFail = true;
             }
           } else {
+            delete itemMeasures[id][m.key];
             allPass = false;
           }
         });
@@ -708,6 +711,7 @@
         if (!anyEntered) {
           statEl.textContent = "選填實測數據以自動判讀合規性";
           statEl.style.color = "var(--text-muted)";
+          setState(id, "pending");
           return;
         }
         if (anyFail) {
@@ -718,15 +722,26 @@
           statEl.textContent = "多項實測皆合規";
           statEl.style.color = "var(--primary)";
           setState(id, "pass");
+        } else {
+          statEl.textContent = "已填項目合規，待續填其餘指標";
+          statEl.style.color = "var(--amber)";
+          setState(id, "pending");
         }
       }
     }
 
     function evaluateAll() {
-      // Re-evaluate dynamic time if item 6.2 has a value
+      // Re-evaluate dynamic time safely without recursion if item 6.2 has a value
       const inp62 = document.getElementById("m_6.2");
-      if (inp62 && inp62.value.trim() !== "") {
-        onMeasureChange("6.2");
+      const stat62 = document.getElementById("mstat_6.2");
+      if (inp62 && inp62.value.trim() !== "" && itemStates["6.2"] !== "na") {
+        const val62 = parseFloat(inp62.value.trim());
+        const ok62 = checkRule(val62, "dynamic_time", 120);
+        itemStates["6.2"] = ok62 ? "pass" : "fail";
+        if (stat62) {
+          stat62.textContent = ok62 ? "實測合規" : "超標異常！自動觸發缺失診斷";
+          stat62.style.color = ok62 ? "var(--primary)" : "var(--danger)";
+        }
       }
 
       let score = 100;
@@ -743,6 +758,7 @@
 
       PHASES.forEach(p => {
         let phaseApp = 0;
+        let phaseVisible = 0;
         p.items.forEach(it => {
           const st = itemStates[it.id];
           const card = document.getElementById(`card_${it.id}`);
@@ -763,6 +779,7 @@
           if (currentViewFilter === "fail" && st !== "fail") show = false;
           if (currentViewFilter === "pending" && st !== "pending") show = false;
           card.classList.toggle("hidden-item", !show);
+          if (show) phaseVisible++;
 
           if (st !== "na") {
             applicableCount++;
@@ -784,6 +801,8 @@
           }
         });
 
+        const phaseBlock = document.getElementById(`phase_block_${p.id}`);
+        if (phaseBlock) phaseBlock.style.display = phaseVisible === 0 ? "none" : "block";
         const phaseStat = document.getElementById(`phase_stat_${p.id}`);
         if (phaseStat) phaseStat.textContent = `本階段適用 ${phaseApp} 項`;
       });
@@ -935,6 +954,7 @@
       Object.keys(itemStates).forEach(k => {
         itemStates[k] = "pending";
         itemNotes[k] = "";
+        itemMeasures[k] = {};
         const noteEl = document.getElementById(`note_${k}`);
         if (noteEl) noteEl.value = "";
       });
@@ -954,16 +974,19 @@
       const method = document.getElementById("dishMethod").value || "未填寫";
       const chef = document.getElementById("chefName").value || "未填寫";
       const time = document.getElementById("auditTime").value;
+      const isHot = document.getElementById("hotEnvToggle").checked;
       const score = document.getElementById("scoreVal").textContent;
       const verdict = document.getElementById("verdictPill").textContent;
 
       let report = `【食品安全烹調全流程稽核報告 (34-CCP)】\n`;
       report += `========================================\n`;
       report += `菜餚名稱：${dish}\n烹調與用油：${method}\n負責主廚：${chef}\n檢核時間：${time}\n`;
+      report += `環境溫度條件：${isHot ? '高溫酷熱 (>32°C，室溫上限60分鐘)' : '一般常溫 (≤32°C，室溫上限120分鐘)'}\n`;
       report += `總評分數：${score} 分 ｜ 判定結果：${verdict}\n`;
       report += `========================================\n\n`;
 
       const fails = [];
+      const measuredSummary = [];
       let passCnt = 0, naCnt = 0, pendCnt = 0;
 
       PHASES.forEach(p => {
@@ -973,21 +996,41 @@
           else if (st === "pass") passCnt++;
           else if (st === "na") naCnt++;
           else pendCnt++;
+
+          const m = itemMeasures[it.id];
+          if (m && Object.keys(m).length > 0) {
+            if (it.numericInput && m.val !== undefined) {
+              measuredSummary.push(`- CCP ${it.id} ${it.numericInput.label}: ${m.val} ${it.numericInput.unit}`);
+            } else if (it.multiNumericInput) {
+              const parts = it.multiNumericInput
+                .filter(mi => m[mi.key] !== undefined)
+                .map(mi => `${mi.label} ${m[mi.key]}${mi.unit}`);
+              if (parts.length > 0) measuredSummary.push(`- CCP ${it.id}: ${parts.join(", ")}`);
+            }
+          }
         });
       });
 
       report += `統計概況：合規 ${passCnt} 項 ｜ 缺失 ${fails.length} 項 ｜ 不適用 ${naCnt} 項 ｜ 待檢 ${pendCnt} 項\n\n`;
 
+      if (measuredSummary.length > 0) {
+        report += `📏 【現場實測量化數據記錄】\n${measuredSummary.join("\n")}\n\n`;
+      }
+
       if (fails.length > 0) {
         report += `🚨 【流程缺失與強制矯正清單】\n`;
+        const order = { P0: 0, P1: 1, P2: 2 };
+        fails.sort((a, b) => order[a.sev] - order[b.sev]);
         fails.forEach(f => {
-          const note = itemNotes[f.id] ? ` (備註: ${itemNotes[f.id]})` : "";
+          const note = itemNotes[f.id] ? ` (現場備註: ${itemNotes[f.id]})` : "";
           report += `- [${f.sev}] CCP ${f.id} ${f.title}${note}\n`;
           report += `  • 科學危害：${f.diag}\n`;
           report += `  • 矯正 SOP：${f.sop}\n`;
         });
+      } else if (pendCnt > 0) {
+        report += `⏳ 注意：尚有 ${pendCnt} 項適用控制點待完成檢核。\n`;
       } else {
-        report += `✅ 本道菜餚未發現任何流程缺失！\n`;
+        report += `✅ 本道菜餚全部適用項目均合規，未發現任何流程缺失！\n`;
       }
 
       navigator.clipboard.writeText(report).then(() => {
