@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>食品安全烹調全流程檢核系統 · 34-CCP 專業食安稽核平台</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <style>
     :root {
       --bg: #F8F6F0;
@@ -331,6 +332,10 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
           <span>Markdown 完整手冊</span>
         </a>
+        <button type="button" class="nav-link" style="background:var(--primary); color:#FFFFFF; border-color:var(--primary); cursor:pointer;" onclick="downloadPdfReport()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span>下載 PDF 報告</span>
+        </button>
       </div>
     </nav>
 
@@ -464,9 +469,9 @@
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
           <span>複製完整缺失診斷報告</span>
         </button>
-        <button type="button" class="btn-primary" onclick="window.print()">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-          <span>列印 / 匯出 PDF 稽核表</span>
+        <button type="button" class="btn-primary" id="btnDownloadPdf" onclick="downloadPdfReport()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span id="btnDownloadPdfText">下載 PDF 稽核報告</span>
         </button>
       </div>
     </footer>
@@ -1036,6 +1041,232 @@
       navigator.clipboard.writeText(report).then(() => {
         showToast("已複製完整稽核診斷報告至剪貼簿！");
       });
+    }
+
+    function escapeHtml(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function ensureHtml2Pdf() {
+      if (typeof window.html2pdf === "function") return Promise.resolve();
+      return new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src = "https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js";
+        script.onload = () => resolve();
+        script.onerror = () => reject(new Error("無法載入 PDF 轉換元件"));
+        document.head.appendChild(script);
+      });
+    }
+
+    function buildPdfReportNode() {
+      const dish = document.getElementById("dishName").value.trim() || "未命名菜餚";
+      const method = document.getElementById("dishMethod").value.trim() || "未填寫";
+      const chef = document.getElementById("chefName").value.trim() || "未填寫";
+      const time = document.getElementById("auditTime").value.trim() || new Date().toLocaleString("zh-TW", { hour12: false });
+      const isHot = document.getElementById("hotEnvToggle").checked;
+      const score = parseInt(document.getElementById("scoreVal").textContent, 10) || 0;
+      const verdictText = document.getElementById("verdictPill").textContent;
+      const countsText = document.getElementById("verdictCounts").textContent;
+      const u1Text = document.getElementById("u1Stat").textContent;
+      const u2Text = document.getElementById("u2Stat").textContent;
+      const u3Text = document.getElementById("u3Stat").textContent;
+
+      let p0Fails = 0;
+      const fails = [];
+      const naIds = [];
+      const tableRows = [];
+
+      PHASES.forEach(p => {
+        p.items.forEach(it => {
+          const st = itemStates[it.id];
+          if (st === "na") {
+            naIds.push(`CCP ${it.id}`);
+            return;
+          }
+          if (st === "fail") {
+            fails.push(it);
+            if (it.sev === "P0") p0Fails++;
+          }
+
+          const mParts = [];
+          const m = itemMeasures[it.id];
+          if (m && Object.keys(m).length > 0) {
+            if (it.numericInput && m.val !== undefined) {
+              mParts.push(`${it.numericInput.label}: ${m.val}${it.numericInput.unit}`);
+            } else if (it.multiNumericInput) {
+              it.multiNumericInput.forEach(mi => {
+                if (m[mi.key] !== undefined) mParts.push(`${mi.label}: ${m[mi.key]}${mi.unit}`);
+              });
+            }
+          }
+          if (itemNotes[it.id]) mParts.push(`備註: ${itemNotes[it.id]}`);
+
+          const stateLabel = st === "pass" ? "合規" : (st === "fail" ? "缺失" : "待檢");
+          const stateColor = st === "pass" ? "#15803D" : (st === "fail" ? "#DC2626" : "#1D4ED8");
+          const stateBg = st === "pass" ? "#F0FDF4" : (st === "fail" ? "#FEF2F2" : "#EFF6FF");
+          const rowBg = st === "fail" ? "#FFF7F7" : "#FFFFFF";
+          const sevColor = it.sev === "P0" ? "#DC2626" : (it.sev === "P1" ? "#C2410C" : "#B45309");
+
+          tableRows.push(`
+            <tr style="background:${rowBg}; break-inside:avoid; page-break-inside:avoid;">
+              <td style="padding:7px 8px; border-bottom:1px solid #E7E5E4; font-family:monospace; font-weight:700; font-size:11px; color:#44403C; white-space:nowrap;">${escapeHtml(it.id)}</td>
+              <td style="padding:7px 8px; border-bottom:1px solid #E7E5E4; font-size:11.5px; color:#1C1917; line-height:1.45;">
+                <div style="font-weight:700;">${escapeHtml(it.title)}</div>
+                <div style="font-size:10px; color:#78716C; margin-top:2px;">階段${p.id} ｜ ${escapeHtml(it.chapter)}</div>
+              </td>
+              <td style="padding:7px 8px; border-bottom:1px solid #E7E5E4; text-align:center; font-weight:800; font-size:10.5px; color:${sevColor}; white-space:nowrap;">${escapeHtml(it.sev)}</td>
+              <td style="padding:7px 8px; border-bottom:1px solid #E7E5E4; font-size:10.5px; color:#44403C;">${mParts.length > 0 ? escapeHtml(mParts.join("；")) : "-"}</td>
+              <td style="padding:7px 8px; border-bottom:1px solid #E7E5E4; text-align:center; white-space:nowrap;">
+                <span style="display:inline-block; padding:2px 8px; border-radius:4px; font-size:10.5px; font-weight:800; color:${stateColor}; background:${stateBg}; border:1px solid ${stateColor}33;">${stateLabel}</span>
+              </td>
+            </tr>
+          `);
+        });
+      });
+
+      const isReject = p0Fails > 0 || score < 80;
+      const verdictColor = isReject ? "#DC2626" : (score < 90 ? "#B45309" : "#15803D");
+      const verdictBg = isReject ? "#FEF2F2" : (score < 90 ? "#FFFBEB" : "#F0FDF4");
+
+      let failsHtml = "";
+      if (fails.length > 0) {
+        const order = { P0: 0, P1: 1, P2: 2 };
+        const sortedFails = [...fails].sort((a, b) => order[a.sev] - order[b.sev]);
+        const failCards = sortedFails.map(f => {
+          const noteStr = itemNotes[f.id] ? ` ｜ 現場備註：${escapeHtml(itemNotes[f.id])}` : "";
+          const badgeBg = f.sev === "P0" ? "#DC2626" : (f.sev === "P1" ? "#C2410C" : "#B45309");
+          return `
+            <div class="pdf-no-break" style="background:#FFFFFF; border:1px solid #FECACA; border-left:4px solid ${badgeBg}; border-radius:8px; padding:10px 14px; margin-bottom:8px; break-inside:avoid; page-break-inside:avoid;">
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                <span style="background:${badgeBg}; color:#FFFFFF; font-size:10px; font-weight:800; padding:2px 7px; border-radius:4px;">${escapeHtml(f.sev)} · CCP ${escapeHtml(f.id)}</span>
+                <span style="font-size:12.5px; font-weight:800; color:#1C1917;">${escapeHtml(f.title)}</span>
+              </div>
+              <div style="font-size:11px; color:#DC2626; line-height:1.5; margin-bottom:3px;"><strong>科學危害：</strong>${escapeHtml(f.diag)}${noteStr}</div>
+              <div style="font-size:11px; color:#44403C; line-height:1.5;"><strong>矯正 SOP：</strong>${escapeHtml(f.sop)}</div>
+            </div>
+          `;
+        }).join("");
+
+        failsHtml = `
+          <div style="background:#FEF2F2; border:1px solid #FECACA; border-radius:10px; padding:14px 16px; margin-bottom:16px;">
+            <div style="font-size:13.5px; font-weight:800; color:#DC2626; margin-bottom:10px;">流程缺失診斷與強制矯正清單（共 ${fails.length} 項）</div>
+            ${failCards}
+          </div>
+        `;
+      }
+
+      const wrapper = document.createElement("div");
+      wrapper.style.width = "710px";
+      wrapper.style.background = "#FFFFFF";
+      wrapper.style.color = "#1C1917";
+      wrapper.style.fontFamily = '"PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif';
+      wrapper.style.padding = "4px 2px";
+
+      wrapper.innerHTML = `
+        <div class="pdf-no-break" style="background:#F8F6F0; border:1px solid #E7E5E4; border-radius:12px; padding:18px 22px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center; break-inside:avoid; page-break-inside:avoid;">
+          <div>
+            <div style="font-size:10px; font-weight:800; color:#15803D; letter-spacing:0.06em; margin-bottom:4px;">FOOD SAFETY AUDIT REPORT · 34-CCP</div>
+            <div style="font-size:20px; font-weight:900; color:#1C1917; letter-spacing:-0.02em;">食品安全烹調全流程稽核報告書</div>
+            <div style="font-size:11px; color:#78716C; margin-top:3px;">依據文化大學施明智教授《食品安全入門》全三章規範建立</div>
+          </div>
+          <div style="text-align:right; background:${verdictBg}; border:2px solid ${verdictColor}; border-radius:10px; padding:10px 16px; min-width:165px;">
+            <div style="font-size:24px; font-weight:900; color:${verdictColor}; line-height:1;">${score} <span style="font-size:12px; font-weight:700;">分</span></div>
+            <div style="font-size:12px; font-weight:800; color:${verdictColor}; margin-top:4px;">${escapeHtml(verdictText)}</div>
+            <div style="font-size:9.5px; color:#57534E; margin-top:3px;">${escapeHtml(countsText)}</div>
+          </div>
+        </div>
+
+        <div class="pdf-no-break" style="border:1px solid #E7E5E4; border-radius:10px; padding:12px 16px; margin-bottom:14px; font-size:11.5px; line-height:1.6; break-inside:avoid; page-break-inside:avoid;">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px 18px;">
+            <div><strong>菜餚名稱：</strong>${escapeHtml(dish)}</div>
+            <div><strong>烹調與用油：</strong>${escapeHtml(method)}</div>
+            <div><strong>負責主廚：</strong>${escapeHtml(chef)}</div>
+            <div><strong>稽核時間/員：</strong>${escapeHtml(time)}</div>
+          </div>
+          <div style="margin-top:8px; padding-top:8px; border-top:1px dashed #E7E5E4; display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; font-size:10.5px; color:#44403C;">
+            <span><strong>環境條件：</strong>${isHot ? "夏季/高溫 (>32°C，室溫限60分)" : "常溫 (≤32°C，室溫限120分)"}</span>
+            <span><strong>單元一(微生物)：</strong>${escapeHtml(u1Text)} ｜ <strong>單元二(油脂)：</strong>${escapeHtml(u2Text)} ｜ <strong>單元三(添加物/毒素)：</strong>${escapeHtml(u3Text)}</span>
+          </div>
+        </div>
+
+        ${failsHtml}
+
+        <div style="margin-bottom:14px;">
+          <div style="font-size:13px; font-weight:800; color:#1C1917; margin-bottom:8px;">適用檢核項目明細表（共 ${tableRows.length} 項適用）</div>
+          <table style="width:100%; border-collapse:collapse; border:1px solid #E7E5E4;">
+            <thead style="display:table-header-group;">
+              <tr style="background:#F4F1EA;">
+                <th style="padding:7px 8px; text-align:left; font-size:10.5px; font-weight:800; color:#1C1917; border-bottom:1px solid #D6D3D1;">編號</th>
+                <th style="padding:7px 8px; text-align:left; font-size:10.5px; font-weight:800; color:#1C1917; border-bottom:1px solid #D6D3D1;">檢核項目與課程依據</th>
+                <th style="padding:7px 8px; text-align:center; font-size:10.5px; font-weight:800; color:#1C1917; border-bottom:1px solid #D6D3D1;">級別</th>
+                <th style="padding:7px 8px; text-align:left; font-size:10.5px; font-weight:800; color:#1C1917; border-bottom:1px solid #D6D3D1;">實測數據 / 備註</th>
+                <th style="padding:7px 8px; text-align:center; font-size:10.5px; font-weight:800; color:#1C1917; border-bottom:1px solid #D6D3D1;">結果</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${tableRows.join("")}
+            </tbody>
+          </table>
+          ${naIds.length > 0 ? `<div style="margin-top:8px; font-size:10px; color:#78716C; line-height:1.5;"><strong>標記不適用 (N/A) 之項目 (${naIds.length} 項)：</strong>${escapeHtml(naIds.join("、"))}</div>` : ""}
+        </div>
+
+        <div class="pdf-no-break" style="border:1px solid #E7E5E4; border-radius:10px; padding:12px 16px; background:#FAF8F5; display:flex; justify-content:space-between; font-size:11px; color:#44403C; break-inside:avoid; page-break-inside:avoid;">
+          <div>主廚簽確認：____________________</div>
+          <div>稽核員簽章：____________________</div>
+          <div>出餐放行：[ ] 准許出餐  [ ] 扣留改善</div>
+        </div>
+      `;
+
+      return wrapper;
+    }
+
+    async function downloadPdfReport() {
+      const btn = document.getElementById("btnDownloadPdf");
+      const btnText = document.getElementById("btnDownloadPdfText");
+      if (btn) btn.disabled = true;
+      if (btnText) btnText.textContent = "正在生成 PDF...";
+      showToast("正在排版生成 A4 PDF 稽核報告...");
+
+      try {
+        await ensureHtml2Pdf();
+        const dishRaw = document.getElementById("dishName").value.trim() || "菜餚食安檢核";
+        const safeDish = dishRaw.replace(/[\\/:*?"<>|]/g, "_");
+        const d = new Date();
+        const pad = n => String(n).padStart(2, "0");
+        const stamp = `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}`;
+        const filename = `食品安全檢核報告_${safeDish}_${stamp}.pdf`;
+
+        const reportNode = buildPdfReportNode();
+        const opt = {
+          margin: [10, 10, 12, 10],
+          filename: filename,
+          image: { type: "jpeg", quality: 0.96 },
+          html2canvas: {
+            scale: 2,
+            useCORS: true,
+            scrollX: 0,
+            scrollY: 0,
+            windowWidth: 794,
+            backgroundColor: "#FFFFFF"
+          },
+          jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+          pagebreak: { mode: ["css", "legacy"], avoid: [".pdf-no-break", "tr"] }
+        };
+
+        await html2pdf().set(opt).from(reportNode).save();
+        showToast(`已成功下載 ${filename}`);
+      } catch (err) {
+        console.error("PDF generation failed:", err);
+        showToast("PDF 元件載入失敗，為您切換至系統列印視窗");
+        setTimeout(() => window.print(), 400);
+      } finally {
+        if (btn) btn.disabled = false;
+        if (btnText) btnText.textContent = "下載 PDF 稽核報告";
+      }
     }
 
     function showToast(msg) {
