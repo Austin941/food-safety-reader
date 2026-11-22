@@ -309,6 +309,7 @@
       .ccp-card.state-na { display: none !important; }
       .science-drawer { display: none !important; }
     }
+    .html2pdf__container { left: 0 !important; right: auto !important; margin: 0 !important; }
   </style>
 </head>
 <body>
@@ -1160,7 +1161,7 @@
       }
 
       const wrapper = document.createElement("div");
-      wrapper.style.width = "710px";
+      wrapper.style.width = "700px";
       wrapper.style.background = "#FFFFFF";
       wrapper.style.color = "#1C1917";
       wrapper.style.fontFamily = '"PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif';
@@ -1248,9 +1249,10 @@
           html2canvas: {
             scale: 2,
             useCORS: true,
+            x: 0,
+            y: 0,
             scrollX: 0,
             scrollY: 0,
-            windowWidth: 794,
             backgroundColor: "#FFFFFF"
           },
           jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
