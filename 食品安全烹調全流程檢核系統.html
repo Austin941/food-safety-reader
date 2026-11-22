@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>食品安全烹調全流程檢核系統 · 食安稽核量化評分表單</title>
+  <title>食品安全烹調全流程檢核系統 · 34-CCP 專業食安稽核平台</title>
   <style>
     :root {
       --bg: #F8F6F0;
-      --card-bg: #FFFFFF;
-      --card-border: rgba(44, 40, 36, 0.09);
-      --card-shadow: 0 8px 24px rgba(44, 40, 36, 0.04), 0 2px 6px rgba(44, 40, 36, 0.02);
-      --card-hover-shadow: 0 16px 36px rgba(44, 40, 36, 0.08), 0 4px 12px rgba(44, 40, 36, 0.03);
+      --surface: #FFFFFF;
+      --surface-muted: #FAF8F5;
+      --border: rgba(28, 25, 23, 0.09);
+      --border-strong: rgba(28, 25, 23, 0.16);
       --text-main: #1C1917;
       --text-body: #44403C;
       --text-muted: #78716C;
@@ -20,899 +20,989 @@
       --accent: #C2410C;
       --accent-soft: #FFF7ED;
       --accent-border: #FED7AA;
+      --danger: #DC2626;
+      --danger-soft: #FEF2F2;
+      --danger-border: #FECACA;
       --amber: #B45309;
       --amber-soft: #FFFBEB;
       --amber-border: #FDE68A;
       --indigo: #1D4ED8;
       --indigo-soft: #EFF6FF;
       --indigo-border: #BFDBFE;
-      --radius: 16px;
+      --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --radius-sm: 8px;
+      --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      font-family: var(--font-sans);
       background-color: var(--bg);
       color: var(--text-main);
-      line-height: 1.7;
+      line-height: 1.65;
       -webkit-font-smoothing: antialiased;
-      background-image: 
-        radial-gradient(at 0% 0%, rgba(240, 235, 224, 0.8) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(235, 230, 218, 0.6) 0px, transparent 50%);
-      background-attachment: fixed;
-      padding: 30px 20px 80px;
-    }
-    .container { max-width: 1140px; margin: 0 auto; }
-    
-    /* Top Navigation bar */
-    .nav-bar { display: flex; justify-content: space-between; align-items: center; background: #FFFFFF; padding: 14px 28px; border-radius: 999px; border: 1px solid var(--card-border); box-shadow: var(--card-shadow); margin-bottom: 30px; }
-    .nav-brand { font-size: 1rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
-    .nav-links { display: flex; gap: 12px; }
-    .nav-btn { font-size: 0.84rem; font-weight: 650; color: var(--text-body); text-decoration: none; padding: 6px 14px; border-radius: 999px; border: 1px solid rgba(44,40,36,0.1); background: #FAF8F5; transition: all 0.2s ease; }
-    .nav-btn:hover { background: var(--primary-soft); color: var(--primary); border-color: var(--primary-border); }
-
-    /* Score Dashboard Banner */
-    .dashboard-banner { background: #FFFFFF; border: 1px solid var(--card-border); border-radius: 24px; padding: 36px 44px; box-shadow: var(--card-shadow); margin-bottom: 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; position: sticky; top: 16px; z-index: 100; backdrop-filter: blur(20px); background: rgba(255, 255, 255, 0.95); }
-    .score-left { flex: 1; min-width: 300px; }
-    .dash-pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 14px; background: var(--primary-soft); border: 1px solid var(--primary-border); border-radius: 999px; color: var(--primary); font-size: 0.78rem; font-weight: 800; letter-spacing: 0.06em; margin-bottom: 10px; }
-    .dash-title { font-size: 1.85rem; font-weight: 900; letter-spacing: -0.025em; color: var(--text-main); }
-    .dash-sub { font-size: 0.92rem; color: var(--text-muted); margin-top: 4px; }
-    
-    .score-right { display: flex; align-items: center; gap: 24px; }
-    .score-circle { width: 105px; height: 105px; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: var(--primary-soft); border: 3px solid var(--primary); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-    .score-val { font-size: 2.2rem; font-weight: 900; line-height: 1; color: var(--primary); }
-    .score-unit { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-top: 2px; }
-    .status-badge { padding: 8px 20px; border-radius: 12px; font-weight: 850; font-size: 1.05rem; letter-spacing: 0.02em; border: 1px solid; text-align: center; }
-    .status-pass { background: var(--primary-soft); color: var(--primary); border-color: var(--primary-border); }
-    .status-warn { background: var(--amber-soft); color: var(--amber); border-color: var(--amber-border); }
-    .status-reject { background: var(--accent-soft); color: var(--accent); border-color: var(--accent-border); animation: pulseWarning 1.5s infinite; }
-
-    @keyframes pulseWarning {
-      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(194, 65, 12, 0.4); }
-      70% { transform: scale(1.02); box-shadow: 0 0 0 10px rgba(194, 65, 12, 0); }
-      100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(194, 65, 12, 0); }
+      padding: 24px 20px 100px;
     }
 
-    /* Meta Info Card */
-    .meta-card { background: #FFFFFF; border: 1px solid var(--card-border); border-radius: var(--radius); padding: 24px 32px; box-shadow: var(--card-shadow); margin-bottom: 32px; }
-    .meta-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 14px; }
-    .meta-input-group label { display: block; font-size: 0.78rem; font-weight: 750; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; }
-    .meta-input { width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(44, 40, 36, 0.15); font-size: 0.92rem; font-family: inherit; color: var(--text-main); background: #FAF8F5; }
-    .meta-input:focus { outline: none; border-color: var(--primary); background: #FFFFFF; }
-    .sample-btns { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
-    .sample-btn { font-size: 0.78rem; font-weight: 650; padding: 5px 12px; border-radius: 999px; border: 1px dashed var(--primary); background: var(--primary-soft); color: var(--primary); cursor: pointer; transition: all 0.2s ease; }
-    .sample-btn:hover { background: var(--primary); color: #FFFFFF; }
+    .container { max-width: 1180px; margin: 0 auto; }
 
-    /* Section & Question Cards */
-    .section-title-wrap { margin: 40px 0 16px; display: flex; align-items: center; justify-content: space-between; }
-    .section-title { font-size: 1.45rem; font-weight: 850; color: var(--text-main); letter-spacing: -0.02em; display: flex; align-items: center; gap: 10px; }
-    .section-num { width: 32px; height: 32px; border-radius: 8px; background: var(--primary); color: #FFFFFF; display: inline-flex; align-items: center; justify-content: center; font-size: 0.95rem; font-weight: 800; }
-    
-    .q-card { background: #FFFFFF; border: 1px solid var(--card-border); border-radius: var(--radius); padding: 22px 28px; margin-bottom: 16px; box-shadow: var(--card-shadow); transition: all 0.25s ease; position: relative; }
-    .q-card:hover { border-color: rgba(21, 128, 61, 0.25); box-shadow: var(--card-hover-shadow); }
-    .q-card.fail-card { border-left: 6px solid var(--accent); background: #FFFDFB; }
-    .q-card.pass-card { border-left: 6px solid var(--primary); }
+    /* Top Nav */
+    .top-nav {
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+      background: var(--surface); padding: 12px 24px; border-radius: 999px;
+      border: 1px solid var(--border); margin-bottom: 24px;
+      box-shadow: 0 2px 10px rgba(28,25,23,0.03);
+    }
+    .nav-brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 0.95rem; letter-spacing: -0.01em; }
+    .nav-brand svg { color: var(--primary); flex-shrink: 0; }
+    .nav-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .nav-link {
+      display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px;
+      border-radius: 999px; font-size: 0.82rem; font-weight: 600; color: var(--text-body);
+      text-decoration: none; border: 1px solid var(--border); background: var(--surface-muted);
+      transition: transform 0.2s var(--ease-spring), background-color 0.2s, border-color 0.2s;
+    }
+    .nav-link:hover { background: var(--primary-soft); color: var(--primary); border-color: var(--primary-border); transform: translateY(-1px); }
 
-    .q-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 10px; }
-    .q-left { flex: 1; }
-    .q-tag-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
-    .q-num { font-size: 0.8rem; font-weight: 800; color: var(--text-muted); }
-    .badge-sev { font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; }
-    .sev-p0 { background: #FEE2E2; color: #DC2626; border: 1px solid #FCA5A5; }
-    .sev-p1 { background: #FFEDD5; color: #EA580C; border: 1px solid #FDBA74; }
-    .sev-p2 { background: #FEF3C7; color: #D97706; border: 1px solid #FCD34D; }
-    
-    .q-title { font-size: 1.08rem; font-weight: 800; color: var(--text-main); line-height: 1.4; }
-    .q-desc { font-size: 0.88rem; color: var(--text-muted); margin-top: 4px; line-height: 1.5; }
-    
-    .q-options { display: flex; gap: 8px; flex-shrink: 0; }
-    .opt-label { display: flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 8px; border: 1px solid rgba(44, 40, 36, 0.12); font-size: 0.86rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; background: #FAF8F5; user-select: none; }
-    .opt-label input[type="radio"] { display: none; }
-    .opt-label:hover { background: #F2EFE9; }
-    .opt-label.active-pass { background: var(--primary-soft); border-color: var(--primary); color: var(--primary); box-shadow: 0 2px 6px rgba(21, 128, 61, 0.15); }
-    .opt-label.active-fail { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); box-shadow: 0 2px 6px rgba(194, 65, 12, 0.15); }
-    .opt-label.active-na { background: #F5F5F4; border-color: #A8A29E; color: #78716C; }
+    /* Telemetry Dashboard (Sticky) */
+    .dashboard {
+      position: sticky; top: 14px; z-index: 100;
+      background: rgba(255, 255, 255, 0.94); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--border); border-radius: var(--radius-lg);
+      padding: 22px 32px; margin-bottom: 24px;
+      box-shadow: 0 12px 32px rgba(28, 25, 23, 0.06);
+      display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center;
+    }
+    .dash-head { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+    .dash-tag {
+      font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.05em;
+      padding: 3px 10px; border-radius: 6px; background: var(--surface-muted); border: 1px solid var(--border); color: var(--text-muted);
+    }
+    .dash-title { font-size: 1.45rem; font-weight: 850; letter-spacing: -0.025em; }
+    .dash-sub { font-size: 0.88rem; color: var(--text-body); margin-top: 2px; }
 
-    /* Diagnostic Accordion inside Card */
-    .diag-box { margin-top: 14px; padding: 14px 18px; border-radius: 10px; background: #FFF5F5; border: 1px solid #FED7D7; display: none; }
-    .diag-title { font-size: 0.85rem; font-weight: 800; color: var(--accent); display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
-    .diag-text { font-size: 0.88rem; color: var(--text-body); line-height: 1.6; }
-    .sop-btn { display: inline-flex; align-items: center; gap: 4px; font-size: 0.8rem; font-weight: 700; color: var(--accent); margin-top: 8px; background: #FFFFFF; padding: 4px 10px; border-radius: 6px; border: 1px solid var(--accent); text-decoration: none; cursor: pointer; }
+    /* Domain Bars inside Dashboard */
+    .domain-bars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 14px; }
+    .d-bar-wrap { background: var(--surface-muted); padding: 8px 12px; border-radius: 10px; border: 1px solid var(--border); }
+    .d-bar-label { display: flex; justify-content: space-between; font-size: 0.74rem; font-weight: 700; color: var(--text-body); margin-bottom: 5px; }
+    .d-track { height: 6px; background: rgba(28,25,23,0.08); border-radius: 999px; overflow: hidden; }
+    .d-fill { height: 100%; border-radius: 999px; transition: width 0.4s var(--ease-spring), background-color 0.3s; }
+
+    /* Score Gauge */
+    .gauge-area { display: flex; align-items: center; gap: 20px; }
+    .svg-gauge { position: relative; width: 96px; height: 96px; display: flex; align-items: center; justify-content: center; }
+    .svg-gauge svg { transform: rotate(-90deg); width: 96px; height: 96px; }
+    .gauge-bg { fill: none; stroke: rgba(28,25,23,0.08); stroke-width: 7; }
+    .gauge-prog { fill: none; stroke-width: 7; stroke-linecap: round; transition: stroke-dashoffset 0.5s var(--ease-spring), stroke 0.3s; }
+    .gauge-text { position: absolute; text-align: center; }
+    .gauge-num { font-family: var(--font-mono); font-size: 1.75rem; font-weight: 900; line-height: 1; }
+    .gauge-unit { font-size: 0.65rem; font-weight: 700; color: var(--text-muted); letter-spacing: 0.06em; margin-top: 2px; }
+
+    .verdict-box { text-align: right; min-width: 190px; }
+    .verdict-pill {
+      display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 10px;
+      font-weight: 800; font-size: 0.94rem; border: 1px solid;
+    }
+    .v-pass { background: var(--primary-soft); color: var(--primary); border-color: var(--primary-border); }
+    .v-warn { background: var(--amber-soft); color: var(--amber); border-color: var(--amber-border); }
+    .v-pending { background: var(--indigo-soft); color: var(--indigo); border-color: var(--indigo-border); }
+    .v-reject { background: var(--danger-soft); color: var(--danger); border-color: var(--danger-border); }
+    .verdict-meta { font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-muted); margin-top: 6px; }
+
+    /* Context & Scenario Card */
+    .panel-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md);
+      padding: 22px 26px; margin-bottom: 24px; box-shadow: 0 4px 16px rgba(28,25,23,0.03);
+    }
+    .panel-title { font-size: 1.05rem; font-weight: 800; display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+    .meta-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .field-group label { display: block; font-size: 0.75rem; font-weight: 700; color: var(--text-muted); margin-bottom: 5px; }
+    .field-input, .field-select {
+      width: 100%; padding: 8px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-strong);
+      background: var(--surface-muted); font-family: var(--font-sans); font-size: 0.88rem; color: var(--text-main);
+      transition: border-color 0.2s, background-color 0.2s;
+    }
+    .field-input:focus, .field-select:focus { outline: none; border-color: var(--primary); background: var(--surface); }
+
+    .toggle-hot-env {
+      display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; padding: 8px 14px;
+      border-radius: var(--radius-sm); background: var(--amber-soft); border: 1px solid var(--amber-border);
+      font-size: 0.82rem; font-weight: 700; color: var(--amber); cursor: pointer; user-select: none;
+    }
+
+    .preset-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); align-items: center; }
+    .preset-label { font-size: 0.78rem; font-weight: 750; color: var(--text-muted); margin-right: 4px; }
+    .btn-preset {
+      padding: 6px 13px; border-radius: 999px; font-size: 0.8rem; font-weight: 650;
+      border: 1px solid var(--border-strong); background: var(--surface-muted); color: var(--text-main);
+      cursor: pointer; transition: all 0.2s var(--ease-spring);
+    }
+    .btn-preset:hover { background: var(--primary-soft); border-color: var(--primary); color: var(--primary); transform: translateY(-1px); }
+    .btn-preset.active { background: var(--primary); color: #FFFFFF; border-color: var(--primary); }
+
+    /* Filter Toolbar */
+    .filter-toolbar {
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+      background: var(--surface); padding: 12px 20px; border-radius: var(--radius-md);
+      border: 1px solid var(--border); margin-bottom: 20px;
+    }
+    .filter-group { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .filter-btn {
+      padding: 6px 14px; border-radius: 8px; font-size: 0.82rem; font-weight: 650;
+      border: 1px solid var(--border); background: var(--surface-muted); color: var(--text-body); cursor: pointer;
+      transition: all 0.18s;
+    }
+    .filter-btn.active { background: var(--text-main); color: #FFFFFF; border-color: var(--text-main); }
+    .btn-quick-pass {
+      display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 8px;
+      font-size: 0.82rem; font-weight: 700; background: var(--primary-soft); color: var(--primary);
+      border: 1px solid var(--primary-border); cursor: pointer; transition: all 0.2s;
+    }
+    .btn-quick-pass:hover { background: var(--primary); color: #FFFFFF; }
+
+    /* Live Deficiency Diagnostic Summary Panel */
+    .diag-summary {
+      background: var(--danger-soft); border: 1px solid var(--danger-border); border-radius: var(--radius-md);
+      padding: 20px 26px; margin-bottom: 28px; display: none;
+    }
+    .diag-sum-head { display: flex; align-items: center; gap: 10px; font-size: 1.1rem; font-weight: 850; color: var(--danger); margin-bottom: 12px; }
+    .diag-sum-list { display: flex; flex-direction: column; gap: 10px; }
+    .diag-sum-item {
+      background: var(--surface); border: 1px solid var(--danger-border); border-radius: 10px;
+      padding: 12px 16px; display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start;
+    }
+    .diag-sum-badge { font-family: var(--font-mono); font-size: 0.72rem; font-weight: 800; padding: 3px 8px; border-radius: 6px; }
+
+    /* Phase Headers */
+    .phase-header { margin: 36px 0 14px; display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid var(--border); padding-bottom: 10px; }
+    .phase-title-wrap { display: flex; align-items: center; gap: 12px; }
+    .phase-num {
+      width: 32px; height: 32px; border-radius: 9px; background: var(--text-main); color: #FFFFFF;
+      font-family: var(--font-mono); font-weight: 800; font-size: 0.9rem; display: flex; align-items: center; justify-content: center;
+    }
+    .phase-title { font-size: 1.25rem; font-weight: 850; letter-spacing: -0.02em; }
+    .phase-sub { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
+    .phase-count { font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; color: var(--text-muted); }
+
+    /* CCP Card */
+    .ccp-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md);
+      padding: 18px 24px; margin-bottom: 12px; transition: transform 0.2s var(--ease-spring), border-color 0.2s;
+      border-left: 4px solid transparent;
+    }
+    .ccp-card.state-pass { border-left-color: var(--primary); }
+    .ccp-card.state-fail { border-left-color: var(--danger); background: #FFFAFA; border-color: var(--danger-border); }
+    .ccp-card.state-pending { border-left-color: var(--indigo); }
+    .ccp-card.state-na { opacity: 0.62; background: var(--surface-muted); }
+    .ccp-card.hidden-item { display: none !important; }
+
+    .ccp-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; }
+    .ccp-info { flex: 1; }
+    .ccp-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+    .ccp-id { font-family: var(--font-mono); font-size: 0.76rem; font-weight: 800; color: var(--text-muted); }
+    .sev-tag { font-size: 0.7rem; font-weight: 800; padding: 2px 8px; border-radius: 5px; letter-spacing: 0.02em; }
+    .sev-P0 { background: var(--danger-soft); color: var(--danger); border: 1px solid var(--danger-border); }
+    .sev-P1 { background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent-border); }
+    .sev-P2 { background: var(--amber-soft); color: var(--amber); border: 1px solid var(--amber-border); }
+    .ch-tag { font-size: 0.72rem; font-weight: 600; color: var(--text-muted); background: var(--surface-muted); padding: 2px 8px; border-radius: 5px; border: 1px solid var(--border); }
+
+    .ccp-title { font-size: 1.04rem; font-weight: 800; color: var(--text-main); line-height: 1.4; }
+    .ccp-desc { font-size: 0.87rem; color: var(--text-body); margin-top: 4px; }
+
+    /* Control Options */
+    .ccp-controls { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0; }
+    .radio-group { display: flex; gap: 6px; }
+    .r-btn {
+      padding: 6px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-strong);
+      font-size: 0.8rem; font-weight: 700; cursor: pointer; background: var(--surface-muted); color: var(--text-body);
+      transition: all 0.15s; user-select: none;
+    }
+    .r-btn:hover { background: #EFECE6; }
+    .r-btn.sel-pass { background: var(--primary-soft); border-color: var(--primary); color: var(--primary); }
+    .r-btn.sel-fail { background: var(--danger-soft); border-color: var(--danger); color: var(--danger); }
+    .r-btn.sel-pending { background: var(--indigo-soft); border-color: var(--indigo); color: var(--indigo); }
+    .r-btn.sel-na { background: #E7E5E4; border-color: #A8A29E; color: #57534E; }
+
+    /* Measured Inputs Row */
+    .measure-row {
+      display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 10px;
+      padding: 10px 14px; background: var(--surface-muted); border-radius: var(--radius-sm); border: 1px solid var(--border);
+    }
+    .measure-field { display: flex; align-items: center; gap: 6px; font-size: 0.82rem; font-weight: 700; }
+    .measure-input {
+      width: 145px; padding: 5px 10px; border-radius: 6px; border: 1px solid var(--border-strong);
+      font-family: var(--font-mono); font-size: 0.82rem; background: #FFFFFF;
+    }
+    .measure-input:focus { outline: none; border-color: var(--primary); }
+    .measure-status { font-size: 0.76rem; font-weight: 700; }
+
+    /* Collapsible Science & Diagnosis */
+    .ccp-footer-actions { display: flex; align-items: center; gap: 12px; margin-top: 10px; flex-wrap: wrap; }
+    .btn-science {
+      display: inline-flex; align-items: center; gap: 5px; font-size: 0.78rem; font-weight: 700;
+      color: var(--text-muted); background: none; border: none; cursor: pointer; padding: 2px 0;
+    }
+    .btn-science:hover { color: var(--primary); }
+    .note-input {
+      flex: 1; min-width: 220px; padding: 4px 10px; border: none; border-bottom: 1px dashed var(--border-strong);
+      background: transparent; font-size: 0.8rem; font-family: var(--font-sans); color: var(--text-main);
+    }
+    .note-input:focus { outline: none; border-bottom-color: var(--primary); }
+
+    .science-drawer {
+      margin-top: 10px; padding: 12px 16px; border-radius: var(--radius-sm);
+      background: var(--primary-soft); border: 1px solid var(--primary-border);
+      font-size: 0.85rem; color: var(--text-body); display: none;
+    }
+    .diag-drawer {
+      margin-top: 12px; padding: 14px 18px; border-radius: var(--radius-sm);
+      background: var(--danger-soft); border: 1px solid var(--danger-border); display: none;
+    }
+    .diag-drawer-title { font-size: 0.86rem; font-weight: 850; color: var(--danger); margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+    .diag-drawer-body { font-size: 0.86rem; color: var(--text-main); line-height: 1.6; }
 
     /* Bottom Action Bar */
-    .action-bar { margin-top: 48px; background: #FFFFFF; border: 1px solid var(--card-border); border-radius: var(--radius); padding: 24px 32px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--card-shadow); flex-wrap: wrap; gap: 16px; }
-    .action-left { font-size: 0.92rem; color: var(--text-muted); }
-    .action-btns { display: flex; gap: 12px; }
-    .btn-act { padding: 10px 24px; border-radius: 999px; font-size: 0.92rem; font-weight: 750; cursor: pointer; display: flex; align-items: center; gap: 8px; border: 1px solid transparent; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
-    .btn-print { background: var(--primary); color: #FFFFFF; box-shadow: 0 4px 12px rgba(21, 128, 61, 0.2); }
-    .btn-print:hover { background: #166534; transform: translateY(-1px); }
-    .btn-reset { background: #FAF8F5; border-color: rgba(44, 40, 36, 0.15); color: var(--text-main); }
-    .btn-reset:hover { background: #F5F2EB; }
+    .bottom-bar {
+      margin-top: 40px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md);
+      padding: 22px 28px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+      box-shadow: 0 4px 16px rgba(28,25,23,0.03);
+    }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; border-radius: 999px;
+      font-size: 0.9rem; font-weight: 750; background: var(--primary); color: #FFFFFF; border: none; cursor: pointer;
+      transition: transform 0.2s var(--ease-spring), background-color 0.2s;
+    }
+    .btn-primary:hover { background: #166534; transform: translateY(-1px); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 999px;
+      font-size: 0.9rem; font-weight: 700; background: var(--surface-muted); color: var(--text-main);
+      border: 1px solid var(--border-strong); cursor: pointer; transition: background-color 0.2s;
+    }
+    .btn-secondary:hover { background: #EFECE6; }
+
+    .toast {
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: var(--text-main); color: #FFFFFF; padding: 10px 22px; border-radius: 999px;
+      font-size: 0.86rem; font-weight: 700; opacity: 0; pointer-events: none; z-index: 999;
+      transition: opacity 0.25s, transform 0.25s var(--ease-spring);
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    @media (max-width: 860px) {
+      .dashboard { grid-template-columns: 1fr; position: static; }
+      .domain-bars { grid-template-columns: 1fr; }
+      .meta-grid { grid-template-columns: 1fr 1fr; }
+      .ccp-top { flex-direction: column; }
+      .ccp-controls { align-items: flex-start; width: 100%; }
+    }
 
     @media print {
       body { background: #FFFFFF; padding: 0; }
-      .nav-bar, .action-bar, .sample-btns, .deck-switcher { display: none !important; }
-      .dashboard-banner { position: static; box-shadow: none; border: 1px solid #CCC; margin-bottom: 20px; }
-      .q-card { box-shadow: none; border: 1px solid #DDD; break-inside: avoid; margin-bottom: 12px; }
-      .q-options { display: none; }
-      .print-box-result { display: block !important; font-weight: bold; }
+      .top-nav, .filter-toolbar, .preset-row, .bottom-bar, .btn-science, .btn-quick-pass { display: none !important; }
+      .dashboard { position: static; box-shadow: none; border: 1px solid #CCC; page-break-inside: avoid; }
+      .ccp-card { break-inside: avoid; box-shadow: none; border: 1px solid #DDD; }
+      .ccp-card.state-na { display: none !important; }
+      .science-drawer { display: none !important; }
     }
-    .print-box-result { display: none; }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- TOP NAVIGATION -->
-    <header class="nav-bar">
+    <!-- Top Nav -->
+    <nav class="top-nav">
       <div class="nav-brand">
-        <span>🛡️</span>
-        <span>食品安全烹調全流程檢核系統</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+        <span>食品安全烹調全流程檢核系統 · 34-CCP</span>
       </div>
-      <div class="nav-links">
-        <a href="./index.html" class="nav-btn">🏠 全課程總入口</a>
-        <a href="./第一與第二單元成果發表_簡報展示.html" class="nav-btn">📽️ 成果發表 Web Slides</a>
-        <a href="./食品安全入門_一二單元階段成果發表詳細報告.html" class="nav-btn">📄 成果詳細報告</a>
+      <div class="nav-actions">
+        <a href="./index.html" class="nav-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <span>課程總入口</span>
+        </a>
+        <a href="./食品安全入門_全課程綜合研析與深度前瞻報告.html" class="nav-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          <span>全課程詳盡報告</span>
+        </a>
+        <a href="./食品安全烹調全流程檢視表與缺失診斷手冊.md" target="_blank" class="nav-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <span>Markdown 完整手冊</span>
+        </a>
+      </div>
+    </nav>
+
+    <!-- Live Telemetry Dashboard -->
+    <header class="dashboard">
+      <div>
+        <div class="dash-head">
+          <span class="dash-tag">AUDIT TELEMETRY · 6 PHASES / 34 CCPs</span>
+          <span class="dash-tag" id="progressTag">已查核：0 / 34 項適用</span>
+        </div>
+        <div class="dash-title">料理製作即時食安評估與缺失診斷儀表板</div>
+        <div class="dash-sub" id="verdictDesc">請依製作菜餚之真實狀況逐項查核；任何一項 P0 致命缺失將觸發強制否決！</div>
+        
+        <div class="domain-bars">
+          <div class="d-bar-wrap">
+            <div class="d-bar-label"><span>單元一：微生物與溫控防線</span><span id="u1Stat">0/0</span></div>
+            <div class="d-track"><div class="d-fill" id="u1Bar" style="width:100%; background:var(--primary);"></div></div>
+          </div>
+          <div class="d-bar-wrap">
+            <div class="d-bar-label"><span>單元二：油脂工藝與換油標準</span><span id="u2Stat">0/0</span></div>
+            <div class="d-track"><div class="d-fill" id="u2Bar" style="width:100%; background:var(--primary);"></div></div>
+          </div>
+          <div class="d-bar-wrap">
+            <div class="d-bar-label"><span>單元三：添加物與天然毒素</span><span id="u3Stat">0/0</span></div>
+            <div class="d-track"><div class="d-fill" id="u3Bar" style="width:100%; background:var(--primary);"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gauge-area">
+        <div class="svg-gauge">
+          <svg viewBox="0 0 100 100">
+            <circle class="gauge-bg" cx="50" cy="50" r="42"></circle>
+            <circle class="gauge-prog" id="gaugeCircle" cx="50" cy="50" r="42" stroke="var(--primary)" stroke-dasharray="263.89" stroke-dashoffset="0"></circle>
+          </svg>
+          <div class="gauge-text">
+            <div class="gauge-num" id="scoreVal" style="color:var(--primary);">100</div>
+            <div class="gauge-unit">SCORE</div>
+          </div>
+        </div>
+        <div class="verdict-box">
+          <div class="verdict-pill v-pending" id="verdictPill">尚待完成查核</div>
+          <div class="verdict-meta" id="verdictCounts">P0 致命: 0 | P1: 0 | P2: 0</div>
+        </div>
       </div>
     </header>
 
-    <!-- LIVE SCORE DASHBOARD (STICKY) -->
-    <div class="dashboard-banner">
-      <div class="score-left">
-        <div class="dash-pill" id="rulePill">STRICT ANTI-MOCK AUDIT SYSTEM</div>
-        <div class="dash-title">烹調即時安全評估儀表板</div>
-        <div class="dash-sub" id="statusMessage">請逐項檢核下方 20 道關鍵控制點；任何一項 P0 致命缺失將觸發一票否決！</div>
+    <!-- Dish Context & Presets -->
+    <section class="panel-card">
+      <div class="panel-title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/><path d="M9 14h6"/><path d="M9 18h6"/></svg>
+        <span>本道菜餚稽核基本資料與實務情境設定</span>
       </div>
-      <div class="score-right">
-        <div class="score-circle" id="scoreCircle">
-          <div class="score-val" id="scoreDisplay">100</div>
-          <div class="score-unit">POINTS</div>
-        </div>
-        <div>
-          <div class="status-badge status-pass" id="statusBadge">特優 · 准許出餐</div>
-          <div style="font-size:0.75rem; text-align:center; color:var(--text-muted); margin-top:4px;" id="p0CountLabel">P0 致命缺失：0 項</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- DISH METADATA CARD -->
-    <div class="meta-card">
-      <div style="font-size: 1.1rem; font-weight: 800; color: var(--text-main);">📋 菜餚基本檢核資訊</div>
       <div class="meta-grid">
-        <div class="meta-input-group">
+        <div class="field-group">
           <label>菜餚名稱 (Dish Name)</label>
-          <input type="text" class="meta-input" id="dishName" placeholder="例如：台式香酥炸雞排" value="台式香酥炸雞排配四季豆">
+          <input type="text" class="field-input" id="dishName" placeholder="請輸入製作之菜名">
         </div>
-        <div class="meta-input-group">
-          <label>烹調手法 (Method)</label>
-          <input type="text" class="meta-input" id="dishMethod" placeholder="例如：高溫油炸 / 水炒 / 舒肥" value="高溫油炸 (180°C)">
+        <div class="field-group">
+          <label>主要烹調手法與使用油脂</label>
+          <input type="text" class="field-input" id="dishMethod" placeholder="例：水炒/精製芥花油 或 舒肥">
         </div>
-        <div class="meta-input-group">
-          <label>烹調負責人 (Chef)</label>
-          <input type="text" class="meta-input" id="chefName" value="士鈞 主廚">
+        <div class="field-group">
+          <label>烹調負責人 / 主廚</label>
+          <input type="text" class="field-input" id="chefName" placeholder="填寫主廚姓名">
         </div>
-        <div class="meta-input-group">
-          <label>檢核稽核員 (Auditor)</label>
-          <input type="text" class="meta-input" id="auditorName" value="食安稽核組">
+        <div class="field-group">
+          <label>稽核時間與稽核員</label>
+          <input type="text" class="field-input" id="auditTime">
         </div>
       </div>
-      <div class="sample-btns">
-        <span style="font-size:0.78rem; font-weight:700; color:var(--text-muted); align-self:center;">載入測試範本：</span>
-        <button class="sample-btn" onclick="loadSample(1)">🍗 範例一：台式鹽酥雞 (油炸/禽肉)</button>
-        <button class="sample-btn" onclick="loadSample(2)">🥩 範例二：低溫舒肥牛排溫沙拉 (低溫/生食)</button>
-        <button class="sample-btn" onclick="loadSample(3)">🍚 範例三：海鮮炒飯配蛤蜊湯 (芽孢/水產)</button>
-        <button class="sample-btn" onclick="resetAll()">🔄 全部重設為預設</button>
+
+      <label class="toggle-hot-env">
+        <input type="checkbox" id="hotEnvToggle" onchange="evaluateAll()">
+        <span>環境酷熱警示：現場或夏季室溫超過 32°C（熟食室溫鐵律自動從 120 分鐘收緊為 60 分鐘）</span>
+      </label>
+
+      <div class="preset-row">
+        <span class="preset-label">快速套用菜餚查核項目 (自動隱藏不適用項目)：</span>
+        <button type="button" class="btn-preset active" onclick="applyPreset('all', this)">全部 34 項全檢</button>
+        <button type="button" class="btn-preset" onclick="applyPreset('fried_chicken', this)">台式炸雞排 / 鹽酥雞</button>
+        <button type="button" class="btn-preset" onclick="applyPreset('sousvide', this)">舒肥牛排配初榨油溫沙拉</button>
+        <button type="button" class="btn-preset" onclick="applyPreset('seafood_rice', this)">海鮮炒飯配蛤蜊湯</button>
+        <button type="button" class="btn-preset" onclick="applyPreset('cured_sausage', this)">蒜苗香腸炒菜 / 臘味便當</button>
+        <button type="button" class="btn-preset" onclick="applyPreset('braised_soup', this)">滷味豆干濕麵 / 金針排骨湯</button>
+        <button type="button" class="btn-preset" onclick="applyPreset('sashimi_airfryer', this)">氣炸鯖魚 / 生魚片丼飯</button>
+      </div>
+    </section>
+
+    <!-- Filter & Rapid Audit Toolbar -->
+    <div class="filter-toolbar">
+      <div class="filter-group">
+        <span style="font-size:0.8rem; font-weight:750; color:var(--text-muted);">檢視篩選：</span>
+        <button type="button" class="filter-btn active" onclick="setViewFilter('all', this)">顯示全部</button>
+        <button type="button" class="filter-btn" onclick="setViewFilter('applicable', this)">隱藏 N/A (僅本道菜適用)</button>
+        <button type="button" class="filter-btn" onclick="setViewFilter('fail', this)">僅看缺失 (Fail)</button>
+        <button type="button" class="filter-btn" onclick="setViewFilter('pending', this)">僅看待檢核</button>
+      </div>
+      <div class="filter-group">
+        <button type="button" class="btn-quick-pass" onclick="markPendingAsPass()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          <span>將其餘「待檢」項目設為合規（快速僅挑缺失）</span>
+        </button>
       </div>
     </div>
 
-    <!-- FORM SECTIONS -->
-    <form id="auditForm">
-      
-      <!-- PHASE 1 -->
-      <div class="section-title-wrap">
-        <div class="section-title">
-          <span class="section-num">1</span>
-          <span>階段一：人員衛生與前置準備 (Personnel & Pre-op)</span>
-        </div>
-        <span style="font-size:0.85rem; font-weight:700; color:var(--text-muted);">共 4 項查核</span>
+    <!-- Consolidated Live Deficiency Diagnosis Summary -->
+    <section class="diag-summary" id="diagSummaryPanel">
+      <div class="diag-sum-head">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span id="diagSumTitle">偵測到流程缺失與立即矯正清單</span>
       </div>
+      <div class="diag-sum-list" id="diagSummaryList"></div>
+    </section>
 
-      <!-- Item 1.1 -->
-      <div class="q-card" id="card_1_1">
-        <div class="q-header">
-          <div class="q-left">
-            <div class="q-tag-row">
-              <span class="q-num">ITEM 1.1</span>
-              <span class="badge-sev sev-p1">P1 重大缺失 (-10分)</span>
-              <span style="font-size:0.75rem; color:var(--text-muted);">對應單元一 1-5</span>
-            </div>
-            <div class="q-title">手部澈底洗淨 20 秒以上</div>
-            <div class="q-desc">調理前、如廁後、觸摸生肉/生蛋後，必須以肥皂搓洗雙手、指甲縫與手腕達 20 秒以上。</div>
-          </div>
-          <div class="q-options">
-            <label class="opt-label" id="lbl_1_1_pass"><input type="radio" name="q_1_1" value="pass" checked onchange="updateScore()">✓ 合規 Pass</label>
-            <label class="opt-label" id="lbl_1_1_fail"><input type="radio" name="q_1_1" value="fail" onchange="updateScore()">✕ 缺失 Fail</label>
-            <label class="opt-label" id="lbl_1_1_na"><input type="radio" name="q_1_1" value="na" onchange="updateScore()">- N/A</label>
-          </div>
-        </div>
-        <div class="diag-box" id="diag_1_1">
-          <div class="diag-title">⚠️ 缺失危害診斷：手部清潔未達標</div>
-          <div class="diag-text">未落實洗手 20 秒，極易將諾羅病毒、大腸桿菌或沙門氏菌由如廁環境或生禽肉外殼轉移至成品即食菜餚。<br><strong>即時矯正 SOP：</strong>立即暫停調理，強制使用肥皂搓洗指甲縫與指間 20 秒並以流動水沖淨，擦乾後以 75% 酒精消毒雙手。</div>
-        </div>
-      </div>
+    <!-- Dynamic Checklist Container -->
+    <main id="checklistContainer"></main>
 
-      <!-- Item 1.2 -->
-      <div class="q-card" id="card_1_2">
-        <div class="q-header">
-          <div class="q-left">
-            <div class="q-tag-row">
-              <span class="q-num">ITEM 1.2</span>
-              <span class="badge-sev sev-p0">★ P0 致命缺失 (一票否決)</span>
-              <span style="font-size:0.75rem; color:var(--text-muted);">對應單元一 1-3</span>
-            </div>
-            <div class="q-title">手部傷口、化膿排查與即時隔離</div>
-            <div class="q-desc">調理人員手部若有割傷、化膿、疔瘡或濕疹，<strong>絕對嚴禁接觸即食食材與熟食</strong>！</div>
-          </div>
-          <div class="q-options">
-            <label class="opt-label" id="lbl_1_2_pass"><input type="radio" name="q_1_2" value="pass" checked onchange="updateScore()">✓ 合規 Pass</label>
-            <label class="opt-label" id="lbl_1_2_fail"><input type="radio" name="q_1_2" value="fail" onchange="updateScore()">✕ 缺失 Fail</label>
-            <label class="opt-label" id="lbl_1_2_na"><input type="radio" name="q_1_2" value="na" onchange="updateScore()">- N/A</label>
-          </div>
-        </div>
-        <div class="diag-box" id="diag_1_2">
-          <div class="diag-title">🚨 致命危害診斷：金黃色葡萄球菌耐熱毒素風險！</div>
-          <div class="diag-text">化膿傷口中寄居大量<strong>金黃色葡萄球菌</strong>，觸碰熟食後將迅速分泌<strong>高耐熱腸毒素（100°C 沸水加熱 30 分鐘仍不瓦解！）</strong>，食用後 2 小時內誘發噴射狀劇烈嘔吐！<br><strong>即時強制矯正 SOP：</strong>已被觸碰之即食熟食<strong>全數報廢銷毀</strong>！立即調離該員即食調理作業，傷口包紮耐水敷料並強制配戴食品級手套。</div>
-        </div>
+    <!-- Bottom Export & Print Actions -->
+    <footer class="bottom-bar">
+      <div>
+        <div style="font-weight:800; font-size:0.95rem;">稽核報告匯出與現場存檔</div>
+        <div style="font-size:0.8rem; color:var(--text-muted);">依據文化大學施明智教授《食品安全入門》全三章規範建立</div>
       </div>
-
-      <!-- Item 1.3 -->
-      <div class="q-card" id="card_1_3">
-        <div class="q-header">
-          <div class="q-left">
-            <div class="q-tag-row">
-              <span class="q-num">ITEM 1.3</span>
-              <span class="badge-sev sev-p1">P1 重大缺失 (-10分)</span>
-              <span style="font-size:0.75rem; color:var(--text-muted);">對應單元一 1-5</span>
-            </div>
-            <div class="q-title">生食與熟食刀具砧板嚴格分流</div>
-            <div class="q-desc">切生肉、生海鮮之刀具砧板與熟食/即食生菜專用砧板必須嚴格分色（如紅/藍切生食，白/綠切熟食）。</div>
-          </div>
-          <div class="q-options">
-            <label class="opt-label" id="lbl_1_3_pass"><input type="radio" name="q_1_3" value="pass" checked onchange="updateScore()">✓ 合規 Pass</label>
-            <label class="opt-label" id="lbl_1_3_fail"><input type="radio" name="q_1_3" value="fail" onchange="updateScore()">✕ 缺失 Fail</label>
-            <label class="opt-label" id="lbl_1_3_na"><input type="radio" name="q_1_3" value="na" onchange="updateScore()">- N/A</label>
-          </div>
-        </div>
-        <div class="diag-box" id="diag_1_3">
-          <div class="diag-title">⚠️ 缺失危害診斷：生熟交叉污染</div>
-          <div class="diag-text">生肉上附著之沙門氏菌或腸炎弧菌透過刀具沾染至不需再加熱之熟食，繞過最後加熱防線。<br><strong>即時矯正 SOP：</strong>若即食食材已被污染必須重新高溫熱煮；全面更換並重新清洗消毒刀具與砧板。</div>
-        </div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button type="button" class="btn-secondary" onclick="resetAll()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+          <span>全部重設為待檢</span>
+        </button>
+        <button type="button" class="btn-secondary" onclick="copyReport()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span>複製完整缺失診斷報告</span>
+        </button>
+        <button type="button" class="btn-primary" onclick="window.print()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          <span>列印 / 匯出 PDF 稽核表</span>
+        </button>
       </div>
-
-      <!-- Item 1.4 -->
-      <div class="q-card" id="card_1_4">
-        <div class="q-header">
-          <div class="q-left">
-            <div class="q-tag-row">
-              <span class="q-num">ITEM 1.4</span>
-              <span class="badge-sev sev-p2">P2 一般缺失 (-5分)</span>
-              <span style="font-size:0.75rem; color:var(--text-muted);">對應單元一 1-5</span>
-            </div>
-            <div class="q-title">抹布分流與消毒良好作業規範</div>
-            <div class="q-desc">擦拭生食砧板之抹布與擦拭成品餐盤、出餐檯之抹布嚴格分開，定期以沸水或 200 ppm 漂白水浸泡。</div>
-          </div>
-          <div class="q-options">
-            <label class="opt-label" id="lbl_1_4_pass"><input type="radio" name="q_1_4" value="pass" checked onchange="updateScore()">✓ 合規 Pass</label>
-            <label class="opt-label" id="lbl_1_4_fail"><input type="radio" name="q_1_4" value="fail" onchange="updateScore()">✕ 缺失 Fail</label>
-            <label class="opt-label" id="lbl_1_4_na"><input type="radio" name="q_1_4" value="na" onchange="updateScore()">- N/A</label>
-          </div>
-        </div>
-        <div class="diag-box" id="diag_1_4">
-          <div class="diag-title">⚠️ 缺失危害診斷：抹布成為隱形細菌溫床</div>
-          <div class="diag-text">一塊抹布擦到底會造成細菌在廚房桌面四處擴散。<br><strong>即時矯正 SOP：</strong>立即更換乾淨專用抹布，舊抹布浸入 200 ppm 含氯漂白水消毒 30 分鐘。</div>
-        </div>
-      </div>
-
-      <!-- PHASE 2 -->
-      <div class="section-title-wrap">
-        <div class="section-title">
-          <span class="section-num">2</span>
-          <span>階段二：食材驗收、清洗與前處理 (Ingredient Prep)</span>
-        </div>
-        <span style="font-size:0.85rem; font-weight:700; color:var(--text-muted);">共 5 項查核</span>
-      </div>
-
-      <!-- Item 2.1 -->
-      <div class="q-card" id="card_2_1">
-        <div class="q-header">
-          <div class="q-left">
-            <div class="q-tag-row">
-              <span class="q-num">ITEM 2.1</span>
-              <span class="badge-sev sev-p1">P1 重大缺失 (-10分)</span>
-              <span style="font-size:0.75rem; color:var(--text-muted);">對應單元一 1-3</span>
-            </div>
-            <div class="q-title">生鮮海產自來水（淡水）澈底沖洗</div>
-            <div class="q-desc">生鮮魚、蝦、蟹、貝類在前處理時，必須以流動自來水澈底沖洗，利用滲透壓瓦解嗜鹽菌。</div>
-          </div>
-          <div class="q-options">
-            <label class="opt-label" id="lbl_2_1_pass"><input type="radio" name="q_2_1" value="pass" checked onchange="updateScore()">✓ 合規 Pass</label>
-            <label class="opt-label" id="lbl_2_1_fail"><input type="radio" name="q_2_1" value="fail" onchange="updateScore()">✕ 缺失 Fail</label>
-            <label class="opt-label" id="lbl_2_1_na"><input type="radio" name="q_2_1" value="na" onchange="updateScore()">- N/A</label>
-          </div>
-        </div>
-        <div class="diag-box" id="diag_2_1">
-          <div class="diag-title">⚠️ 缺失危害診斷：腸炎弧菌殘留危機</div>
-          <div class="diag-text"><strong>腸炎弧菌具強烈嗜鹽性 (2%~3% NaCl)</strong>，且繁殖倍增僅需 10 分鐘！其阿基里斯之腱是極度怕淡水。<br><strong>即時矯正 SOP：</strong>立即使用流動自來水反覆沖洗魚鰓、內臟與表面，隨後調理器具澈底清洗。</div>
-        </div>
-      </div>
-
-      <!-- Item 2.2 -->
-      <div class="q-card" id="card_2_2">
-        <div class="q-header">
-          <div class="q-left">
-            <div class="q-tag-row">
-              <span class="q-num">ITEM 2.2</span>
-              <span class="badge-sev sev-p1">P1 重大缺失 (-10分)</span>
-              <span style="font-size:0.75rem; color:var(--text-muted);">對應單元一 1-3</span>
-            </div>
-            <div class="q-title">禽肉與蛋品前置衛生（洗選蛋與防噴濺）</div>
-            <div class="q-desc">選用洗選蛋；打蛋前檢視蛋殼無裂紋糞污；禽肉分切嚴防血水噴濺周邊生食；觸摸生蛋後立即洗手。</div>
-          </div>
-          <div class="q-options">
-            <label class="opt-label" id="lbl_2_2_pass"><input type="radio" name="q_2_2" value="pass" checked onchange="updateScore()">✓ 合規 Pass</label>
-            <label class="opt-label" id="lbl_2_2_fail"><input type="radio" name="q_2_2" value="fail" onchange="updateScore()">✕ 缺失 Fail</label>
-            <label class="opt-label" id="lbl_2_2_na"><input type="radio" name="q_2_2" value="na" onchange="updateScore()">- N/A</label>
-          </div>
-        </div>
-        <div class="diag-box" id="diag_2_2">
-          <div class="diag-title">⚠️ 缺失危害診斷：沙門氏桿菌污染</div>
-          <div class="diag-text">沙門氏菌經蛋殼氣孔入侵內部，摸蛋殼後未洗手觸摸餐具將引發高燒血便。<br><strong>即時矯正 SOP：</strong>若使用非洗選散裝蛋，敲蛋前應以乾布擦拭，打蛋後立即肥皂洗手，該道料理必須全熟烹煮！</div>
-        </div>
-      </div>
-
-      <!-- Item 2.3 -->
-      <div class="q-card" id="card_2_3">
-        <div class="q-header">
-          <div class="q-left">
-            <div class="q-tag-row">
-              <span class="q-num">ITEM 2.3</span>
-              <span class="badge-sev sev-p2">P2 一般缺失 (-5分)</span>
-              <span style="font-size:0.75rem; color:var(--text-muted);">對應單元三 3-5</span>
-            </div>
-            <div class="q-title">乾貨（金針/竹筍）浸泡溫水去二氧化硫</div>
-            <div class="q-desc">乾金針、乾竹筍、白木耳烹調前以 45°C 溫水浸泡 20 分鐘並倒掉浸泡水，或開蓋沸水汆燙。</div>
-          </div>
-          <div class="q-options">
-            <label class="opt-label" id="lbl_2_3_pass"><input type="radio" name="q_2_3" value="pass" checked onchange="updateScore()">✓ 合規 Pass</label>
-            <label class="opt-label" id="lbl_2_3_fail"><input type="radio" name="q_2_3" value="fail" onchange="updateScore()">✕ 缺失 Fail</label>
-            <label class="opt-label" id="lbl_2_3_na"><input type="radio" name="q_2_3" value="na" onchange="updateScore()">- N/A</label>
-          </div>
-        </div>
-        <div class="diag-box" id="diag_2_3">
-          <div class="diag-title">⚠️ 缺失危害診斷：亞硫酸鹽殘留誘發氣喘</div>
-          <div class="diag-text">農產乾貨常以二氧化硫防腐保色，敏感體質或氣喘患者攝入易誘發急性過敏發作。<br><strong>即時矯正 SOP：</strong>烹調前務必汆燙開蓋 3 分鐘讓揮發性亞硫酸逸散，倒掉湯水。</div>
-        </div>
-      </div>
-
-      <!-- Item 2.4 -->
-      <div class="q-card" id="card_2_4">
-        <div class="q-header">
-          <div class="q-left">
-            <div class="q-tag-row">
-              <span class="q-num">ITEM 2.4</span>
-              <span class="badge-sev sev-p0">★ P0 致命缺失 (一票否決)</span>
-              <span style="font-size:0.75rem; color:var(--text-muted);">對應單元三 3-3</span>
-            </div>
-            <div class="q-title">生鮮魚肉排查一氧化碳 (CO) 染色假冒</div>
-            <div class="q-desc">魚肉色澤自然，無異常鮮紅、不自然螢光粉紅色；聞其氣味無腐敗臭味（嚴禁 CO 處理魚片）。</div>
-          </div>
-          <div class="q-options">
-            <label class="opt-label" id="lbl_2_4_pass"><input type="radio" name="q_2_4" value="pass" checked onchange="updateScore()">✓ 合規 Pass</label>
-            <label class="opt-label" id="lbl_2_4_fail"><input type="radio" name="q_2_4" value="fail" onchange="updateScore()">✕ 缺失 Fail</label>
-            <label class="opt-label" id="lbl_2_4_na"><input type="radio" name="q_2_4" value="na" onchange="updateScore()">- N/A</label>
-          </div>
-        </div>
-        <div class="diag-box" id="diag_2_4">
-          <div class="diag-title">🚨 致命危害診斷：一氧化碳染色掩蓋腐敗生魚片！</div>
-          <div class="diag-text">不法業者以一氧化碳結合肌紅蛋白形成穩定粉紅色，即使魚肉腐敗孳生細菌分泌組織胺依然鮮紅！<br><strong>即時強制矯正 SOP：</strong>該批魚肉<strong>全數銷毀封存，嚴禁食用出餐</strong>！通報主管機關調查供應鏈。</div>
-        </div>
-      </div>
-
-      <!-- Item 2.5 -->
-      <div class="q-card" id="card_2_5">
-        <div class="q-header">
-          <div class="q-left">
-            <div class="q-tag-row">
-              <span class="q-num">ITEM 2.5</span>
-              <span class="badge-sev sev-p1">P1 重大缺失 (-10分)</span>
-              <span style="font-size:0.75rem; color:var(--text-muted);">對應單元一 1-3, 1-4</span>
-            </div>
-            <div class="q-title">常溫備料時間控管（不得逾 30 分鐘）</div>
-            <div class="q-desc">生鮮絞肉、海鮮、熟米飯、熟麵條自冰箱取出至下鍋加熱，在室溫下備料時間嚴禁超過 30 分鐘。</div>
-          </div>
-          <div class="q-options">
-            <label class="opt-label" id="lbl_2_5_pass"><input type="radio" name="q_2_5" value="pass" checked onchange="updateScore()">✓ 合規 Pass</label>
-            <label class="opt-label" id="lbl_2_5_fail"><input type="radio" name="q_2_5" value="fail" onchange="updateScore()">✕ 缺失 Fail</label>
-            <label class="opt-label" id="lbl_2_5_na"><input type="radio" name="q_2_5" value="na" onchange="updateScore()">- N/A</label>
-          </div>
-        </div>
-        <div class="diag-box" id="diag_2_5">
-          <div class="diag-title">⚠️ 缺失危害診斷：仙人掌桿菌芽孢發芽產毒</div>
-          <div class="diag-text">室溫 25~35°C 正是仙人掌桿菌與金黃色葡萄球菌產毒的黃金時間。<br><strong>即時矯正 SOP：</strong>若超過 30 分鐘但未逾 2 小時，應立即下鍋進行大火高溫全熟烹調，切忌再冰回冰箱！</div>
-        </div>
-      </div>
-
-      <!-- PHASE 3 -->
-      <div class="section-title-wrap">
-        <div class="section-title">
-          <span class="section-num">3</span>
-          <span>階段三：烹調用油與添加物稽核 (Oil & Additives)</span>
-        </div>
-        <span style="font-size:0.85rem; font-weight:700; color:var(--text-muted);">共 4 項查核</span>
-      </div>
-
-      <!-- Item 3.1 -->
-      <div class="q-card" id="card_3_1">
-        <div class="q-header">
-          <div class="q-left">
-            <div class="q-tag-row">
-              <span class="q-num">ITEM 3.1</span>
-              <span class="badge-sev sev-p1">P1 重大缺失 (-10分)</span>
-              <span style="font-size:0.75rem; color:var(--text-muted);">對應單元二 2-3, 2-6</span>
-            </div>
-            <div class="q-title">烹調油品與溫度精準適配</div>
-            <div class="q-desc">低溫涼拌選初榨橄欖油；中溫水炒選芥花/玄米/大豆油；高溫油炸選苦茶/棕櫚油。<strong>嚴禁用初榨橄欖油久炸！</strong></div>
-          </div>
-          <div class="q-options">
-            <label class="opt-label" id="lbl_3_1_pass"><input type="radio" name="q_3_1" value="pass" checked onchange="updateScore()">✓ 合規 Pass</label>
-            <label class="opt-label" id="lbl_3_1_fail"><input type="radio" name="q_3_1" value="fail" onchange="updateScore()">✕ 缺失 Fail</label>
-            <label class="opt-label" id="lbl_3_1_na"><input type="radio" name="q_3_1" value="na" onchange="updateScore()">- N/A</label>
-          </div>
-        </div>
-        <div class="diag-box" id="diag_3_1">
-          <div class="diag-title">⚠️ 缺失危害診斷：越過發煙點裂解產生致癌丙烯醛</div>
-          <div class="diag-text">特級初榨橄欖油發煙點僅 191°C，拿來 200°C 高溫油炸會劇烈裂解，產生刺激性嗆鼻丙烯醛與醛酮毒物。<br><strong>即時矯正 SOP：</strong>立即倒掉油炸油，換成精製高發煙點油品（如苦茶油 252°C 或芥花油 240°C）。</div>
-        </div>
-      </div>
-
-      <!-- Item 3.2 -->
-      <div class="q-card" id="card_3_2">
-        <div class="q-header">
-          <div class="q-left">
-            <div class="q-tag-row">
-              <span class="q-num">ITEM 3.2</span>
-              <span class="badge-sev sev-p0">★ P0 致命缺失 (一票否決)</span>
-              <span style="font-size:0.75rem; color:var(--text-muted);">對應單元二 2-4, 2-5</span>
-            </div>
-            <div class="q-title">油炸油品質檢視（TPC < 25% 與酸價 < 2.0 鐵律）</div>
-            <div class="q-desc">油槽無劇烈冒煙、顏色無深黑如醬油、起泡未超鍋面 1/2；<strong>TPC < 25%、酸價 AV < 2.0</strong>（嚴禁補新油掩飾劣變）。</div>
-          </div>
-          <div class="q-options">
-            <label class="opt-label" id="lbl_3_2_pass"><input type="radio" name="q_3_2" value="pass" checked onchange="updateScore()">✓ 合規 Pass</label>
-            <label class="opt-label" id="lbl_3_2_fail"><input type="radio" name="q_3_2" value="fail" onchange="updateScore()">✕ 缺失 Fail</label>
-            <label class="opt-label" id="lbl_3_2_na"><input type="radio" name="q_3_2" value="na" onchange="updateScore()">- N/A</label>
-          </div>
-        </div>
-        <div class="diag-box" id="diag_3_2">
-          <div class="diag-title">🚨 致命危害診斷：劣變油累積高濃度致癌聚合物與過氧化物！</div>
-          <div class="diag-text">高溫長時間水解、氧化與熱聚合反應，累積大量極性聚合物與丙烯醯胺，損傷胃黏膜並增加心血管疾病風險！<br><strong>即時強制矯正 SOP：</strong>立即關閉火源，<strong>全鍋劣變油全數廢棄</strong>！嚴禁加新油混充，徹底清洗油鍋換新油。</div>
-        </div>
-      </div>
-
-      <!-- Item 3.3 -->
-      <div class="q-card" id="card_3_3">
-        <div class="q-header">
-          <div class="q-left">
-            <div class="q-tag-row">
-              <span class="q-num">ITEM 3.3</span>
-              <span class="badge-sev sev-p1">P1 重大缺失 (-10分)</span>
-              <span style="font-size:0.75rem; color:var(--text-muted);">對應單元三 3-5</span>
-            </div>
-            <div class="q-title">醃肉與食材搭配禁忌（防範致癌亞硝胺）</div>
-            <div class="q-desc">含亞硝酸鹽肉品（香腸、培根、火腿）<strong>嚴禁與高量二級胺海鮮（魷魚乾、干貝、鹹魚）同鍋大火爆炒</strong>。</div>
-          </div>
-          <div class="q-options">
-            <label class="opt-label" id="lbl_3_3_pass"><input type="radio" name="q_3_3" value="pass" checked onchange="updateScore()">✓ 合規 Pass</label>
-            <label class="opt-label" id="lbl_3_3_fail"><input type="radio" name="q_3_3" value="fail" onchange="updateScore()">✕ 缺失 Fail</label>
-            <label class="opt-label" id="lbl_3_3_na"><input type="radio" name="q_3_3" value="na" onchange="updateScore()">- N/A</label>
-          </div>
-        </div>
-        <div class="diag-box" id="diag_3_3">
-          <div class="diag-title">⚠️ 缺失危害診斷：一級致癌物亞硝基二甲胺 (NDMA) 生成！</div>
-          <div class="diag-text">香腸中的亞硝酸鹽遇高溫與魷魚乾中的二級胺快速結合生成強致癌物亞硝胺，大幅增加胃癌與食道癌風險。<br><strong>即時矯正 SOP：</strong>分開烹調！香腸先水蒸後低溫水煎，海鮮單獨炒製，嚴禁同鍋高溫油炸。</div>
-        </div>
-      </div>
-
-      <!-- Item 3.4 -->
-      <div class="q-card" id="card_3_4">
-        <div class="q-header">
-          <div class="q-left">
-            <div class="q-tag-row">
-              <span class="q-num">ITEM 3.4</span>
-              <span class="badge-sev sev-p2">P2 一般缺失 (-5分)</span>
-              <span style="font-size:0.75rem; color:var(--text-muted);">對應單元三 3-5</span>
-            </div>
-            <div class="q-title">維生素 C 阻斷阻劑之主動搭配</div>
-            <div class="q-desc">烹飪含亞硝酸鹽肉品時，配菜主動搭配彩椒、青花菜、番茄或大蒜等富含維生素 C 與多酚之食材。</div>
-          </div>
-          <div class="q-options">
-            <label class="opt-label" id="lbl_3_4_pass"><input type="radio" name="q_3_4" value="pass" checked onchange="updateScore()">✓ 合規 Pass</label>
-            <label class="opt-label" id="lbl_3_4_fail"><input type="radio" name="q_3_4" value="fail" onchange="updateScore()">✕ 缺失 Fail</label>
-            <label class="opt-label" id="lbl_3_4_na"><input type="radio" name="q_3_4" value="na" onchange="updateScore()">- N/A</label>
-          </div>
-        </div>
-        <div class="diag-box" id="diag_3_4">
-          <div class="diag-title">⚠️ 缺失危害診斷：缺乏亞硝胺抗氧化阻斷劑</div>
-          <div class="diag-text">抗壞血酸（維生素 C）能在胃酸環境中將亞硝酸根快速還原成一氧化氮，切斷亞硝胺生成。<br><strong>即時矯正 SOP：</strong>出餐時附上新鮮檸檬切片、彩椒或生大蒜片作為佐料。</div>
-        </div>
-      </div>
-
-      <!-- PHASE 4 -->
-      <div class="section-title-wrap">
-        <div class="section-title">
-          <span class="section-num">4</span>
-          <span>階段四：熱烹調與滅菌監控 (Thermal Processing)</span>
-        </div>
-        <span style="font-size:0.85rem; font-weight:700; color:var(--text-muted);">共 4 項查核</span>
-      </div>
-
-      <!-- Item 4.1 -->
-      <div class="q-card" id="card_4_1">
-        <div class="q-header">
-          <div class="q-left">
-            <div class="q-tag-row">
-              <span class="q-num">ITEM 4.1</span>
-              <span class="badge-sev sev-p0">★ P0 致命缺失 (一票否決)</span>
-              <span style="font-size:0.75rem; color:var(--text-muted);">對應單元一 1-4</span>
-            </div>
-            <div class="q-title">一般熱烹調菜餚中心溫度達到 70°C 以上</div>
-            <div class="q-desc">一般熱烹調料理在起鍋前，中心溫度必須達到 70°C 以上並維持 1~2 分鐘。</div>
-          </div>
-          <div class="q-options">
-            <label class="opt-label" id="lbl_4_1_pass"><input type="radio" name="q_4_1" value="pass" checked onchange="updateScore()">✓ 合規 Pass</label>
-            <label class="opt-label" id="lbl_4_1_fail"><input type="radio" name="q_4_1" value="fail" onchange="updateScore()">✕ 缺失 Fail</label>
-            <label class="opt-label" id="lbl_4_1_na"><input type="radio" name="q_4_1" value="na" onchange="updateScore()">- N/A</label>
-          </div>
-        </div>
-        <div class="diag-box" id="diag_4_1">
-          <div class="diag-title">🚨 致命危害診斷：未達熱致死溫度，致病活菌大量殘存！</div>
-          <div class="diag-text">低於 70°C 無法使腸炎弧菌、大腸桿菌或李斯特菌之關鍵代謝酵素變性死亡。<br><strong>即時強制矯正 SOP：</strong><strong>嚴禁出餐！</strong>立即放回鍋具持續加熱，使用探針式溫度計實測食材中心超過 70°C 方可起鍋。</div>
-        </div>
-      </div>
-
-      <!-- Item 4.2 -->
-      <div class="q-card" id="card_4_2">
-        <div class="q-header">
-          <div class="q-left">
-            <div class="q-tag-row">
-              <span class="q-num">ITEM 4.2</span>
-              <span class="badge-sev sev-p0">★ P0 致命缺失 (一票否決)</span>
-              <span style="font-size:0.75rem; color:var(--text-muted);">對應單元一 1-3</span>
-            </div>
-            <div class="q-title">禽肉與絞肉全熟無血水（中心溫度 > 75°C）</div>
-            <div class="q-desc">雞肉、鴨肉、絞肉漢堡排、香腸內部必須澈底全熟，切開無粉紅血水，中心溫度達 75°C 以上。</div>
-          </div>
-          <div class="q-options">
-            <label class="opt-label" id="lbl_4_2_pass"><input type="radio" name="q_4_2" value="pass" checked onchange="updateScore()">✓ 合規 Pass</label>
-            <label class="opt-label" id="lbl_4_2_fail"><input type="radio" name="q_4_2" value="fail" onchange="updateScore()">✕ 缺失 Fail</label>
-            <label class="opt-label" id="lbl_4_2_na"><input type="radio" name="q_4_2" value="na" onchange="updateScore()">- N/A</label>
-          </div>
-        </div>
-        <div class="diag-box" id="diag_4_2">
-          <div class="diag-title">🚨 致命危害診斷：沙門氏菌與出血性大腸桿菌 (STEC) 存活！</div>
-          <div class="diag-text">未熟禽肉極易引發高燒 40°C 與黏液血便；未熟牛絞肉可能引發致死率極高之溶血性尿毒症 (HUS)！<br><strong>即時強制矯正 SOP：</strong><strong>嚴禁出餐！</strong>放回烤箱或油鍋繼續悶煎加熱，切開最厚部位確認全無粉紅肉色，溫度計實測達 75°C 以上。</div>
-        </div>
-      </div>
-
-      <!-- Item 4.3 -->
-      <div class="q-card" id="card_4_3">
-        <div class="q-header">
-          <div class="q-left">
-            <div class="q-tag-row">
-              <span class="q-num">ITEM 4.3</span>
-              <span class="badge-sev sev-p0">★ P0 致命缺失 (一票否決)</span>
-              <span style="font-size:0.75rem; color:var(--text-muted);">對應單元一 1-3</span>
-            </div>
-            <div class="q-title">貝類海鮮澈底加熱（85°C 90秒諾羅病毒防線）</div>
-            <div class="q-desc">牡蠣、生蠔、蛤蜊烹煮至外殼全開後，持續滾煮使中心溫度達 85°C 以上至少 90 秒。</div>
-          </div>
-          <div class="q-options">
-            <label class="opt-label" id="lbl_4_3_pass"><input type="radio" name="q_4_3" value="pass" checked onchange="updateScore()">✓ 合規 Pass</label>
-            <label class="opt-label" id="lbl_4_3_fail"><input type="radio" name="q_4_3" value="fail" onchange="updateScore()">✕ 缺失 Fail</label>
-            <label class="opt-label" id="lbl_4_3_na"><input type="radio" name="q_4_3" value="na" onchange="updateScore()">- N/A</label>
-          </div>
-        </div>
-        <div class="diag-box" id="diag_4_3">
-          <div class="diag-title">🚨 致命危害診斷：諾羅病毒 (Norovirus) 群聚感染風險！</div>
-          <div class="diag-text">貝類僅開殼並不代表內部病毒已滅活，未達 85°C 90 秒會導致病毒顆粒殘留引發群聚急性腸胃炎。<br><strong>即時強制矯正 SOP：</strong>蛤蜊或生蠔開殼後持續滾沸加熱 2 分鐘，確保內部均勻受熱超過 85°C。</div>
-        </div>
-      </div>
-
-      <!-- Item 4.4 -->
-      <div class="q-card" id="card_4_4">
-        <div class="q-header">
-          <div class="q-left">
-            <div class="q-tag-row">
-              <span class="q-num">ITEM 4.4</span>
-              <span class="badge-sev sev-p0">★ P0 致命缺失 (一票否決)</span>
-              <span style="font-size:0.75rem; color:var(--text-muted);">對應前瞻研討 4.3</span>
-            </div>
-            <div class="q-title">舒肥 (Sous-Vide) 低溫烹調溫度嚴守 > 55°C 紅線</div>
-            <div class="q-desc">低溫真空烹調水浴設定溫度嚴禁低於 55°C；禽肉中心溫度維持 60°C 以上達 12 分鐘。</div>
-          </div>
-          <div class="q-options">
-            <label class="opt-label" id="lbl_4_4_pass"><input type="radio" name="q_4_4" value="pass" checked onchange="updateScore()">✓ 合規 Pass</label>
-            <label class="opt-label" id="lbl_4_4_fail"><input type="radio" name="q_4_4" value="fail" onchange="updateScore()">✕ 缺失 Fail</label>
-            <label class="opt-label" id="lbl_4_4_na"><input type="radio" name="q_4_4" value="na" onchange="updateScore()">- N/A</label>
-          </div>
-        </div>
-        <div class="diag-box" id="diag_4_4">
-          <div class="diag-title">🚨 致命危害診斷：真空厭氧肉毒桿菌與產氣莢膜桿菌發酵！</div>
-          <div class="diag-text">真空無氧環境若在 45°C~53°C 低溫長時間慢煮，無異於量身打造肉毒桿菌發酵槽，神經毒素致死率高達 50%！<br><strong>即時強制矯正 SOP：</strong>若在 < 55°C 超過 2 小時<strong>全數報廢銷毀</strong>！若未滿 30 分鐘立即調升水溫至 60°C 以上。</div>
-        </div>
-      </div>
-
-      <!-- PHASE 5 -->
-      <div class="section-title-wrap">
-        <div class="section-title">
-          <span class="section-num">5</span>
-          <span>階段五：出餐、保溫、冷卻與保存 (Holding & Storage)</span>
-        </div>
-        <span style="font-size:0.85rem; font-weight:700; color:var(--text-muted);">共 3 項查核</span>
-      </div>
-
-      <!-- Item 5.1 -->
-      <div class="q-card" id="card_5_1">
-        <div class="q-header">
-          <div class="q-left">
-            <div class="q-tag-row">
-              <span class="q-num">ITEM 5.1</span>
-              <span class="badge-sev sev-p1">P1 重大缺失 (-10分)</span>
-              <span style="font-size:0.75rem; color:var(--text-muted);">對應單元一 1-4</span>
-            </div>
-            <div class="q-title">熟食熱存保溫溫度維持在 60°C 以上</div>
-            <div class="q-desc">熟食若暫不出餐而存放於保溫櫃或保溫湯槽中，保溫設備溫度必須維持在 60°C 以上。</div>
-          </div>
-          <div class="q-options">
-            <label class="opt-label" id="lbl_5_1_pass"><input type="radio" name="q_5_1" value="pass" checked onchange="updateScore()">✓ 合規 Pass</label>
-            <label class="opt-label" id="lbl_5_1_fail"><input type="radio" name="q_5_1" value="fail" onchange="updateScore()">✕ 缺失 Fail</label>
-            <label class="opt-label" id="lbl_5_1_na"><input type="radio" name="q_5_1" value="na" onchange="updateScore()">- N/A</label>
-          </div>
-        </div>
-        <div class="diag-box" id="diag_5_1">
-          <div class="diag-title">⚠️ 缺失危害診斷：跌入危險溫度帶</div>
-          <div class="diag-text">保溫槽溫度若降至 40~50°C，會讓仙人掌桿菌芽孢迅速萌發產毒。<br><strong>即時矯正 SOP：</strong>立即調高保溫槽功率，或將菜餚重新大火加熱至沸騰後再維持 60°C 以上熱存。</div>
-        </div>
-      </div>
-
-      <!-- Item 5.2 -->
-      <div class="q-card" id="card_5_2">
-        <div class="q-header">
-          <div class="q-left">
-            <div class="q-tag-row">
-              <span class="q-num">ITEM 5.2</span>
-              <span class="badge-sev sev-p0">★ P0 致命缺失 (一票否決)</span>
-              <span style="font-size:0.75rem; color:var(--text-muted);">對應單元一 1-4, 1-5</span>
-            </div>
-            <div class="q-title">出餐與室溫食用嚴守兩小時鐵律</div>
-            <div class="q-desc">熟食起鍋後在常溫室溫下放置時間嚴禁超過 2 小時（夏季環境 > 32°C 時縮短至 1 小時）！</div>
-          </div>
-          <div class="q-options">
-            <label class="opt-label" id="lbl_5_2_pass"><input type="radio" name="q_5_2" value="pass" checked onchange="updateScore()">✓ 合規 Pass</label>
-            <label class="opt-label" id="lbl_5_2_fail"><input type="radio" name="q_5_2" value="fail" onchange="updateScore()">✕ 缺失 Fail</label>
-            <label class="opt-label" id="lbl_5_2_na"><input type="radio" name="q_5_2" value="na" onchange="updateScore()">- N/A</label>
-          </div>
-        </div>
-        <div class="diag-box" id="diag_5_2">
-          <div class="diag-title">🚨 致命危害診斷：細菌幾何級數倍增產毒！</div>
-          <div class="diag-text">室溫 20~50°C 下細菌 15 分鐘倍增一代，2 小時後菌數飆漲數百倍！<br><strong>即時強制矯正 SOP：</strong>若放置超過 2 小時但未滿 3 小時，必須<strong>立即重新加熱至中心 > 75°C</strong>；若常溫超過 4 小時請直接銷毀報廢！</div>
-        </div>
-      </div>
-
-      <!-- Item 5.3 -->
-      <div class="q-card" id="card_5_3">
-        <div class="q-header">
-          <div class="q-left">
-            <div class="q-tag-row">
-              <span class="q-num">ITEM 5.3</span>
-              <span class="badge-sev sev-p0">★ P0 致命缺失 (一票否決)</span>
-              <span style="font-size:0.75rem; color:var(--text-muted);">對應單元一 1-3</span>
-            </div>
-            <div class="q-title">大鍋高湯米飯快速冷卻（嚴禁常溫放涼過夜）</div>
-            <div class="q-desc">大鍋米飯、濃湯若需冷藏，嚴禁在瓦斯爐上常溫放涼過夜！必須分裝淺盤在 2 小時內降至 7°C 以下。</div>
-          </div>
-          <div class="q-options">
-            <label class="opt-label" id="lbl_5_3_pass"><input type="radio" name="q_5_3" value="pass" checked onchange="updateScore()">✓ 合規 Pass</label>
-            <label class="opt-label" id="lbl_5_3_fail"><input type="radio" name="q_5_3" value="fail" onchange="updateScore()">✕ 缺失 Fail</label>
-            <label class="opt-label" id="lbl_5_3_na"><input type="radio" name="q_5_3" value="na" onchange="updateScore()">- N/A</label>
-          </div>
-        </div>
-        <div class="diag-box" id="diag_5_3">
-          <div class="diag-title">🚨 致命危害診斷：仙人掌桿菌嘔吐毒素（炒飯症候群）！</div>
-          <div class="diag-text">大鍋高湯散熱慢，20~50°C 停留 6 小時芽孢萌發產耐熱毒素，隔天即使煮滾重新沸騰亦無法破壞！<br><strong>即時強制矯正 SOP：</strong>若已常溫過夜<strong>整鍋直接報廢銷毀</strong>！正確做法是將湯品分裝小份或冰水浴輔助在 2 小時內冷藏。</div>
-        </div>
-      </div>
-
-    </form>
-
-    <!-- BOTTOM ACTION BAR -->
-    <div class="action-bar">
-      <div class="action-left">
-        <div><strong>稽核標準依據：</strong>文化大學施明智教授《食品安全入門》全系列課程標準</div>
-        <div style="font-size:0.8rem; margin-top:2px;">本檢核表嚴格禁止私自填充假資料 (Anti-Mock)，評分結果直接具備公衛稽核參考效力。</div>
-      </div>
-      <div class="action-btns">
-        <button type="button" class="btn-act btn-reset" onclick="resetAll()">🔄 重設檢核表</button>
-        <button type="button" class="btn-act btn-print" onclick="window.print()">🖨️ 列印 / 匯出 PDF 檢核表</button>
-      </div>
-    </div>
+    </footer>
   </div>
 
+  <div class="toast" id="toastMsg">已複製完整稽核報告至剪貼簿</div>
+
   <script>
-    const itemsConfig = [
-      { id: "1_1", sev: "P1", weight: 10 },
-      { id: "1_2", sev: "P0", weight: 0 },
-      { id: "1_3", sev: "P1", weight: 10 },
-      { id: "1_4", sev: "P2", weight: 5 },
-      { id: "2_1", sev: "P1", weight: 10 },
-      { id: "2_2", sev: "P1", weight: 10 },
-      { id: "2_3", sev: "P2", weight: 5 },
-      { id: "2_4", sev: "P0", weight: 0 },
-      { id: "2_5", sev: "P1", weight: 10 },
-      { id: "3_1", sev: "P1", weight: 10 },
-      { id: "3_2", sev: "P0", weight: 0 },
-      { id: "3_3", sev: "P1", weight: 10 },
-      { id: "3_4", sev: "P2", weight: 5 },
-      { id: "4_1", sev: "P0", weight: 0 },
-      { id: "4_2", sev: "P0", weight: 0 },
-      { id: "4_3", sev: "P0", weight: 0 },
-      { id: "4_4", sev: "P0", weight: 0 },
-      { id: "5_1", sev: "P1", weight: 10 },
-      { id: "5_2", sev: "P0", weight: 0 },
-      { id: "5_3", sev: "P0", weight: 0 }
-    ];
+    const PHASES = [{"id": 1, "title": "階段一：人員衛生、作業環境與過敏原防線", "subtitle": "Personnel Hygiene, Environmental Sanitation & Allergen Segregation", "items": [{"id": "1.1", "title": "手部澈底搓洗 20 秒以上（含指縫與腕部）", "desc": "調理前、如廁後、觸碰生鮮肉品/蛋殼/手機或垃圾後，必須以肥皂澈底搓洗雙手並擦乾。", "sev": "P1", "weight": 8, "chapter": "單元一 1-5", "domain": "U1", "science": "雙手是沙門氏菌、病原性大腸桿菌與諾羅病毒最常見的糞口傳播媒介；肥皂介面活性劑搓洗 20 秒配合流動清水方能有效剝離並沖去表皮油脂中藏匿的病原體。", "diag": "未落實洗手 20 秒，極易將環境病原菌與無套膜諾羅病毒直接帶入即食料理中。", "sop": "立即暫停料理作業，以肥皂搓揉手心、手背、指縫、指尖與手腕達 20 秒以上並以擦手紙擦乾；若為諾羅疑似環境，切忌僅用酒精乾洗手替代（酒精對無套膜諾羅病毒無效！）。"}, {"id": "1.2", "title": "手部傷口、化膿排查與即食接觸嚴格禁止", "desc": "檢視烹調者雙手無割傷、化膿、疔瘡或濕疹；有傷口者【絕對嚴禁接觸即食食品與熟食】，其餘作業須包紮並戴手套。", "sev": "P0", "weight": 0, "chapter": "單元一 1-3", "domain": "U1", "science": "化膿傷口與皮膚表面高度富含金黃色葡萄球菌 (Staphylococcus aureus)，且其具備高達 10% 耐鹽性。菌體在 20~37°C 繁殖後分泌的『腸毒素 (Enterotoxin)』極為耐熱，100°C 沸水持續加熱 30~60 分鐘仍不失活！", "diag": "金黃色葡萄球菌耐熱腸毒素污染風險！即使後續再將菜餚高溫加熱煮沸，耐熱毒素依然存在，食用後 1~6 小時內將引發劇烈噴射狀嘔吐。", "sop": "【一票否決】凡已被帶傷口裸手觸碰過之即食沙拉、涼拌菜或熟食拼盤，必須全數報廢銷毀，嚴禁出餐！立即調離該員即食崗位，傷口以防水敷料包紮並佩戴無粉食品級手套。"}, {"id": "1.3", "title": "口罩配戴與廚工胃腸症狀停工規範", "desc": "調理熟食及備餐人員全程配戴口罩遮蔽口鼻；若曾有嘔吐或腹瀉症狀，須於症狀解除後至少 48 小時方可接觸食物。", "sev": "P1", "weight": 8, "chapter": "單元一 1-3", "domain": "U1", "science": "約 20%~30% 健康成年人鼻腔咽喉帶原金黃色葡萄球菌，說話咳嗽飛沫可直接落入菜餚產毒；此外諾羅病毒患者在症狀緩解後 48 小時內糞便與飛沫仍具極高傳染力（僅需 1~10 顆微粒即可致病）。", "diag": "呼吸道飛沫污染金黃色葡萄球菌，或無症狀/康復期排毒導致諾羅病毒群聚傳染。", "sop": "立即配戴密合口鼻之醫用或食品級口罩；若有腸胃不適廚工應強制休假隔離，環境使用 1000 ppm 含氯漂白水徹底清消。"}, {"id": "1.4", "title": "生食與熟食刀具、砧板、容器嚴格分色分流", "desc": "生禽肉、生海鮮與熟食、即食蔬果使用截然不同且標示明確之專用刀具砧板（生食紅/藍，熟食蔬果綠/白）。", "sev": "P1", "weight": 8, "chapter": "單元一 1-5", "domain": "U1", "science": "生魚片上的腸炎弧菌或生雞肉上的沙門氏桿菌，只要藉由同一把刀或砧板轉移至不再加熱的涼拌菜或切好的滷味上，就會繞過所有加熱防線直接造成感染型中毒。", "diag": "生熟交叉污染！高危致病活菌已轉移至無須加熱的成品介質。", "sop": "若即食熟食已接觸過生食砧板刀具，必須立即改採高溫烹煮（中心 > 75°C）重新滅菌或予以廢棄；全面更換並以熱水刷洗消毒混用之器具。"}, {"id": "1.5", "title": "抹布專用消毒與法定過敏原清潔隔離", "desc": "生食區與成品出餐區抹布嚴格區分並定期煮沸或 200 ppm 漂白水消毒；遇甲殼類/花生堅果/奶蛋過敏原需求時器具徹底刷洗。", "sev": "P2", "weight": 4, "chapter": "單元一 1-5 / 過敏原", "domain": "U1", "science": "潮濕溫暖的抹布是細菌密度最高的廚房死角，混擦將導致細菌全檯面擴散；此外微量的甲殼類、花生堅果或亞硫酸鹽殘留皆可能誘發特定族群致命性過敏休克。", "diag": "抹布二次污染擴散或過敏原交叉接觸風險。", "sop": "即時更換乾燥清潔之專用抹布，舊抹布浸泡 200 ppm 含氯漂白水 30 分鐘或煮沸消毒；過敏原料理前徹底刷洗鍋鏟與砧板。"}]}, {"id": 2, "title": "階段二：食材驗收、天然毒素與添加物成分排查", "subtitle": "Ingredient Inspection, Natural Toxins, Water Activity & Illegal Additives Screening", "items": [{"id": "2.1", "title": "冷凍食材低溫正確解凍（嚴禁室溫泡水慢退冰）", "desc": "冷凍肉品與魚介須採：(1) 7°C 以下冷藏庫退冰、(2) 密封後流動自來水快速解凍、或 (3) 微波解凍後立即下鍋烹調。", "sev": "P1", "weight": 8, "chapter": "單元一 1-4 / 1-1", "domain": "U1", "science": "將冷凍肉置於室溫靜置或泡熱水慢速解凍時，食材表層早已升溫至 25~35°C 危險溫度帶並釋出大量血水養分，表層細菌已幾何級數增殖數小時，中心卻仍未解凍。", "diag": "不當解凍導致食材表層長時間暴露於危險溫度帶，細菌滋生或組織胺累積。", "sop": "立即停止室溫靜置解凍！若表面已明顯軟化出水且在室溫暴露超過 2 小時，考量毒素生成風險應予以棄置；其餘應立即移入冷藏庫 (< 7°C) 進行低溫解凍。"}, {"id": "2.2", "title": "生鮮魚肉排查一氧化碳 (CO) 染色詐欺", "desc": "檢視鮪魚、鯛魚（吳郭魚）等魚片肉色呈自然微透光暗紅，無異常死板粉嫩螢光紅、且壓之具彈性無腐臭味。", "sev": "P0", "weight": 0, "chapter": "單元三 3-3", "domain": "U3", "science": "黑心業者對腐敗褐變魚肉灌入一氧化碳 (CO)，CO 與肌紅蛋白的結合力是氧氣的 200 倍以上，生成極穩定的『一氧化碳肌紅蛋白』，即使魚肉腐爛發臭仍恆久鮮紅，嚴重掩蓋腐敗事實！台灣法規絕對禁止生鮮魚品使用 CO 發色。", "diag": "疑似遭受非法一氧化碳 (CO) 熏氣染色之腐敗或劣質魚肉，極易導致嚴重細菌性中毒與組織胺過敏。", "sop": "【一票否決】立即封存並退貨銷毀該批異常粉嫩色澤魚肉，嚴禁製作成生魚片或供人食用！向上游採購端舉報排查供應商。"}, {"id": "2.3", "title": "紅肉魚類（鯖魚/鮪魚/秋刀/鬼頭刀）冷鏈與組織胺防線", "desc": "鯖科魚類與紅肉魚全程嚴格維持 < 4°C 冷藏或冷凍，無失溫回溫、魚腹破損或魚肉發酸刺麻感。", "sev": "P0", "weight": 0, "chapter": "單元一 1-1 組織胺", "domain": "U1", "science": "紅肉魚體內含有大量游離『組胺酸 (Histidine)』。一旦捕撈後或解凍過程溫度失控 (> 15°C)，摩氏摩根氏菌等會迅速將組胺酸轉化為【組織胺 (Histamine)】。組織胺『極度耐熱』，後續經過油炸、滾煮甚至高溫製罐皆完全無法破壞！", "diag": "組織胺中毒風險（過敏性食物中毒）！食用後數分鐘至 1 小時內引發臉部潮紅、心悸、頭暈、蕁麻疹與呼吸急促，且煮熟無效！", "sop": "【一票否決】凡發現曾長時間室溫退冰、失溫或聞有酸味/氨臭之鯖魚、鮪魚、鬼頭刀，必須立即整批報廢銷毀，絕對不可抱持『煮熟就好』的僥倖心理！"}, {"id": "2.4", "title": "植物與水產天然毒素排查（發芽馬鈴薯/未熟豆類/不明魚貝）", "desc": "馬鈴薯確認無發芽、表皮無變綠；四季豆/皇帝豆/黃豆確保規劃徹底沸騰熟透；拒用來路不明野菇與河豚。", "sev": "P0", "weight": 0, "chapter": "單元一 1-1 天然毒素", "domain": "U1", "science": "發芽或受光變綠的馬鈴薯含有高濃度神經毒素【龍葵鹼 (Solanine)】，其毒素擴散至整顆塊莖且耐熱（須超過 170°C 以上深層高溫才部分破壞，一般水煮無效！）；生豆類含植物血球凝集素與皂素，須 100°C 煮透方能分解。", "diag": "攝入耐熱性植物生物鹼（龍葵鹼中毒引起喉嚨灼熱、嘔吐昏迷）或未分解皂素導致急性腸胃發炎。", "sop": "【一票否決】凡已發芽或表皮轉綠之馬鈴薯必須【整顆徹底丟棄】，嚴禁僅挖掉芽眼後繼續烹調！豆類烹調務必大火滾透至全無生豆腥味。"}, {"id": "2.5", "title": "乾燥穀物堅果水分活性 (Aw < 0.6) 與黃麴毒素排查", "desc": "花生、堅果、玉米、乾辣椒、米麵粉與香料粉密封乾燥保存（無受潮結塊、無油耗霉味或黃綠色黴斑）；木質砧板與竹筷無發霉。", "sev": "P0", "weight": 0, "chapter": "單元三 3-4 / 黃麴毒素", "domain": "U3", "science": "乾燥食材仰賴低水分活性 (Aw < 0.60) 抑菌。一旦受潮 (Aw > 0.70) 滋生黃麴黴菌，將產生世界衛生組織一級強致癌物【黃麴毒素 (Aflatoxin)】，其耐熱高達 280°C 以上才裂解，一般炒菜油炸完全殺不死毒素且毒素會滲透擴散！", "diag": "高致命性肝癌風險！受潮發霉之花生、堅果、香料或發霉木筷正在釋放耐熱性極強的黃麴毒素。", "sop": "【一票否決】凡發現任何一顆發霉、變黑或出現哈喇味之堅果花生玉米，必須【整袋/整批全數拋棄】，絕不可挑掉壞的吃好的，亦不可清洗後再炒熟！木製器具發霉亦須立刻丟棄。"}, {"id": "2.6", "title": "罐頭外觀安全、禁止自製泡油低酸醃漬與 1 歲以下禁食蜂蜜", "desc": "商業罐頭無膨罐（胖聽）、凹罐、鏽蝕或漏液；嚴禁私自製作無酸化真空油漬大蒜/辣椒常溫保存；供 1 歲以下嬰兒餐點絕對不含蜂蜜。", "sev": "P0", "weight": 0, "chapter": "單元三 3-4 / 1-2 肉毒桿菌", "domain": "U3", "science": "商業罐頭依法『絕對嚴禁添加防腐劑』，靠真空與 121°C 商業無菌久存；一旦膨罐代表內部已產氣（極可能是致命率 30~50% 之肉毒桿菌發酵！）。私自將大蒜辣椒泡入橄欖油常溫存放或提供蜂蜜給腸道菌相尚未健全之 1 歲以下嬰兒，均是肉毒桿菌致命溫床！", "diag": "致命性肉毒桿菌神經毒素危機（複視、吞嚥困難、呼吸肌麻痺死亡）！", "sop": "【一票否決】膨罐、嚴重凹罐或生鏽穿孔罐頭直接整罐銷毀；1 歲以下嬰兒副食品立即移除所有蜂蜜成份；家庭自製油漬辛香料必須冷藏保存並於一週內用畢。"}, {"id": "2.7", "title": "加工原料成分標示審查（避開反式脂肪與超加工添加劑矩陣）", "desc": "檢視市售奶油、抹醬、醬料包成分表，避開『部分氫化植物油 (反式脂肪)』，優先選用成分簡潔、正面表列合規之合法產品。", "sev": "P2", "weight": 4, "chapter": "單元二 2-2 / 單元三 3-2", "domain": "U2", "science": "人工不完全氫化會產生反式脂肪酸，極易堆積 LDL 並誘發心血管阻塞與系統性發炎；此外檢視包裝展開之法定中文學名，可避免劣質重組製品（安部司肉丸子現象）帶入過量焦糖色素、磷酸鹽與人工抗氧化劑 BHT/BHA。", "diag": "長期攝入人造反式脂肪或過量超加工食品雞尾酒效應（干擾腸道微生態與加重腎臟磷酸鹽負擔）。", "sop": "更換為無部分氫化標示之天然奶油或純植物油產品；減少使用多合一化學風味高湯粉與廉價重組火鍋料。"}]}, {"id": 3, "title": "階段三：食材清洗、去毒與備料前處理流程", "subtitle": "Washing, Chemical Leaching (SO2/H2O2) & Time-Controlled Preparation", "items": [{"id": "3.1", "title": "生鮮海產以流動自來水（淡水）澈底沖洗", "desc": "魚體表面、魚鰓、腹腔及蝦蟹貝類在烹調前，必須以流動自來水（無鹽淡水）反覆沖刷洗淨。", "sev": "P1", "weight": 8, "chapter": "單元一 1-3 腸炎弧菌", "domain": "U1", "science": "腸炎弧菌 (Vibrio parahaemolyticus) 是台灣夏季食品中毒頭號殺手，具備強烈嗜鹽性（需 2%~3% NaCl 環境），倍增時間僅 10~12 分鐘；但其致命弱點為『極度怕淡水』，流動自來水可藉低滲透壓令菌體膨脹破裂！", "diag": "海產表面腸炎弧菌未去除，調理過程極易污染雙手及刀具引起劇烈水樣腹瀉與絞痛。", "sop": "立即將海鮮置於流動自來水下沖洗魚鰓、腹膜及外殼至少 1~2 分鐘，洗畢立刻清潔水槽避免水花飛濺污染周邊餐具。"}, {"id": "3.2", "title": "禽肉與洗選蛋防噴濺前置衛生", "desc": "生禽肉盡量不於水龍頭下猛力沖水防飛沫四濺；優先採用洗選蛋並於冷藏保存（勿退冰至室溫產生冷凝水），打蛋後立即洗手。", "sev": "P1", "weight": 8, "chapter": "單元一 1-3 沙門氏桿菌", "domain": "U1", "science": "雞蛋殼上佈滿數千個微細氣孔，生禽肉表面與蛋殼易沾染沙門氏桿菌。猛力沖洗生雞肉會將細菌隨水花霧氣噴散至周邊 80 公分內檯面；洗選蛋若在室溫回溫，表面冷凝水會將蛋殼微生物吸入蛋液內。", "diag": "沙門氏桿菌霧化飛沫污染廚房環境或滲入蛋液。", "sop": "改用廚房紙巾擦拭生禽肉表面水分並立即拋棄紙巾；洗選蛋直接自冷藏庫取出即敲即煮，接觸蛋殼後立即以肥皂洗手。"}, {"id": "3.3", "title": "乾貨（金針/竹筍/蝦米/蓮子）溫水浸泡去二氧化硫 (SO₂)", "desc": "乾金針、乾竹筍、白木耳等脫水農產乾貨，烹調前先以【45°C 溫水浸泡 20~30 分鐘並倒掉浸泡水】，或開蓋沸水汆燙。", "sev": "P2", "weight": 4, "chapter": "單元三 3-5 漂白劑", "domain": "U3", "science": "漂白劑二氧化硫（亞硫酸鹽類）常超量殘留於乾貨中以抑菌保色，氣喘體質或敏感族群攝入會誘發支氣管痙攣氣喘發作！幸而亞硫酸鹽具備高度水溶性且遇熱易揮發，溫水浸泡加上開蓋滾煮可去除 90% 以上殘留。", "diag": "高濃度亞硫酸鹽殘留誘發食客呼吸道過敏與消化道刺激。", "sop": "立即將乾貨浸泡水全部倒棄不可當高湯使用！另換一鍋清水開蓋滾煮 3 分鐘再次瀝乾後，再進行正式調味燉煮。"}, {"id": "3.4", "title": "加工豆製品/濕麵條/丸類開蓋滾水汆燙去殘留物", "desc": "豆干、濕麵條、油麵、吻仔魚、貢丸脆腸等，下鍋正式烹調前先以滾水【開蓋汆燙 2~3 分鐘並倒掉燙水】。", "sev": "P1", "weight": 8, "chapter": "單元三 3-4 / 3-5", "domain": "U3", "science": "濕麵條、豆干為高水活性易腐食材，過去常被違法添加殺菌劑【過氧化氫 (雙氧水，成品依法不得檢出)】、超標酸型防腐劑或違法硼砂；且去水醋酸僅限用於乾酪奶油。開蓋沸水汆燙可利用高溫分解雙氧水並大幅溶出表層水溶性化學添加劑。", "diag": "未經過汆燙前處理，可能攝入殘留雙氧水（刺激消化道潰瘍）或過量水溶性防腐劑。", "sop": "立刻燒一鍋滾水，將豆製品或濕麵投入開蓋煮沸 2~3 分鐘後撈起並將燙水全數倒掉，不可直接拿燙麵湯當湯底。"}, {"id": "3.5", "title": "常溫備料累計時間嚴控 (≤ 30 分鐘) 與製冰用水安全", "desc": "生鮮肉品、熟米飯、熟麵條自冷藏庫取出備料至開火加熱時間嚴禁超過 30 分鐘；冷飲與冰鎮食材使用煮沸過濾安全飲用水。", "sev": "P1", "weight": 8, "chapter": "單元一 1-3 / 1-4", "domain": "U1", "science": "備料區環境常落在 25~32°C，正是仙人掌桿菌與金黃色葡萄球菌快速增殖區間；另製冰機與未濾淨生水亦常為諾羅病毒及大腸桿菌群聚暴發來源。", "diag": "備料延遲導致菌數呈倍數累積，或飲用冰塊生水直接引爆急性感染型腹瀉。", "sop": "備料超過 30 分鐘應分批從冰箱少量取用；若超過 2 小時未烹調且疑似變質應予拋棄。冰鎮食材請使用經沸騰冷卻之開水製冰。", "numericInput": {"label": "室溫備料累計時間", "unit": "分鐘", "placeholder": "實測時間 (限 ≤30)", "rule": "lte", "limit": 30}}]}, {"id": 4, "title": "階段四：烹調用油選擇、油鍋劣化與添加物禁忌搭配", "subtitle": "Oil Smoke Point Matching, Lipid Degradation (TPC/AV) & Chemical Interaction Control", "items": [{"id": "4.1", "title": "油品發煙點與烹調溫度精準適配（拒用初榨油久炸）", "desc": "低溫涼拌 (<120°C)：亞麻仁油/冷壓芝麻油/初榨橄欖油(191°C)；水炒 (100~180°C)：芥花/大豆/玄米油；高溫油炸 (>180°C)：苦茶油(252°C)/玄米油(254°C)/棕櫚油。", "sev": "P1", "weight": 8, "chapter": "單元二 2-3 / 2-6", "domain": "U2", "science": "未精製初榨油保留多酚與游離酸，發煙點低（初榨橄欖油 191°C、芝麻油 160°C、亞麻仁油僅 107°C）；若拿來高溫油炸越過發煙點，油脂立即裂解並冒出含致癌物【丙烯醛 (Acrolein)】及多環芳香烴的藍煙！經精煉四部曲（脫膠脫酸脫色脫臭）的植物油發煙點則可達 232~254°C。", "diag": "油品錯配高溫，引發大量有毒油煙並破壞天然不飽和抗氧化物！", "sop": "立即停止加熱冒煙之低發煙點油品！依烹調手法更換為高發煙點精製油（苦茶油 252°C、玄米油 254°C 或精製芥花油 240°C），初榨橄欖油留作涼拌淋醬。"}, {"id": "4.2", "title": "入鍋前食材拭乾水分，且油炸/熱煎油鍋不加蓋", "desc": "食材入熱油鍋前已擦乾表面積水；油炸過程中不加蓋防止鍋蓋冷凝水滴回油槽。", "sev": "P2", "weight": 4, "chapter": "單元二 2-4 水解反應", "domain": "U2", "science": "高溫下水分會直接攻擊三酸甘油酯之酯鍵引發【水解反應 (Hydrolysis)】，釋出游離脂肪酸使【酸價 (AV) 急速飆升】並令發煙點劇烈下降，加速整鍋油提早報廢。", "diag": "大量水分滴入熱油加速油脂化學水解酸敗，並引發高溫油爆燙傷危機。", "sop": "食材先以廚房紙巾充分壓乾水分或瀝乾麵衣後再下鍋，油炸過程維持油鍋開放通風抽煙。"}, {"id": "4.3", "title": "油炸油品質換油雙鐵律：TPC < 25% 與酸價 AV ≤ 2.0", "desc": "油色無深黑如醬油、炸時不劇烈冒藍煙、起泡不超過鍋面 1/2 且消退迅速；儀器量測總極性化合物 TPC < 25%、酸價 AV ≤ 2.0（嚴禁僅撈渣或補新油混充）。", "sev": "P0", "weight": 0, "chapter": "單元二 2-4 / 2-5", "domain": "U2", "science": "長時間高溫油炸會歷經水解、自動氧化與熱聚合三大不可逆反應，累積高分子極性聚合物、反式脂肪與致癌【丙烯醯胺】！濾網僅能濾除焦渣無法去除極性分子，補新油更會因舊油自由基催化連鎖加速氧化。衛福部法定換油紅線為 TPC ≥ 25% 或酸價 > 2.0。", "diag": "油脂嚴重劣變超標！炸物將吸附高濃度過氧化物與熱聚合致癌分子，嚴重損傷消化道黏膜與血管內皮。", "sop": "【一票否決】立即關閉熱源，整鍋油炸油【全數抽乾報廢】！徹底刷洗油槽內壁碳化物後再注入全新油品，嚴禁單純添補新油掩飾。", "multiNumericInput": [{"key": "tpc", "label": "總極性物 TPC", "unit": "%", "placeholder": "如實測 (限 <25)", "rule": "lt", "limit": 25}, {"key": "av", "label": "酸價 AV", "unit": "mg/g", "placeholder": "如實測 (限 ≤2.0)", "rule": "lte", "limit": 2.0}]}, {"id": "4.4", "title": "食用油儲存「四避」鐵律（遠離瓦斯爐火源）", "desc": "油瓶遵守「避光線、避高溫、避水分、避空氣」，不將油瓶直接緊鄰瓦斯爐旁擺放，開瓶後盡量於 3 個月內用畢。", "sev": "P2", "weight": 4, "chapter": "單元二 2-6", "domain": "U2", "science": "光線（紫外線）、爐火高熱、水氣與氧氣是催化不飽和脂肪酸自動氧化的四大元兇；將透明塑膠油瓶緊貼瓦斯爐火邊放置，未開火時油品早已在不知不覺中氧化生成過氧化物與油耗味。", "diag": "油品長期受爐火熱輻射與光線照射，已發生初期自動氧化酸敗。", "sop": "立刻將食用油移入陰涼乾燥櫥櫃存放（勿置於瓦斯爐台旁），選用深色玻璃瓶小容量包裝，用畢立即旋緊瓶蓋。"}, {"id": "4.5", "title": "亞硝酸鹽醃肉（香腸/培根）烹調法與海鮮禁忌搭配", "desc": "香腸、火腿、培根優先水蒸低溫煎，避免大火油炸炭烤焦黑；【嚴禁與魷魚乾、干貝、秋刀魚、鹹魚等高二級胺海鮮同鍋高溫爆炒】，亦勿緊接搭配乳酸菌飲料。", "sev": "P1", "weight": 8, "chapter": "單元三 3-5 亞硝酸鹽", "domain": "U3", "science": "合法肉製品依法加入限量 ≤ 70 ppm 亞硝酸鹽以對抗致死率 30~50% 之肉毒桿菌；但亞硝酸鹽若在高溫超過 150°C 下遇見魚乾魷魚等豐富『二級胺』，會立刻合成國際一級致癌物【亞硝基二甲胺 (NDMA)】！", "diag": "觸發致癌物亞硝胺高危合成條件！高溫大火加上亞硝酸鹽與海鮮二級胺碰撞。", "sop": "立即將香腸/培根與海鮮分開烹調！香腸先用水煮或蒸熟後再微火快煎上色即可，嚴禁直接大火炭烤或與魷魚鹹魚同炒。"}, {"id": "4.6", "title": "維生素 C 抗氧化阻斷搭配 & 味精 (MSG) 鈉含量控制", "desc": "烹調含亞硝酸鹽肉品主動配搭彩椒、青花菜、大蒜或餐後檸檬芭樂；有使用味精、雞粉、醬油時相應減少食鹽用量。", "sev": "P2", "weight": 4, "chapter": "單元三 3-5", "domain": "U3", "science": "維生素 C（抗壞血酸）具備極強還原力，能在胃中把亞硝酸還原為一氧化氮直接斬斷亞硝胺生成！另味精 (L-麩酸鈉) 已被證實無毒非過敏元兇，但含鈉量為食鹽的 1/3 (12%)，仍須總量控鈉護腎。", "diag": "缺乏抗氧化劑保護或鈉離子總量疊加過高。", "sop": "同菜加入富含維生素 C 的新鮮蔬菜（彩椒、青花菜）或餐後附上檸檬/芭樂切片；將食鹽減半以控制總鈉攝取。"}]}, {"id": 5, "title": "階段五：熱烹調、現代廚藝與滅菌溫度實測", "subtitle": "Thermal Lethal Monitoring, Core Temperature, Sous-Vide & Air-Fryer Control", "items": [{"id": "5.1", "title": "一般熱烹調菜餚中心溫度實測達 ≥ 70°C 並維持 1~2 分鐘", "desc": "所有非生食類熱烹調菜餚起鍋前，中心最厚部位溫度必須達到 70°C 以上並維持至少 1~2 分鐘。", "sev": "P0", "weight": 0, "chapter": "單元一 1-4 / 1-5", "domain": "U1", "science": "70°C 是多數嗜溫性感染型病原菌（如腸炎弧菌、大腸桿菌、李斯特菌）細胞機能性蛋白質發生不可逆變性與 DNA 解螺旋的熱致死防線。", "diag": "中心加熱不足，活菌體未被殺滅，進入人體後將在腸道黏膜定殖增生引發感染型食物中毒！", "sop": "【一票否決】嚴禁出餐上菜！立即放回鍋具或烤箱繼續加熱，以探針食品溫度計實測中心 ≥ 70°C 維持 1~2 分鐘後方可起鍋。", "numericInput": {"label": "菜餚中心實測溫度", "unit": "°C", "placeholder": "實測溫度 (須 ≥70)", "rule": "gte", "limit": 70}}, {"id": "5.2", "title": "禽肉、絞肉、重組肉徹底全熟無血水（中心 ≥ 75°C）", "desc": "雞肉、鴨肉、豬肉、漢堡排絞肉、重組牛排中心必須全熟無粉紅血水，溫度計實測中心達 75°C 以上。", "sev": "P0", "weight": 0, "chapter": "單元一 1-3 沙門/O157:H7", "domain": "U1", "science": "完整原塊牛排細菌僅在表面，表面煎熟即可；但【絞肉、漢堡肉、重組肉】製作過程已將表面腸道出血性大腸桿菌 O157:H7（可引發致死性溶血尿毒症 HUS）絞入肉排中心！雞肉內亦常潛伏高危險沙門氏桿菌，必須 75°C 全熟消滅。", "diag": "絞肉或禽肉內部夾生帶有血水，沙門氏菌或 O157:H7 大腸桿菌可能存活致死！", "sop": "【一票否決】嚴禁出餐！放回爐台加蓋悶熟或烤箱徹底烤熟，切開肉排最厚處確認全無血水，實測中心 ≥ 75°C。", "numericInput": {"label": "禽/絞肉中心溫度", "unit": "°C", "placeholder": "實測溫度 (須 ≥75)", "rule": "gte", "limit": 75}}, {"id": "5.3", "title": "貝類水產高溫滅菌（開殼後持續滾煮 ≥ 85°C 達 90 秒）", "desc": "牡蠣、生蠔、蛤蜊、淡菜煮至殼開後不可立刻關火，須持續保持高溫使貝肉中心達 85°C 以上維持至少 90 秒。", "sev": "P0", "weight": 0, "chapter": "單元一 1-3 諾羅病毒", "domain": "U1", "science": "雙殼貝類以濾食維生，極易於消化腺濃縮污水中的無套膜【諾羅病毒 (Norovirus)】。貝殼張開僅約 70°C 肌肉鬆弛，並未達到破壞諾羅病毒堅硬蛋白質衣殼的標準，必須中心 ≥ 85°C 持續 90 秒以上！", "diag": "貝類夾生未滅活諾羅病毒！僅 1~10 顆病毒微粒即可造成全家人與整桌客人急性群聚嘔吐腹瀉。", "sop": "【一票否決】立即將貝類湯品回鍋大火持續滾沸至少 2 分鐘，確保貝肉內部均勻受熱超過 85°C 方可上桌。", "multiNumericInput": [{"key": "shellTemp", "label": "煮沸中心溫度", "unit": "°C", "placeholder": "實測溫度 (須 ≥85)", "rule": "gte", "limit": 85}, {"key": "shellSec", "label": "開殼後維持秒數", "unit": "秒", "placeholder": "實測秒數 (須 ≥90)", "rule": "gte", "limit": 90}]}, {"id": "5.4", "title": "舒肥法 (Sous-Vide) 水溫嚴守 ≥ 55°C 與急速冰鎮防線", "desc": "低溫真空水浴溫度絕對嚴禁低於 55°C（禽肉中心達 60°C 維持 12 分鐘以上）；若非立即炙燒食用，必須 2 小時內冰水浴降至 3°C 以下。", "sev": "P0", "weight": 0, "chapter": "前瞻研討 4.3 肉毒桿菌", "domain": "U1", "science": "真空袋形成完全無氧環境，一旦水溫設在 45~53°C 低溫慢煮，即為絕對厭氧【肉毒桿菌】與【產氣莢膜桿菌】量身打造恆溫培養槽，促成芽孢甦醒繁殖產出致命神經毒素！", "diag": "致命真空厭氧肉毒桿菌發酵溫床！水溫未達抑菌紅線或冷卻過慢。", "sop": "【一票否決】若於 < 55°C 真空水浴已超過 2 小時，該批肉品必須全數銷毀報廢！若剛起鍋尚未超過 30 分鐘請立刻調升至 60°C 以上延長加熱；非即食者馬上浸入滿載冰塊冰水降溫至 3°C 以下。", "numericInput": {"label": "舒肥水浴設定溫度", "unit": "°C", "placeholder": "設定水溫 (須 ≥55)", "rule": "gte", "limit": 55}}, {"id": "5.5", "title": "氣炸鍋控溫 ≤ 160°C 與托盤滴油廢油徹底棄置", "desc": "氣炸高油脂肉類或澱粉類時溫度盡量控制在 160°C 以下；托盤底槽收集之氧化滴油直接倒棄，嚴禁回淋食材或留作炒菜用油。", "sev": "P1", "weight": 8, "chapter": "前瞻研討 油脂超氧化", "domain": "U2", "science": "氣炸鍋係高強度高速熱風循環旋風烤箱，在 180~200°C 結合高速氧氣流吹拂表面薄油膜下，會催化肉類膽固醇產生極高濃度的【膽固醇氧化衍生物 (COPs)】（強力損傷血管內皮細胞）以及澱粉類產生丙烯醯胺！", "diag": "膽固醇超氧化物 (COPs) 與丙烯醯胺大量生成風險，且底盤焦化廢油含大量極性自由基。", "sop": "立即下調氣炸鍋溫度至 160°C 以下（適度拉長烹調時間取代過高溫度）；徹底倒掉氣炸底槽滴油，絕對不可回收淋回肉排上！"}, {"id": "5.6", "title": "優先採行「健康水炒法」並避免直火炭燒焦黑炭化", "desc": "家常炒青菜優先採「水炒法」（水沸 100°C 壓低鍋溫再淋油）；燒烤肉類避免油脂滴落炭火冒黑煙焦化（去除燒焦部位）。", "sev": "P2", "weight": 4, "chapter": "單元二 2-6 / 2-5", "domain": "U2", "science": "『水炒法』以 100°C 水蒸氣環境炒菜，徹底避免油滴觸及 200°C 乾鍋裂解產生油煙毒素；反之肉類蛋白質焦黑產生多環芳香烴 (BaP) 與雜環胺 (HCA) 等一級致癌物。", "diag": "過度高溫乾煸冒油煙或產生焦黑碳化致癌物。", "sop": "起鍋前剪除所有焦黑部位丟棄；下次家常炒菜改為冷鍋加水煮沸蔬菜半熟後再淋上少量植物油拌勻起鍋。"}]}, {"id": 6, "title": "階段六：出餐、保溫、快速冷卻、冰箱管理與留樣追蹤", "subtitle": "Hot-Holding, 2-Hour Rule, Rapid Chilling, Refrigerator Layering & Traceability", "items": [{"id": "6.1", "title": "熟食熱存保溫設備溫度維持 ≥ 60°C", "desc": "烹調完成暫不出餐之熟食，若置於保溫箱、蒸氣熱檯或電鍋保溫，設備實測溫度必須恆定維持在 60°C 以上。", "sev": "P1", "weight": 8, "chapter": "單元一 1-4 危險溫帶", "domain": "U1", "science": "許多保溫餐檯或半開電鍋實際溫度僅有 40~52°C，這不僅殺不死細菌，反而完美處在『危險溫度帶』中最利於產氣莢膜桿菌與仙人掌桿菌極速繁殖的黃金區間！", "diag": "假保溫真養菌！熟食正在保溫槽中跌入危險溫度帶。", "sop": "立即調高熱存設備溫度確認超過 60°C；若已在 < 60°C 停留超過 2 小時，須整批大火重新煮沸後再高溫熱存或限時食用。", "numericInput": {"label": "保溫設備實測溫度", "unit": "°C", "placeholder": "實測溫度 (須 ≥60)", "rule": "gte", "limit": 60}}, {"id": "6.2", "title": "出餐供食與室溫擺放嚴守「兩小時鐵律」", "desc": "熟食自起鍋（或外送離開熱源）後在室溫常溫環境暴露累計嚴禁超過 120 分鐘（若環境/夏季溫度 > 32°C，紅線自動收緊為 60 分鐘）！", "sev": "P0", "weight": 0, "chapter": "單元一 1-4 / 前瞻外送", "domain": "U1", "science": "外送保溫箱或自助餐檯中 20~50°C 是嗜溫菌繁殖最狂暴的區間，倍增時間僅 15 分鐘，2 小時即可幾何級數倍增數百倍並分泌耐熱腸毒素。", "diag": "熟食已超出常溫安全時效紅線，極高機率產生足以致病之菌量或耐熱毒素！", "sop": "【一票否決】超過時限之常溫熟食及外送餐盒嚴禁直接冷吃！若剛逾時未久 (2~3 小時內) 須立即徹頭徹尾高溫復熱 (> 75°C)；若夏季高溫逾 3~4 小時或有酸黏異味，必須全數銷毀報廢！", "numericInput": {"label": "熟食常溫/外送時間", "unit": "分鐘", "placeholder": "累計分鐘 (一般≤120/高溫≤60)", "rule": "dynamic_time", "limit": 120}}, {"id": "6.3", "title": "大鍋米飯、濃湯、滷汁快速降溫冷藏（嚴禁常溫放涼過夜）", "desc": "熟米飯、高湯、咖哩、肉汁若需冷藏備用，必須分裝淺盤或採冰水浴攪拌輔助，於【2 小時 (120分鐘) 內降至 7°C 以下冷藏】，絕對嚴禁整鍋蓋著蓋子在瓦斯爐上放涼過夜！", "sev": "P0", "weight": 0, "chapter": "單元一 1-3 仙人掌桿菌", "domain": "U1", "science": "大鍋食物導熱慢、中心散熱需時 6~8 小時，且密閉缺氧會喚醒耐高溫芽孢（如仙人掌桿菌嘔吐毒素 Cereulide 與產氣莢膜桿菌）。Cereulide 可耐受 126°C 加熱 90 分鐘而不壞，隔天『重新煮滾再吃』依然會造成急性嘔吐中毒！", "diag": "經典『炒飯症候群 / 隔夜濃湯中毒』風險！耐熱芽孢已在慢速放涼過程中發芽產出無法煮毀的毒素。", "sop": "【一票否決】凡已整鍋置於常溫放涼過夜之米飯或濃湯，必須【全數倒掉銷毀】，切忌再加熱食用！正確應立刻改用不鏽鋼淺盤分裝加冰水浴降溫，2 小時內移入冰箱冷藏。", "numericInput": {"label": "冷卻降至 7°C 耗時", "unit": "分鐘", "placeholder": "降溫耗時 (須 ≤120)", "rule": "lte", "limit": 120}}, {"id": "6.4", "title": "冰箱七分滿管理、熟上生下密封與開罐換裝玻璃盒", "desc": "冰箱冷藏空間保持七分滿以下確保冷氣循環（溫度 ≤ 5~7°C）；熟食置於最上層，生肉海鮮置於底層加蓋防血水滴漏；鐵皮罐頭開罐未用完必須倒入玻璃/陶瓷容器再冷藏。", "sev": "P1", "weight": 8, "chapter": "單元一 1-5 / 單元三 3-4", "domain": "U1", "science": "冰箱塞爆超過八分滿會阻塞出風口，使實際溫度升破 10°C 形同失效；生鮮肉水若放上層滴血水至下方即食蛋糕水果即成中毒破口；鐵皮罐頭開罐接觸空氣後連原罐冰存會引發氧氣腐蝕溶出金屬離子與變質。", "diag": "冰箱冷氣循環受阻失溫、生肉血水垂直接觸污染熟食，或罐頭金屬溶出風險。", "sop": "立即清理出冰箱 30% 冷風循環空間，將所有熟食調升至上層密封加蓋、生鮮食材下移最底層保鮮盒；把原罐頭剩餘物移入乾燥潔淨玻璃保鮮盒並於 2 天內食畢。"}, {"id": "6.5", "title": "剩菜覆熱 > 75°C、外送時間戳記與團膳 48 小時留樣備查", "desc": "冷藏剩菜或外送延遲餐點食用前必須澈底覆熱至中心 > 75°C（勿反覆冷藏加熱超過 1 次）；外送餐點標註出餐時間戳記；團膳供餐依規留存每樣菜餚 100~200g 冷藏 (<7°C) 48 小時備查。", "sev": "P1", "weight": 8, "chapter": "單元一 1-1 / 前瞻外送", "domain": "U1", "science": "單次澈底加熱 75°C 可消滅冷藏中可能緩慢滋生的嗜冷菌（如李斯特菌）；時間戳記能警示消費者避開危險溫帶；團膳留樣則是衛生局執行食安流病朔源與檢驗查證的法定重要關鍵。", "diag": "覆熱溫度不夠造成嗜冷菌存活，或發生群聚不適時缺乏可送驗對比檢體與時間資訊。", "sop": "冷藏剩菜覆熱務必翻拌均勻使中心沸騰超過 75°C，並僅限覆熱當餐食畢；於外送餐盒蓋明顯處標記出餐時刻及最佳賞味極限。"}]}];
+    
+    // Application State: map id -> "pending" | "pass" | "fail" | "na"
+    const itemStates = {};
+    const itemNotes = {};
+    const itemMeasures = {};
+    let currentViewFilter = "all";
 
-    function updateScore() {
-      let score = 100;
-      let p0Count = 0;
-      let p1Count = 0;
-      let p2Count = 0;
+    const PRESETS = {
+      all: { dish: "", method: "", naList: [] },
+      fried_chicken: {
+        dish: "台式香酥炸雞排配四季豆",
+        method: "高溫油炸 (180°C) · 精製芥花油或苦茶油",
+        naList: ["2.2", "2.3", "2.6", "3.1", "3.3", "3.4", "4.5", "5.3", "5.4", "5.5", "6.3"]
+      },
+      sousvide: {
+        dish: "低溫舒肥牛排配冷壓初榨橄欖油溫沙拉",
+        method: "低溫真空舒肥 (58°C) + 常溫淋拌初榨橄欖油",
+        naList: ["2.2", "2.3", "3.1", "3.2", "3.3", "3.4", "4.2", "4.3", "4.5", "5.2", "5.3", "5.5", "6.3"]
+      },
+      seafood_rice: {
+        dish: "招牌海鮮炒飯配薑絲蛤蜊豆腐湯",
+        method: "大火快炒 + 滾沸煮湯 · 精製玄米油",
+        naList: ["2.2", "2.3", "2.6", "3.2", "3.3", "4.3", "4.5", "5.2", "5.4", "5.5"]
+      },
+      cured_sausage: {
+        dish: "蒜苗香腸炒彩椒 / 臘味便當",
+        method: "水蒸後低溫水煎 · 精製芥花油",
+        naList: ["2.2", "2.3", "3.1", "3.2", "3.3", "4.3", "5.3", "5.4", "5.5"]
+      },
+      braised_soup: {
+        dish: "滷味豆干油麵配金針排骨湯",
+        method: "汆燙去雜質後滾沸燉煮",
+        naList: ["2.2", "2.3", "3.1", "3.2", "4.2", "4.3", "4.5", "5.3", "5.4", "5.5"]
+      },
+      sashimi_airfryer: {
+        dish: "氣炸鹽烤鯖魚配生魚片丼飯",
+        method: "氣炸烹調 (≤160°C) + 生鮮水產切配",
+        naList: ["2.4", "2.6", "3.2", "3.3", "3.4", "4.2", "4.3", "4.5", "5.2", "5.3", "5.4"]
+      }
+    };
 
-      itemsConfig.forEach(item => {
-        const radios = document.getElementsByName(`q_${item.id}`);
-        let val = "pass";
-        for (const r of radios) {
-          if (r.checked) { val = r.value; break; }
-        }
+    function initApp() {
+      const now = new Date();
+      document.getElementById("auditTime").value = now.toLocaleString("zh-TW", { hour12: false });
 
-        const card = document.getElementById(`card_${item.id}`);
-        const diag = document.getElementById(`diag_${item.id}`);
-        const lblPass = document.getElementById(`lbl_${item.id}_pass`);
-        const lblFail = document.getElementById(`lbl_${item.id}_fail`);
-        const lblNa = document.getElementById(`lbl_${item.id}_na`);
+      PHASES.forEach(p => {
+        p.items.forEach(it => {
+          itemStates[it.id] = "pending";
+          itemNotes[it.id] = "";
+          itemMeasures[it.id] = {};
+        });
+      });
 
-        lblPass.classList.toggle("active-pass", val === "pass");
-        lblFail.classList.toggle("active-fail", val === "fail");
-        lblNa.classList.toggle("active-na", val === "na");
+      renderChecklist();
+      evaluateAll();
+    }
 
-        if (val === "fail") {
-          card.classList.add("fail-card");
-          card.classList.remove("pass-card");
-          diag.style.display = "block";
+    function renderChecklist() {
+      const container = document.getElementById("checklistContainer");
+      let html = "";
 
-          if (item.sev === "P0") {
-            p0Count++;
-          } else if (item.sev === "P1") {
-            score -= item.weight;
-            p1Count++;
-          } else if (item.sev === "P2") {
-            score -= item.weight;
-            p2Count++;
+      PHASES.forEach(phase => {
+        html += `
+          <div class="phase-block" id="phase_block_${phase.id}">
+            <div class="phase-header">
+              <div class="phase-title-wrap">
+                <div class="phase-num">0${phase.id}</div>
+                <div>
+                  <div class="phase-title">${phase.title}</div>
+                  <div class="phase-sub">${phase.subtitle}</div>
+                </div>
+              </div>
+              <div class="phase-count" id="phase_stat_${phase.id}">適用 ${phase.items.length} 項</div>
+            </div>
+        `;
+
+        phase.items.forEach(it => {
+          let measureHtml = "";
+          if (it.numericInput) {
+            const ni = it.numericInput;
+            measureHtml = `
+              <div class="measure-row">
+                <div class="measure-field">
+                  <span>${ni.label}：</span>
+                  <input type="number" step="any" class="measure-input" id="m_${it.id}" placeholder="${ni.placeholder}" oninput="onMeasureChange('${it.id}')">
+                  <span>${ni.unit}</span>
+                </div>
+                <span class="measure-status" id="mstat_${it.id}">選填實測數據以自動判讀合規性</span>
+              </div>
+            `;
+          } else if (it.multiNumericInput) {
+            const fields = it.multiNumericInput.map(m => `
+              <div class="measure-field">
+                <span>${m.label}：</span>
+                <input type="number" step="any" class="measure-input" id="m_${it.id}_${m.key}" placeholder="${m.placeholder}" oninput="onMeasureChange('${it.id}')">
+                <span>${m.unit}</span>
+              </div>
+            `).join("");
+            measureHtml = `
+              <div class="measure-row">
+                ${fields}
+                <span class="measure-status" id="mstat_${it.id}">選填實測數據以自動判讀合規性</span>
+              </div>
+            `;
           }
+
+          html += `
+            <article class="ccp-card state-pending" id="card_${it.id}">
+              <div class="ccp-top">
+                <div class="ccp-info">
+                  <div class="ccp-meta">
+                    <span class="ccp-id">CCP ${it.id}</span>
+                    <span class="sev-tag sev-${it.sev}">${it.sev === 'P0' ? 'P0 致命 · 一票否決' : (it.sev === 'P1' ? 'P1 重大 (-8分)' : 'P2 一般 (-4分)')}</span>
+                    <span class="ch-tag">${it.chapter}</span>
+                  </div>
+                  <div class="ccp-title">${it.title}</div>
+                  <div class="ccp-desc">${it.desc}</div>
+                </div>
+                <div class="ccp-controls">
+                  <div class="radio-group">
+                    <button type="button" class="r-btn sel-pending" id="btn_${it.id}_pending" onclick="setState('${it.id}', 'pending')">待檢</button>
+                    <button type="button" class="r-btn" id="btn_${it.id}_pass" onclick="setState('${it.id}', 'pass')">合規</button>
+                    <button type="button" class="r-btn" id="btn_${it.id}_fail" onclick="setState('${it.id}', 'fail')">缺失</button>
+                    <button type="button" class="r-btn" id="btn_${it.id}_na" onclick="setState('${it.id}', 'na')">N/A</button>
+                  </div>
+                </div>
+              </div>
+              ${measureHtml}
+              <div class="ccp-footer-actions">
+                <button type="button" class="btn-science" onclick="toggleScience('${it.id}')">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                  <span>展開課程科學原理解析</span>
+                </button>
+                <input type="text" class="note-input" id="note_${it.id}" placeholder="現場觀察備註 (選填)..." oninput="itemNotes['${it.id}']=this.value">
+              </div>
+              <div class="science-drawer" id="sci_${it.id}">
+                <strong>課程科學機制（${it.chapter}）：</strong>${it.science}
+              </div>
+              <div class="diag-drawer" id="diag_${it.id}">
+                <div class="diag-drawer-title">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                  <span>流程缺失診斷：${it.diag}</span>
+                </div>
+                <div class="diag-drawer-body"><strong>現場即時矯正 SOP：</strong>${it.sop}</div>
+              </div>
+            </article>
+          `;
+        });
+        html += `</div>`;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function setState(id, state) {
+      itemStates[id] = state;
+      evaluateAll();
+    }
+
+    function toggleScience(id) {
+      const el = document.getElementById(`sci_${id}`);
+      el.style.display = el.style.display === "block" ? "none" : "block";
+    }
+
+    function checkRule(val, rule, limit) {
+      if (isNaN(val)) return null;
+      if (rule === "gte") return val >= limit;
+      if (rule === "lte") return val <= limit;
+      if (rule === "lt") return val < limit;
+      if (rule === "dynamic_time") {
+        const isHot = document.getElementById("hotEnvToggle").checked;
+        const maxMin = isHot ? 60 : 120;
+        return val <= maxMin;
+      }
+      return true;
+    }
+
+    function onMeasureChange(id) {
+      let targetItem = null;
+      for (const p of PHASES) {
+        const found = p.items.find(x => x.id === id);
+        if (found) { targetItem = found; break; }
+      }
+      if (!targetItem) return;
+
+      const statEl = document.getElementById(`mstat_${id}`);
+
+      if (targetItem.numericInput) {
+        const inp = document.getElementById(`m_${id}`);
+        const raw = inp.value.trim();
+        if (raw === "") {
+          statEl.textContent = "選填實測數據以自動判讀合規性";
+          statEl.style.color = "var(--text-muted)";
+          return;
+        }
+        const num = parseFloat(raw);
+        itemMeasures[id] = { val: num };
+        const ok = checkRule(num, targetItem.numericInput.rule, targetItem.numericInput.limit);
+        if (ok) {
+          statEl.textContent = "實測合規";
+          statEl.style.color = "var(--primary)";
+          setState(id, "pass");
         } else {
-          card.classList.remove("fail-card");
-          diag.style.display = "none";
-          if (val === "pass") {
-            card.classList.add("pass-card");
-          } else {
-            card.classList.remove("pass-card");
-          }
+          statEl.textContent = "超標異常！自動觸發缺失診斷";
+          statEl.style.color = "var(--danger)";
+          setState(id, "fail");
         }
+      } else if (targetItem.multiNumericInput) {
+        let anyEntered = false;
+        let allPass = true;
+        let anyFail = false;
+
+        targetItem.multiNumericInput.forEach(m => {
+          const inp = document.getElementById(`m_${id}_${m.key}`);
+          const raw = inp.value.trim();
+          if (raw !== "") {
+            anyEntered = true;
+            const num = parseFloat(raw);
+            itemMeasures[id][m.key] = num;
+            const ok = checkRule(num, m.rule, m.limit);
+            if (!ok) {
+              allPass = false;
+              anyFail = true;
+            }
+          } else {
+            allPass = false;
+          }
+        });
+
+        if (!anyEntered) {
+          statEl.textContent = "選填實測數據以自動判讀合規性";
+          statEl.style.color = "var(--text-muted)";
+          return;
+        }
+        if (anyFail) {
+          statEl.textContent = "實測指標逾越紅線！觸發缺失";
+          statEl.style.color = "var(--danger)";
+          setState(id, "fail");
+        } else if (allPass) {
+          statEl.textContent = "多項實測皆合規";
+          statEl.style.color = "var(--primary)";
+          setState(id, "pass");
+        }
+      }
+    }
+
+    function evaluateAll() {
+      // Re-evaluate dynamic time if item 6.2 has a value
+      const inp62 = document.getElementById("m_6.2");
+      if (inp62 && inp62.value.trim() !== "") {
+        onMeasureChange("6.2");
+      }
+
+      let score = 100;
+      let p0Fails = 0, p1Fails = 0, p2Fails = 0;
+      let applicableCount = 0, checkedCount = 0, pendingCount = 0;
+
+      const domainStats = {
+        U1: { total: 0, fail: 0, pass: 0 },
+        U2: { total: 0, fail: 0, pass: 0 },
+        U3: { total: 0, fail: 0, pass: 0 }
+      };
+
+      const failedItems = [];
+
+      PHASES.forEach(p => {
+        let phaseApp = 0;
+        p.items.forEach(it => {
+          const st = itemStates[it.id];
+          const card = document.getElementById(`card_${it.id}`);
+          const diag = document.getElementById(`diag_${it.id}`);
+
+          // Toggle button classes
+          ["pending", "pass", "fail", "na"].forEach(s => {
+            const btn = document.getElementById(`btn_${it.id}_${s}`);
+            btn.className = "r-btn" + (st === s ? ` sel-${s}` : "");
+          });
+
+          card.className = `ccp-card state-${st}`;
+          diag.style.display = st === "fail" ? "block" : "none";
+
+          // Filter visibility
+          let show = true;
+          if (currentViewFilter === "applicable" && st === "na") show = false;
+          if (currentViewFilter === "fail" && st !== "fail") show = false;
+          if (currentViewFilter === "pending" && st !== "pending") show = false;
+          card.classList.toggle("hidden-item", !show);
+
+          if (st !== "na") {
+            applicableCount++;
+            phaseApp++;
+            domainStats[it.domain].total++;
+            if (st === "pending") {
+              pendingCount++;
+            } else {
+              checkedCount++;
+              if (st === "pass") domainStats[it.domain].pass++;
+              if (st === "fail") {
+                domainStats[it.domain].fail++;
+                failedItems.push(it);
+                if (it.sev === "P0") p0Fails++;
+                else if (it.sev === "P1") { p1Fails++; score -= it.weight; }
+                else if (it.sev === "P2") { p2Fails++; score -= it.weight; }
+              }
+            }
+          }
+        });
+
+        const phaseStat = document.getElementById(`phase_stat_${p.id}`);
+        if (phaseStat) phaseStat.textContent = `本階段適用 ${phaseApp} 項`;
       });
 
       if (score < 0) score = 0;
 
-      const scoreDisplay = document.getElementById("scoreDisplay");
-      const scoreCircle = document.getElementById("scoreCircle");
-      const statusBadge = document.getElementById("statusBadge");
-      const statusMessage = document.getElementById("statusMessage");
-      const p0CountLabel = document.getElementById("p0CountLabel");
+      // Update Progress & Gauge
+      document.getElementById("progressTag").textContent = `已查核：${checkedCount} / ${applicableCount} 項適用`;
+      document.getElementById("scoreVal").textContent = score;
+      const circumference = 263.89;
+      const offset = circumference - (score / 100) * circumference;
+      const gaugeCircle = document.getElementById("gaugeCircle");
+      gaugeCircle.style.strokeDashoffset = offset;
 
-      scoreDisplay.textContent = score;
-      p0CountLabel.textContent = `P0 致命缺失：${p0Count} 項 ｜ P1: ${p1Count} ｜ P2: ${p2Count}`;
+      // Update Domain Bars
+      ["U1", "U2", "U3"].forEach(d => {
+        const ds = domainStats[d];
+        const lower = d.toLowerCase();
+        const statEl = document.getElementById(`${lower}Stat`);
+        const barEl = document.getElementById(`${lower}Bar`);
+        if (ds.total === 0) {
+          statEl.textContent = "N/A";
+          barEl.style.width = "100%";
+          barEl.style.background = "var(--border-strong)";
+        } else {
+          const safeRatio = Math.max(0, ((ds.total - ds.fail) / ds.total) * 100);
+          statEl.textContent = ds.fail > 0 ? `${ds.fail} 項缺失` : `${ds.pass}/${ds.total} 合規`;
+          barEl.style.width = `${safeRatio}%`;
+          barEl.style.background = ds.fail > 0 ? "var(--danger)" : "var(--primary)";
+        }
+      });
 
-      if (p0Count > 0) {
-        statusBadge.textContent = "🚨 不合格 · 嚴禁出餐！";
-        statusBadge.className = "status-badge status-reject";
-        scoreCircle.style.borderColor = "var(--accent)";
-        scoreCircle.style.background = "var(--accent-soft)";
-        scoreDisplay.style.color = "var(--accent)";
-        statusMessage.innerHTML = `<strong style="color:var(--accent);">⚠️ 觸發 ${p0Count} 項 P0 致命缺失！</strong> 依公衛規範啟動【一票否決制】，該道菜餚存在急性致病或耐熱毒素風險，必須立即執行矯正 SOP，嚴禁供人食用！`;
+      // Update Verdict
+      const pill = document.getElementById("verdictPill");
+      const desc = document.getElementById("verdictDesc");
+      const counts = document.getElementById("verdictCounts");
+      const scoreVal = document.getElementById("scoreVal");
+
+      counts.textContent = `P0 致命: ${p0Fails} | P1: ${p1Fails} | P2: ${p2Fails}`;
+
+      if (p0Fails > 0) {
+        pill.className = "verdict-pill v-reject";
+        pill.textContent = "不合格 · 嚴禁出餐！";
+        gaugeCircle.style.stroke = "var(--danger)";
+        scoreVal.style.color = "var(--danger)";
+        desc.innerHTML = `<strong style="color:var(--danger);">觸發 ${p0Fails} 項 P0 致命缺失！</strong>啟動一票否決制，該道菜存在急性致病、耐熱毒素或強致癌暴露風險，必須依下方清單強制矯正！`;
       } else if (score < 80) {
-        statusBadge.textContent = "⚠️ 不合格 · 需全面整改";
-        statusBadge.className = "status-badge status-reject";
-        scoreCircle.style.borderColor = "var(--accent)";
-        scoreCircle.style.background = "var(--accent-soft)";
-        scoreDisplay.style.color = "var(--accent)";
-        statusMessage.textContent = "總分低於 80 分，整體衛生操作漏洞過多，必須暫緩出餐並重新複查！";
+        pill.className = "verdict-pill v-reject";
+        pill.textContent = "不合格 · 全面整改";
+        gaugeCircle.style.stroke = "var(--danger)";
+        scoreVal.style.color = "var(--danger)";
+        desc.textContent = "總分低於 80 分，存在過多重大/一般操作缺陷，必須暫緩出餐並進行流程整改！";
+      } else if (pendingCount > 0 && checkedCount === 0) {
+        pill.className = "verdict-pill v-pending";
+        pill.textContent = "尚待開始查核";
+        gaugeCircle.style.stroke = "var(--indigo)";
+        scoreVal.style.color = "var(--indigo)";
+        desc.textContent = `目前有 ${applicableCount} 項適用控制點待填寫；您可逐項檢核，或點擊「將其餘設為合規」快速標記缺失。`;
+      } else if (pendingCount > 0) {
+        pill.className = "verdict-pill v-pending";
+        pill.textContent = `查核中 (尚餘 ${pendingCount} 項)`;
+        gaugeCircle.style.stroke = "var(--indigo)";
+        scoreVal.style.color = "var(--indigo)";
+        desc.textContent = `已完成 ${checkedCount}/${applicableCount} 項查核，目前未發現 P0 致命缺陷。`;
       } else if (score < 90) {
-        statusBadge.textContent = "良 · 糾正後可出餐";
-        statusBadge.className = "status-badge status-warn";
-        scoreCircle.style.borderColor = "var(--amber)";
-        scoreCircle.style.background = "var(--amber-soft)";
-        scoreDisplay.style.color = "var(--amber)";
-        statusMessage.textContent = "流程存在輕微一般缺失，現場口頭糾正並記錄改善項目後，可准許出餐。";
+        pill.className = "verdict-pill v-warn";
+        pill.textContent = "合格 · 現場糾正出餐";
+        gaugeCircle.style.stroke = "var(--amber)";
+        scoreVal.style.color = "var(--amber)";
+        desc.textContent = "流程存在部分 P1/P2 缺失，依現場矯正指南排除瑕疵後即可正常供食。";
       } else {
-        statusBadge.textContent = "特優 · 准許出餐";
-        statusBadge.className = "status-badge status-pass";
-        scoreCircle.style.borderColor = "var(--primary)";
-        scoreCircle.style.background = "var(--primary-soft)";
-        scoreDisplay.style.color = "var(--primary)";
-        statusMessage.textContent = "全流程嚴密合規，無任何致病菌或油脂劣變隱患，符合頂規食安衛生標準！";
+        pill.className = "verdict-pill v-pass";
+        pill.textContent = "特優 · 准許安心出餐";
+        gaugeCircle.style.stroke = "var(--primary)";
+        scoreVal.style.color = "var(--primary)";
+        desc.textContent = "全流程嚴密符合微生物、油脂工藝與添加物最高食安標準，准許安心出餐！";
+      }
+
+      // Render Consolidated Failure Diagnosis Summary
+      const diagPanel = document.getElementById("diagSummaryPanel");
+      const diagList = document.getElementById("diagSummaryList");
+      const diagTitle = document.getElementById("diagSumTitle");
+
+      if (failedItems.length > 0) {
+        diagPanel.style.display = "block";
+        diagTitle.textContent = `流程缺失總覽：共發現 ${failedItems.length} 處流程瑕疵（P0 優先處理）`;
+        // Sort P0 -> P1 -> P2
+        const order = { P0: 0, P1: 1, P2: 2 };
+        failedItems.sort((a, b) => order[a.sev] - order[b.sev]);
+
+        diagList.innerHTML = failedItems.map(f => {
+          const noteStr = itemNotes[f.id] ? ` <span style="color:var(--text-muted);">(備註：${itemNotes[f.id]})</span>` : "";
+          return `
+            <div class="diag-sum-item">
+              <span class="diag-sum-badge sev-${f.sev}">${f.sev} | CCP ${f.id}</span>
+              <div>
+                <div style="font-weight:800; font-size:0.92rem; color:var(--text-main);">${f.title}${noteStr}</div>
+                <div style="font-size:0.84rem; color:var(--danger); margin-top:2px;"><strong>缺失本質：</strong>${f.diag}</div>
+                <div style="font-size:0.84rem; color:var(--text-body); margin-top:2px;"><strong>矯正行動：</strong>${f.sop}</div>
+              </div>
+            </div>
+          `;
+        }).join("");
+      } else {
+        diagPanel.style.display = "none";
       }
     }
 
-    function setVal(id, val) {
-      const radios = document.getElementsByName(`q_${id}`);
-      for (const r of radios) {
-        if (r.value === val) r.checked = true;
+    function applyPreset(key, btnEl) {
+      document.querySelectorAll(".btn-preset").forEach(b => b.classList.remove("active"));
+      if (btnEl) btnEl.classList.add("active");
+
+      const p = PRESETS[key];
+      if (!p) return;
+
+      if (p.dish) document.getElementById("dishName").value = p.dish;
+      if (p.method) document.getElementById("dishMethod").value = p.method;
+
+      PHASES.forEach(ph => {
+        ph.items.forEach(it => {
+          itemStates[it.id] = p.naList.includes(it.id) ? "na" : "pending";
+        });
+      });
+
+      if (key !== "all") {
+        setViewFilter("applicable", document.querySelectorAll(".filter-btn")[1]);
+      } else {
+        setViewFilter("all", document.querySelectorAll(".filter-btn")[0]);
       }
+      evaluateAll();
+    }
+
+    function setViewFilter(mode, btnEl) {
+      currentViewFilter = mode;
+      document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+      if (btnEl) btnEl.classList.add("active");
+      evaluateAll();
+    }
+
+    function markPendingAsPass() {
+      Object.keys(itemStates).forEach(k => {
+        if (itemStates[k] === "pending") itemStates[k] = "pass";
+      });
+      evaluateAll();
+      showToast("已將所有待檢項目設為合規");
     }
 
     function resetAll() {
-      itemsConfig.forEach(item => setVal(item.id, "pass"));
-      document.getElementById("dishName").value = "自訂烹調菜餚";
-      document.getElementById("dishMethod").value = "中溫水炒 / 煎煮";
-      updateScore();
+      Object.keys(itemStates).forEach(k => {
+        itemStates[k] = "pending";
+        itemNotes[k] = "";
+        const noteEl = document.getElementById(`note_${k}`);
+        if (noteEl) noteEl.value = "";
+      });
+      document.querySelectorAll(".measure-input").forEach(inp => inp.value = "");
+      document.querySelectorAll(".measure-status").forEach(el => {
+        el.textContent = "選填實測數據以自動判讀合規性";
+        el.style.color = "var(--text-muted)";
+      });
+      document.querySelectorAll(".btn-preset").forEach((b, i) => b.classList.toggle("active", i === 0));
+      setViewFilter("all", document.querySelectorAll(".filter-btn")[0]);
+      evaluateAll();
+      showToast("已重設全部 34 項查核狀態");
     }
 
-    function loadSample(num) {
-      resetAll();
-      if (num === 1) {
-        // 台式鹽酥雞：油炸/禽肉
-        document.getElementById("dishName").value = "台式香酥炸雞排配四季豆";
-        document.getElementById("dishMethod").value = "高溫油炸 (180°C)";
-        setVal("2_1", "na"); // 無海鮮
-        setVal("2_3", "na"); // 無乾金針
-        setVal("2_4", "na"); // 無生魚
-        setVal("4_3", "na"); // 無貝類
-        setVal("4_4", "na"); // 無舒肥
-      } else if (num === 2) {
-        // 低溫舒肥牛排溫沙拉
-        document.getElementById("dishName").value = "低溫舒肥牛排配冷壓橄欖油溫沙拉";
-        document.getElementById("dishMethod").value = "低溫真空烹調 (58°C) + 涼拌";
-        setVal("2_1", "na");
-        setVal("2_2", "na"); // 無禽蛋
-        setVal("2_3", "na");
-        setVal("2_4", "na");
-        setVal("3_2", "na"); // 無油炸油
-        setVal("3_3", "na"); // 無亞硝酸鹽
-        setVal("4_2", "na"); // 無禽肉
-        setVal("4_3", "na");
-      } else if (num === 3) {
-        // 海鮮炒飯配蛤蜊湯
-        document.getElementById("dishName").value = "招牌海鮮炒飯配薑絲蛤蜊豆腐湯";
-        document.getElementById("dishMethod").value = "大火快炒 + 滾沸煮湯";
-        setVal("3_2", "na"); // 無油炸鍋
-        setVal("3_3", "na"); // 無香腸培根
-        setVal("4_2", "na"); // 無生禽肉
-        setVal("4_4", "na"); // 無舒肥
+    function copyReport() {
+      const dish = document.getElementById("dishName").value || "未命名菜餚";
+      const method = document.getElementById("dishMethod").value || "未填寫";
+      const chef = document.getElementById("chefName").value || "未填寫";
+      const time = document.getElementById("auditTime").value;
+      const score = document.getElementById("scoreVal").textContent;
+      const verdict = document.getElementById("verdictPill").textContent;
+
+      let report = `【食品安全烹調全流程稽核報告 (34-CCP)】\n`;
+      report += `========================================\n`;
+      report += `菜餚名稱：${dish}\n烹調與用油：${method}\n負責主廚：${chef}\n檢核時間：${time}\n`;
+      report += `總評分數：${score} 分 ｜ 判定結果：${verdict}\n`;
+      report += `========================================\n\n`;
+
+      const fails = [];
+      let passCnt = 0, naCnt = 0, pendCnt = 0;
+
+      PHASES.forEach(p => {
+        p.items.forEach(it => {
+          const st = itemStates[it.id];
+          if (st === "fail") fails.push(it);
+          else if (st === "pass") passCnt++;
+          else if (st === "na") naCnt++;
+          else pendCnt++;
+        });
+      });
+
+      report += `統計概況：合規 ${passCnt} 項 ｜ 缺失 ${fails.length} 項 ｜ 不適用 ${naCnt} 項 ｜ 待檢 ${pendCnt} 項\n\n`;
+
+      if (fails.length > 0) {
+        report += `🚨 【流程缺失與強制矯正清單】\n`;
+        fails.forEach(f => {
+          const note = itemNotes[f.id] ? ` (備註: ${itemNotes[f.id]})` : "";
+          report += `- [${f.sev}] CCP ${f.id} ${f.title}${note}\n`;
+          report += `  • 科學危害：${f.diag}\n`;
+          report += `  • 矯正 SOP：${f.sop}\n`;
+        });
+      } else {
+        report += `✅ 本道菜餚未發現任何流程缺失！\n`;
       }
-      updateScore();
+
+      navigator.clipboard.writeText(report).then(() => {
+        showToast("已複製完整稽核診斷報告至剪貼簿！");
+      });
     }
 
-    // Initialize
-    window.addEventListener("DOMContentLoaded", () => {
-      updateScore();
-    });
+    function showToast(msg) {
+      const t = document.getElementById("toastMsg");
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 2600);
+    }
+
+    window.addEventListener("DOMContentLoaded", initApp);
   </script>
 </body>
 </html>
